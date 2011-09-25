@@ -91,3 +91,30 @@ exports.testSimpleLcs = function(test) {
     test.deepEqual(actual_lcs, expect_lcs);
     test.done();
 }
+
+/**
+ * Test simple shortest edit script algorithm. Expected graph is taken from the
+ * example in myers paper on page 3.
+ */
+exports.testSimpleSes = function(test) {
+    var a = 'abcabba';
+    var b = 'cbabac';
+
+    // There is no String.splice function, so we just operate on an array.
+    var result = a.split('');
+    var editor = {
+        'insert': function(idx, symbol) {
+            result.splice(idx, 0, symbol);
+        },
+        'remove': function(idx) {
+            result.splice(idx, 1);
+        }
+    }
+
+    var graph = new deltajs.editgraph.Editgraph();
+    graph.ses_simple('abcabba', 'cbabac', editor);
+    result = result.join('');
+
+    test.deepEqual(result, b);
+    test.done();
+}
