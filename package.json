@@ -1,0 +1,4 @@
+{
+    "name": "deltajs",
+    "main": "./lib/delta.js"
+}

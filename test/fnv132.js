@@ -1,4 +1,4 @@
-var deltajs = require('../lib/delta.js');
+var deltajs = require('deltajs');
 
 exports.testFNVHashEmptyString = function(test) {
     hash = new deltajs.fnv132.Hash();
