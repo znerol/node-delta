@@ -69,10 +69,25 @@ exports.testSimple = function(test) {
         actual_diags.push([x, y]);
     };
 
-    graph.editgraph_simple('abcabba', 'cbabac');
+    var d = graph.editgraph_simple('abcabba', 'cbabac');
 
+    test.equal(d, 5);
     test.deepEqual(actual_downs, expect_downs);
     test.deepEqual(actual_rights, expect_rights);
     test.deepEqual(actual_diags, expect_diags);
+    test.done();
+}
+
+/**
+ * Test simple lcs algorithm. Expected graph is taken from the example in myers
+ * paper on page 3.
+ */
+exports.testSimpleLcs = function(test) {
+    var expect_lcs = ['c','a','b','a'];
+
+    var graph = new deltajs.editgraph.Editgraph();
+    var actual_lcs = graph.lcs_simple('abcabba', 'cbabac');
+
+    test.deepEqual(actual_lcs, expect_lcs);
     test.done();
 }
