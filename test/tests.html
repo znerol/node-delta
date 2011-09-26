@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Example Test Suite</title>
+    <link rel="stylesheet" href="nodeunit/nodeunit.css" type="text/css" />
+    <script src="nodeunit/nodeunit.js"></script>
+    <script src="delta.js"></script>
+    <script src="tests.js"></script>
+  </head>
+  <body>
+    <h1 id="nodeunit-header">Delta.js Test Suite</h1>
+    <script>
+      nodeunit.run({
+        'FNV132 Test': fnv132Test,
+        'Editgraph Test': editgraphTest
+      });
+    </script>
+  </body>
+</html>
