@@ -1,6 +1,4 @@
-var fnv132 = (typeof require === 'undefined' ? this.fnv132 : require('deltajs').fnv132);
-
-(function(exports){
+(function(exports, fnv132){
 
     exports.testFNVHashEmptyString = function(test) {
         hash = new fnv132.Hash();
@@ -18,4 +16,7 @@ var fnv132 = (typeof require === 'undefined' ? this.fnv132 : require('deltajs').
         test.done();
     }
 
-})(typeof exports === 'undefined' ? (this.fnv132Test={}) : exports);
+})(
+    typeof exports === 'undefined' ? (this.fnv132Test={}) : exports,
+    typeof require === 'undefined' ? this.fnv132 : require('deltajs').fnv132
+);

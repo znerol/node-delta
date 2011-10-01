@@ -1,6 +1,4 @@
-var editgraph = (typeof require === 'undefined' ? this.editgraph : require('deltajs').editgraph);
-
-(function(exports) {
+(function(exports, editgraph) {
 
     /**
      * Test simple edit graph algorithm. Expected graph is taken from the example
@@ -121,4 +119,7 @@ var editgraph = (typeof require === 'undefined' ? this.editgraph : require('delt
         test.done();
     }
 
-})(typeof exports === 'undefined' ? (this.editgraphTest={}) : exports);
+})(
+    typeof exports === 'undefined' ? (this.editgraphTest={}) : exports,
+    typeof require === 'undefined' ? this.editgraph : require('deltajs').editgraph
+);
