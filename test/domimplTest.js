@@ -1,35 +1,42 @@
 (function(exports){
-    var jsdomParseXML = function (text) {
+    var nodejsParseXML = function (text) {
         var parseXmlString = require('deltajs').xmlToDom.parseXmlString;
         return parseXmlString(text);
     }
 
-    var libxmljsParseXml = function (text) {
-        var libxmljs = require('libxmljs');
-        return libxmljs.parseXmlString(text);
-    }
-
     var browserParseXML = function (text) {
-        var xmlParser;
-        var xmlDoc;
-
-        if (window.DOMParser) {
-            xmlParser = new DOMParser();
-            xmlDoc = xmlParser.parseFromString(text,"text/xml");
-        }
-        else {
-            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async="false";
-            xmlDoc.loadXML(text);
-        }
+        // IE9 (Chakra): http://msdn.microsoft.com/en-us/library/ff975124(v=vs.85).aspx
+        // No support for IE < 9 (not falling back to ActiveX Component).
+        // FF (Gecko): https://developer.mozilla.org/en/DOM/DOMParser
+        // No official documentation for WebKit (Safari, Chromium, Konqueror)
+        // and Opera but recent versions of these browsers provide DomParser.
+        var xmlParser = new DOMParser();
+        var xmlDoc = xmlParser.parseFromString(text,"text/xml");
 
         return xmlDoc;
     }
 
-    var parseXML = (typeof window === 'undefined' ? jsdomParseXML : browserParseXML);
+    var nodejsSerializeXML = function (doc) {
+        // FIXME
+    }
+
+    var browserSerializeXML = function (doc) {
+        // IE9 (Chakra): http://msdn.microsoft.com/en-us/library/ff975124(v=vs.85).aspx
+        // No support for IE < 9
+        // FF (Gecko): https://developer.mozilla.org/en/XMLSerializer
+        // No official documentation for WebKit (Safari, Chromium, Konqueror)
+        // and Opera but recent versions of these browsers provide
+        // XMLSerializer.
+        var serializer = new XMLSerializer();
+        return serializer.serializeToString(doc);
+    }
+
+    var parseXML = (typeof window === 'undefined' ? nodejsParseXML : browserParseXML);
+
+    var serializeXML = (typeof window === 'undefined' ? nodejsSerializeXML : browserSerializeXML);
 
     exports.testParseSimpleXML = function(test) {
-        var doc = parseXML('<hello-world>');
+        var doc = parseXML('<hello-world/>');
         test.equals(doc.firstChild.nodeName, 'hello-world');
         test.done();
     }
@@ -42,6 +49,14 @@
         test.equals(doc.firstChild.firstChild.nodeName, 'world');
         test.equals(doc.firstChild.firstChild.namespaceURI, 'http://example.com/schema');
 
+        test.done();
+    }
+
+    exports.testSimpleRoundtrip = function(test) {
+        var origText = '<hello-world/>'
+        var doc = parseXML(origText);
+        var serializedText = serializeXML(doc);
+        test.equals(serializedText, origText);
         test.done();
     }
 
