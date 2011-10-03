@@ -76,7 +76,7 @@
         test.deepEqual(actual_rights, expect_rights);
         test.deepEqual(actual_diags, expect_diags);
         test.done();
-    }
+    };
 
     /**
      * Test simple lcs algorithm. Expected graph is taken from the example in myers
@@ -90,7 +90,7 @@
 
         test.deepEqual(actual_lcs, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Test simple shortest edit script algorithm. Expected graph is taken from the
@@ -109,7 +109,7 @@
             'remove': function(idx) {
                 result.splice(idx, 1);
             }
-        }
+        };
 
         var graph = new editgraph.Editgraph();
         graph.ses_simple('abcabba', 'cbabac', editor);
@@ -117,9 +117,9 @@
 
         test.deepEqual(result, b);
         test.done();
-    }
+    };
 
-})(
+}(
     typeof exports === 'undefined' ? (this.editgraphTest={}) : exports,
     typeof require === 'undefined' ? this.editgraph : require('deltajs').editgraph
-);
+));
