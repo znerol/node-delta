@@ -58,18 +58,20 @@
         var actual_rights = [];
         var actual_diags = [];
 
-        var graph = new editgraph.Editgraph();
-        graph.down = function(x, y) {
-            actual_downs.push([x, y]);
-        };
-        graph.right = function(x, y) {
-            actual_rights.push([x, y]);
-        };
-        graph.diag = function(x, y) {
-            actual_diags.push([x, y]);
+        var builder = {
+            'down': function(x, y) {
+                actual_downs.push([x, y]);
+            },
+            'right': function(x, y) {
+                actual_rights.push([x, y]);
+            },
+            'diag': function(x, y) {
+                actual_diags.push([x, y]);
+            }
         };
 
-        var d = graph.editgraph_simple('abcabba', 'cbabac');
+        var graph = new editgraph.Editgraph();
+        var d = graph.editgraph_simple('abcabba', 'cbabac', builder);
 
         test.equal(d, 5);
         test.deepEqual(actual_downs, expect_downs);
