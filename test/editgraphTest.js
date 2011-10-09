@@ -129,10 +129,10 @@
         ];
         var actual_edges = [];
 
-        p1 = new editgraph.Dpath(0, 0, 0, 1, editgraph.Dpath.FORWARD);
-        p2 = new editgraph.Dpath(0, 0, -1, 0, editgraph.Dpath.FORWARD);
+        p1 = new editgraph.Dpath(editgraph.Dpath.FORWARD, 0, 0, 0);
+        p2 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -1, 0, 0);
         p2.prepend(p1);
-        p3 = new editgraph.Dpath(2, 0, -2, -1, editgraph.Dpath.FORWARD);
+        p3 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -2, 2, 0);
         p3.prepend(p2);
 
         [p1, p2, p3].forEach(function(p) {
@@ -154,10 +154,10 @@
         ];
         var actual_edges = [];
 
-        p1 = new editgraph.Dpath(7, 7, 1, 0, editgraph.Dpath.BACKWARD);
-        p2 = new editgraph.Dpath(5, 7, 2, 1, editgraph.Dpath.BACKWARD);
+        p1 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 7, 7);
+        p2 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 2, 5, 7);
         p2.prepend(p1);
-        p3 = new editgraph.Dpath(3, 4, 1, 2, editgraph.Dpath.BACKWARD);
+        p3 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 3, 4);
         p3.prepend(p2);
 
         [p1, p2, p3].forEach(function(p) {
