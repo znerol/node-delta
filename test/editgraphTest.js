@@ -121,6 +121,54 @@
         test.done();
     };
 
+    exports.testForwardDpathChainEdges = function(test) {
+        var expected_edges = [
+            [0, 0, 0, 1],
+            [0, 1, 0, 2],
+            [0, 2, 2, 4]
+        ];
+        var actual_edges = [];
+
+        p1 = new editgraph.Dpath(0, 0, 0, 1, editgraph.Dpath.FORWARD);
+        p2 = new editgraph.Dpath(0, 0, -1, 0, editgraph.Dpath.FORWARD);
+        p2.prepend(p1);
+        p3 = new editgraph.Dpath(2, 0, -2, -1, editgraph.Dpath.FORWARD);
+        p3.prepend(p2);
+
+        [p1, p2, p3].forEach(function(p) {
+            p.forEachEdge(function(start, end) {
+                actual_edges.push([start.x, start.y, end.x, end.y]);
+            });
+        });
+
+        test.deepEqual(actual_edges, expected_edges);
+        test.done();
+    };
+
+    exports.testBackwardDpathChainEdges = function(test) {
+        var expected_edges = [
+            [7, 6, 7, 5],
+            [7, 5, 5, 3],
+            [5, 3, 4, 3],
+            [4, 3, 3, 2]
+        ];
+        var actual_edges = [];
+
+        p1 = new editgraph.Dpath(7, 7, 1, 0, editgraph.Dpath.BACKWARD);
+        p2 = new editgraph.Dpath(5, 7, 2, 1, editgraph.Dpath.BACKWARD);
+        p2.prepend(p1);
+        p3 = new editgraph.Dpath(3, 4, 1, 2, editgraph.Dpath.BACKWARD);
+        p3.prepend(p2);
+
+        [p1, p2, p3].forEach(function(p) {
+            p.forEachEdge(function(start, end) {
+                actual_edges.push([start.x, start.y, end.x, end.y]);
+            });
+        });
+
+        test.deepEqual(actual_edges, expected_edges);
+        test.done();
+    };
 }(
     typeof exports === 'undefined' ? (this.editgraphTest={}) : exports,
     typeof require === 'undefined' ? this.editgraph : require('deltajs').editgraph
