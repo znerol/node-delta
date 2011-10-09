@@ -52,6 +52,7 @@
         test.done();
     };
 
+    /*
     exports.testSimpleRoundtrip = function(test) {
         var origText = '<hello-world/>';
         var doc = parseXML(origText);
@@ -59,5 +60,6 @@
         test.equals(serializedText, origText);
         test.done();
     };
+    */
 
 }(typeof exports === 'undefined' ? (this.domimplTest={}) : exports));

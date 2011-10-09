@@ -70,8 +70,8 @@
             }
         };
 
-        var graph = new editgraph.Editgraph();
-        var d = graph.editgraph_simple('abcabba', 'cbabac', builder);
+        var graph = new editgraph.Editgraph('abcabba', 'cbabac');
+        var d = graph.editgraph_simple(builder);
 
         test.equal(d, 5);
         test.deepEqual(actual_downs, expect_downs);
@@ -87,8 +87,8 @@
     exports.testSimpleLcs = function(test) {
         var expect_lcs = ['c','a','b','a'];
 
-        var graph = new editgraph.Editgraph();
-        var actual_lcs = graph.lcs_simple('abcabba', 'cbabac');
+        var graph = new editgraph.Editgraph('abcabba', 'cbabac');
+        var actual_lcs = graph.lcs_simple();
 
         test.deepEqual(actual_lcs, expect_lcs);
         test.done();
@@ -113,8 +113,8 @@
             }
         };
 
-        var graph = new editgraph.Editgraph();
-        graph.ses_simple('abcabba', 'cbabac', editor);
+        var graph = new editgraph.Editgraph('abcabba', 'cbabac');
+        graph.ses_simple(editor);
         result = result.join('');
 
         test.deepEqual(result, b);
