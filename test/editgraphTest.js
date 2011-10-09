@@ -172,8 +172,8 @@
 
     exports.testForwardDpathCommonSymbolForward = function(test) {
         var expected_common_symbols = [
-            [1,3],
-            [2,4]
+            [0,2],
+            [1,3]
         ];
         var actual_common_symbols = [];
 
@@ -195,8 +195,8 @@
 
     exports.testForwardDpathCommonSymbolBackward = function(test) {
         var expected_common_symbols = [
-            [2,4],
-            [1,3]
+            [1,3],
+            [0,2]
         ];
         var actual_common_symbols = [];
 
@@ -218,9 +218,9 @@
 
     exports.testBackwardDpathCommonSymbolForward = function(test) {
         var expected_common_symbols = [
-            [4, 3],
-            [6, 4],
-            [7, 5]
+            [3, 2],
+            [5, 3],
+            [6, 4]
         ];
         var actual_common_symbols = [];
 
@@ -242,9 +242,9 @@
 
     exports.testBackwardDpathCommonSymbolBackward = function(test) {
         var expected_common_symbols = [
-            [7, 5],
             [6, 4],
-            [4, 3]
+            [5, 3],
+            [3, 2]
         ];
         var actual_common_symbols = [];
 
