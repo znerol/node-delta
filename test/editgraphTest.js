@@ -169,6 +169,100 @@
         test.deepEqual(actual_edges, expected_edges);
         test.done();
     };
+
+    exports.testForwardDpathCommonSymbolForward = function(test) {
+        var expected_common_symbols = [
+            [1,3],
+            [2,4]
+        ];
+        var actual_common_symbols = [];
+
+        p1 = new editgraph.Dpath(editgraph.Dpath.FORWARD, 0, 0, 0);
+        p2 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -1, 0, 0);
+        p2.prepend(p1);
+        p3 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -2, 2, 0);
+        p3.prepend(p2);
+
+        [p1, p2, p3].forEach(function(p) {
+            p.forEachCommonSymbolForward(function(x, y) {
+                actual_common_symbols.push([x,y]);
+            });
+        });
+
+        test.deepEqual(actual_common_symbols, expected_common_symbols);
+        test.done();
+    };
+
+    exports.testForwardDpathCommonSymbolBackward = function(test) {
+        var expected_common_symbols = [
+            [2,4],
+            [1,3]
+        ];
+        var actual_common_symbols = [];
+
+        p1 = new editgraph.Dpath(editgraph.Dpath.FORWARD, 0, 0, 0);
+        p2 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -1, 0, 0);
+        p2.prepend(p1);
+        p3 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -2, 2, 0);
+        p3.prepend(p2);
+
+        [p3, p2, p1].forEach(function(p) {
+            p.forEachCommonSymbolBackward(function(x, y) {
+                actual_common_symbols.push([x,y]);
+            });
+        });
+
+        test.deepEqual(actual_common_symbols, expected_common_symbols);
+        test.done();
+    };
+
+    exports.testBackwardDpathCommonSymbolForward = function(test) {
+        var expected_common_symbols = [
+            [4, 3],
+            [6, 4],
+            [7, 5]
+        ];
+        var actual_common_symbols = [];
+
+        p1 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 7, 7);
+        p2 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 2, 5, 7);
+        p2.prepend(p1);
+        p3 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 3, 4);
+        p3.prepend(p2);
+
+        [p3, p2, p1].forEach(function(p) {
+            p.forEachCommonSymbolForward(function(x, y) {
+                actual_common_symbols.push([x,y]);
+            });
+        });
+
+        test.deepEqual(actual_common_symbols, expected_common_symbols);
+        test.done();
+    };
+
+    exports.testBackwardDpathCommonSymbolBackward = function(test) {
+        var expected_common_symbols = [
+            [7, 5],
+            [6, 4],
+            [4, 3]
+        ];
+        var actual_common_symbols = [];
+
+        p1 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 7, 7);
+        p2 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 2, 5, 7);
+        p2.prepend(p1);
+        p3 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 3, 4);
+        p3.prepend(p2);
+
+        [p1, p2, p3].forEach(function(p) {
+            p.forEachCommonSymbolBackward(function(x, y) {
+                actual_common_symbols.push([x,y]);
+            });
+        });
+
+        test.deepEqual(actual_common_symbols, expected_common_symbols);
+        test.done();
+    };
 }(
     typeof exports === 'undefined' ? (this.editgraphTest={}) : exports,
     typeof require === 'undefined' ? this.editgraph : require('deltajs').editgraph
