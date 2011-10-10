@@ -132,8 +132,8 @@
         p2 = new editgraph.Dpath(-1, 0, 0);
         p3 = new editgraph.Dpath(-2, 0, 2);
 
-        [p1, p2, p3].forEach(function(p) {
-            p.forEachCommonSymbolForward(function(x, y) {
+        [[p1, p2], [p2, p3]].forEach(function(pair) {
+            editgraph.Dpath.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -153,8 +153,8 @@
         p2 = new editgraph.Dpath(-1, 0, 0);
         p3 = new editgraph.Dpath(-2, 0, 2);
 
-        [p3, p2, p1].forEach(function(p) {
-            p.forEachCommonSymbolBackward(function(x, y) {
+        [[p1, p2], [p2, p3]].forEach(function(pair) {
+            editgraph.Dpath.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -165,7 +165,6 @@
 
     exports.testReverseDpathCommonSymbolForward = function(test) {
         var expected_common_symbols = [
-            [3, 2],
             [5, 3],
             [6, 4]
         ];
@@ -175,8 +174,8 @@
         p2 = new editgraph.Dpath(2, 5, 7);
         p3 = new editgraph.Dpath(1, 3, 4);
 
-        [p3, p2, p1].forEach(function(p) {
-            p.forEachCommonSymbolForward(function(x, y) {
+        [[p3, p2], [p2, p1]].forEach(function(pair) {
+            editgraph.Dpath.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -188,8 +187,7 @@
     exports.testReverseDpathCommonSymbolBackward = function(test) {
         var expected_common_symbols = [
             [6, 4],
-            [5, 3],
-            [3, 2]
+            [5, 3]
         ];
         var actual_common_symbols = [];
 
@@ -197,8 +195,8 @@
         p2 = new editgraph.Dpath(2, 5, 7);
         p3 = new editgraph.Dpath(1, 3, 4);
 
-        [p1, p2, p3].forEach(function(p) {
-            p.forEachCommonSymbolBackward(function(x, y) {
+        [[p2, p1], [p3, p2]].forEach(function(pair) {
+            editgraph.Dpath.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
