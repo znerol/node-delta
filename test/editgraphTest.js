@@ -121,67 +121,16 @@
         test.done();
     };
 
-    exports.testForwardDpathChainEdges = function(test) {
-        var expected_edges = [
-            [0, 0, 0, 1],
-            [0, 1, 0, 2],
-            [0, 2, 2, 4]
-        ];
-        var actual_edges = [];
-
-        p1 = new editgraph.Dpath(editgraph.Dpath.FORWARD, 0, 0, 0);
-        p2 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -1, 0, 0);
-        p2.prepend(p1);
-        p3 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -2, 2, 0);
-        p3.prepend(p2);
-
-        [p1, p2, p3].forEach(function(p) {
-            p.forEachEdge(function(start, end) {
-                actual_edges.push([start.x, start.y, end.x, end.y]);
-            });
-        });
-
-        test.deepEqual(actual_edges, expected_edges);
-        test.done();
-    };
-
-    exports.testBackwardDpathChainEdges = function(test) {
-        var expected_edges = [
-            [7, 6, 7, 5],
-            [7, 5, 5, 3],
-            [5, 3, 4, 3],
-            [4, 3, 3, 2]
-        ];
-        var actual_edges = [];
-
-        p1 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 7, 7);
-        p2 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 2, 5, 7);
-        p2.prepend(p1);
-        p3 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 3, 4);
-        p3.prepend(p2);
-
-        [p1, p2, p3].forEach(function(p) {
-            p.forEachEdge(function(start, end) {
-                actual_edges.push([start.x, start.y, end.x, end.y]);
-            });
-        });
-
-        test.deepEqual(actual_edges, expected_edges);
-        test.done();
-    };
-
-    exports.testForwardDpathCommonSymbolForward = function(test) {
+    exports.testDpathCommonSymbolForward = function(test) {
         var expected_common_symbols = [
             [0,2],
             [1,3]
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(editgraph.Dpath.FORWARD, 0, 0, 0);
-        p2 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -1, 0, 0);
-        p2.prepend(p1);
-        p3 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -2, 2, 0);
-        p3.prepend(p2);
+        p1 = new editgraph.Dpath(0, 0, 0);
+        p2 = new editgraph.Dpath(-1, 0, 0);
+        p3 = new editgraph.Dpath(-2, 0, 2);
 
         [p1, p2, p3].forEach(function(p) {
             p.forEachCommonSymbolForward(function(x, y) {
@@ -193,18 +142,16 @@
         test.done();
     };
 
-    exports.testForwardDpathCommonSymbolBackward = function(test) {
+    exports.testDpathCommonSymbolBackward = function(test) {
         var expected_common_symbols = [
             [1,3],
             [0,2]
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(editgraph.Dpath.FORWARD, 0, 0, 0);
-        p2 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -1, 0, 0);
-        p2.prepend(p1);
-        p3 = new editgraph.Dpath(editgraph.Dpath.FORWARD, -2, 2, 0);
-        p3.prepend(p2);
+        p1 = new editgraph.Dpath(0, 0, 0);
+        p2 = new editgraph.Dpath(-1, 0, 0);
+        p3 = new editgraph.Dpath(-2, 0, 2);
 
         [p3, p2, p1].forEach(function(p) {
             p.forEachCommonSymbolBackward(function(x, y) {
@@ -216,7 +163,7 @@
         test.done();
     };
 
-    exports.testBackwardDpathCommonSymbolForward = function(test) {
+    exports.testReverseDpathCommonSymbolForward = function(test) {
         var expected_common_symbols = [
             [3, 2],
             [5, 3],
@@ -224,11 +171,9 @@
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 7, 7);
-        p2 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 2, 5, 7);
-        p2.prepend(p1);
-        p3 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 3, 4);
-        p3.prepend(p2);
+        p1 = new editgraph.Dpath(1, 7, 7);
+        p2 = new editgraph.Dpath(2, 5, 7);
+        p3 = new editgraph.Dpath(1, 3, 4);
 
         [p3, p2, p1].forEach(function(p) {
             p.forEachCommonSymbolForward(function(x, y) {
@@ -240,7 +185,7 @@
         test.done();
     };
 
-    exports.testBackwardDpathCommonSymbolBackward = function(test) {
+    exports.testReverseDpathCommonSymbolBackward = function(test) {
         var expected_common_symbols = [
             [6, 4],
             [5, 3],
@@ -248,11 +193,9 @@
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 7, 7);
-        p2 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 2, 5, 7);
-        p2.prepend(p1);
-        p3 = new editgraph.Dpath(editgraph.Dpath.BACKWARD, 1, 3, 4);
-        p3.prepend(p2);
+        p1 = new editgraph.Dpath(1, 7, 7);
+        p2 = new editgraph.Dpath(2, 5, 7);
+        p3 = new editgraph.Dpath(1, 3, 4);
 
         [p1, p2, p3].forEach(function(p) {
             p.forEachCommonSymbolBackward(function(x, y) {
