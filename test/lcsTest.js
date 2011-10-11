@@ -17,6 +17,6 @@
         test.done();
     };
 }(
-    typeof exports === 'undefined' ? (this.lcsTest={}) : exports,
-    typeof require === 'undefined' ? this.lcs : require('deltajs').lcs
+    typeof exports === 'undefined' ? (DeltaJS.lcsTest={}) : exports,
+    typeof require === 'undefined' ? DeltaJS.lcs : require('deltajs').lcs
 ));

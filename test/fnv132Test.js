@@ -17,6 +17,6 @@
     };
 
 }(
-    typeof exports === 'undefined' ? (this.fnv132Test={}) : exports,
-    typeof require === 'undefined' ? this.fnv132 : require('deltajs').fnv132
+    typeof exports === 'undefined' ? (DeltaJS.fnv132Test={}) : exports,
+    typeof require === 'undefined' ? DeltaJS.fnv132 : require('deltajs').fnv132
 ));

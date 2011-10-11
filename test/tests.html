@@ -3,6 +3,10 @@
     <title>Example Test Suite</title>
     <link rel="stylesheet" href="nodeunit/nodeunit.css" type="text/css" />
     <script src="nodeunit/nodeunit.js"></script>
+    <script>
+        // Initialize DeltaJS Namespace
+        DeltaJS = {};
+    </script>
     <script src="delta/fnv132.js"></script>
     <script src="delta/lcs.js"></script>
     <script src="fnv132Test.js"></script>
@@ -12,8 +16,8 @@
     <h1 id="nodeunit-header">Delta.js Test Suite</h1>
     <script>
       nodeunit.run({
-        'FNV132 Test': fnv132Test,
-        'LCS Test': lcsTest
+        'FNV132 Test': DeltaJS.fnv132Test,
+        'LCS Test': DeltaJS.lcsTest
       });
     </script>
   </body>
