@@ -52,8 +52,11 @@
         p2 = new editgraph.SnakeHead(-1, 0);
         p3 = new editgraph.SnakeHead(-2, 2);
 
-        [[p1, p2], [p2, p3]].forEach(function(pair) {
-            editgraph.SnakeHead.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
+        s1 = new editgraph.Snake(p1, p2);
+        s2 = new editgraph.Snake(p2, p3);
+
+        [s1, s2].forEach(function(snake) {
+            snake.forEachCommonSymbolForward(function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -73,8 +76,11 @@
         p2 = new editgraph.SnakeHead(-1, 0);
         p3 = new editgraph.SnakeHead(-2, 2);
 
-        [[p1, p2], [p2, p3]].forEach(function(pair) {
-            editgraph.SnakeHead.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
+        s1 = new editgraph.Snake(p1, p2);
+        s2 = new editgraph.Snake(p2, p3);
+
+        [s1, s2].forEach(function(snake) {
+            snake.forEachCommonSymbolBackward(function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -94,8 +100,11 @@
         p2 = new editgraph.SnakeHead(2, 7);
         p3 = new editgraph.SnakeHead(1, 4);
 
-        [[p3, p2], [p2, p1]].forEach(function(pair) {
-            editgraph.SnakeHead.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
+        s1 = new editgraph.Snake(p2, p1);
+        s2 = new editgraph.Snake(p3, p2);
+
+        [s2, s1].forEach(function(snake) {
+            snake.forEachCommonSymbolForward(function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -115,8 +124,11 @@
         p2 = new editgraph.SnakeHead(2, 7);
         p3 = new editgraph.SnakeHead(1, 4);
 
-        [[p2, p1], [p3, p2]].forEach(function(pair) {
-            editgraph.SnakeHead.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
+        s1 = new editgraph.Snake(p2, p1);
+        s2 = new editgraph.Snake(p3, p2);
+
+        [s1, s2].forEach(function(snake) {
+            snake.forEachCommonSymbolBackward(function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
