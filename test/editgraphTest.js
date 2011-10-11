@@ -145,24 +145,16 @@
         var actual_lcs_a = [];
         var actual_lcs_b = [];
 
-        var editor = {
-            'skip': function(seq, idx) {
-                if (seq === A) {
-                    actual_lcs_a.push(seq[idx]);
-                }
-                else if (seq === B) {
-                    actual_lcs_b.push(seq[idx]);
-                }
-            }
-        }
-
         var graph = new editgraph.Editgraph(A, B);
-        var d = graph.compute(editor);
+        var d = graph.forEachCommonSymbolInLCS(function(x, y) {
+            actual_lcs_a.push(A[x]);
+            actual_lcs_b.push(B[y]);
+        });
 
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 }(
     typeof exports === 'undefined' ? (this.editgraphTest={}) : exports,
     typeof require === 'undefined' ? this.editgraph : require('deltajs').editgraph
