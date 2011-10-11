@@ -48,9 +48,9 @@
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.SnakeHead(0, 0);
-        p2 = new editgraph.SnakeHead(-1, 0);
-        p3 = new editgraph.SnakeHead(-2, 2);
+        p1 = new editgraph.SnakeHead(0,  0);
+        p2 = new editgraph.SnakeHead(0, -1);
+        p3 = new editgraph.SnakeHead(2, -2);
 
         s1 = new editgraph.Snake(p1, p2);
         s2 = new editgraph.Snake(p2, p3);
@@ -72,9 +72,9 @@
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.SnakeHead(0, 0);
-        p2 = new editgraph.SnakeHead(-1, 0);
-        p3 = new editgraph.SnakeHead(-2, 2);
+        p1 = new editgraph.SnakeHead(0,  0);
+        p2 = new editgraph.SnakeHead(0, -1);
+        p3 = new editgraph.SnakeHead(2, -2);
 
         s1 = new editgraph.Snake(p1, p2);
         s2 = new editgraph.Snake(p2, p3);
@@ -96,9 +96,9 @@
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.SnakeHead(1, 7);
-        p2 = new editgraph.SnakeHead(2, 7);
-        p3 = new editgraph.SnakeHead(1, 4);
+        p1 = new editgraph.SnakeHead(7, 1);
+        p2 = new editgraph.SnakeHead(7, 2);
+        p3 = new editgraph.SnakeHead(4, 1);
 
         s1 = new editgraph.Snake(p2, p1);
         s2 = new editgraph.Snake(p3, p2);
@@ -120,9 +120,9 @@
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.SnakeHead(1, 7);
-        p2 = new editgraph.SnakeHead(2, 7);
-        p3 = new editgraph.SnakeHead(1, 4);
+        p1 = new editgraph.SnakeHead(7, 1);
+        p2 = new editgraph.SnakeHead(7, 2);
+        p3 = new editgraph.SnakeHead(4, 1);
 
         s1 = new editgraph.Snake(p2, p1);
         s2 = new editgraph.Snake(p3, p2);
