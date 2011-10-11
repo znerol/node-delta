@@ -136,6 +136,33 @@
         test.deepEqual(actual_common_symbols, expected_common_symbols);
         test.done();
     };
+
+    exports.testDQLcs = function(test) {
+        var A = 'abcabba';
+        var B = 'cbabac';
+
+        var expect_lcs = ['c','a','b','a'];
+        var actual_lcs_a = [];
+        var actual_lcs_b = [];
+
+        var editor = {
+            'skip': function(seq, idx) {
+                if (seq === A) {
+                    actual_lcs_a.push(seq[idx]);
+                }
+                else if (seq === B) {
+                    actual_lcs_b.push(seq[idx]);
+                }
+            }
+        }
+
+        var graph = new editgraph.Editgraph(A, B);
+        var d = graph.compute(editor);
+
+        test.deepEqual(actual_lcs_a, expect_lcs);
+        test.deepEqual(actual_lcs_b, expect_lcs);
+        test.done();
+    }
 }(
     typeof exports === 'undefined' ? (this.editgraphTest={}) : exports,
     typeof require === 'undefined' ? this.editgraph : require('deltajs').editgraph
