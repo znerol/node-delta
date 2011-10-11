@@ -41,19 +41,19 @@
         test.done();
     };
 
-    exports.testDpathCommonSymbolForward = function(test) {
+    exports.testSnakeHeadCommonSymbolForward = function(test) {
         var expected_common_symbols = [
             [0,2],
             [1,3]
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(0, 0);
-        p2 = new editgraph.Dpath(-1, 0);
-        p3 = new editgraph.Dpath(-2, 2);
+        p1 = new editgraph.SnakeHead(0, 0);
+        p2 = new editgraph.SnakeHead(-1, 0);
+        p3 = new editgraph.SnakeHead(-2, 2);
 
         [[p1, p2], [p2, p3]].forEach(function(pair) {
-            editgraph.Dpath.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
+            editgraph.SnakeHead.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -62,19 +62,19 @@
         test.done();
     };
 
-    exports.testDpathCommonSymbolBackward = function(test) {
+    exports.testSnakeHeadCommonSymbolBackward = function(test) {
         var expected_common_symbols = [
             [1,3],
             [0,2]
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(0, 0);
-        p2 = new editgraph.Dpath(-1, 0);
-        p3 = new editgraph.Dpath(-2, 2);
+        p1 = new editgraph.SnakeHead(0, 0);
+        p2 = new editgraph.SnakeHead(-1, 0);
+        p3 = new editgraph.SnakeHead(-2, 2);
 
         [[p1, p2], [p2, p3]].forEach(function(pair) {
-            editgraph.Dpath.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
+            editgraph.SnakeHead.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -83,19 +83,19 @@
         test.done();
     };
 
-    exports.testReverseDpathCommonSymbolForward = function(test) {
+    exports.testReverseSnakeHeadCommonSymbolForward = function(test) {
         var expected_common_symbols = [
             [5, 3],
             [6, 4]
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(1, 7);
-        p2 = new editgraph.Dpath(2, 7);
-        p3 = new editgraph.Dpath(1, 4);
+        p1 = new editgraph.SnakeHead(1, 7);
+        p2 = new editgraph.SnakeHead(2, 7);
+        p3 = new editgraph.SnakeHead(1, 4);
 
         [[p3, p2], [p2, p1]].forEach(function(pair) {
-            editgraph.Dpath.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
+            editgraph.SnakeHead.forEachCommonSymbolForward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
@@ -104,19 +104,19 @@
         test.done();
     };
 
-    exports.testReverseDpathCommonSymbolBackward = function(test) {
+    exports.testReverseSnakeHeadCommonSymbolBackward = function(test) {
         var expected_common_symbols = [
             [6, 4],
             [5, 3]
         ];
         var actual_common_symbols = [];
 
-        p1 = new editgraph.Dpath(1, 7);
-        p2 = new editgraph.Dpath(2, 7);
-        p3 = new editgraph.Dpath(1, 4);
+        p1 = new editgraph.SnakeHead(1, 7);
+        p2 = new editgraph.SnakeHead(2, 7);
+        p3 = new editgraph.SnakeHead(1, 4);
 
         [[p2, p1], [p3, p2]].forEach(function(pair) {
-            editgraph.Dpath.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
+            editgraph.SnakeHead.forEachCommonSymbolBackward(pair[0], pair[1], function(x, y) {
                 actual_common_symbols.push([x,y]);
             });
         });
