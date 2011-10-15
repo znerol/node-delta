@@ -41,7 +41,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * If input A and input B do not have any characters in common, output must
@@ -64,7 +64,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Edge case A=xyy B=x
@@ -86,7 +86,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Edge case A=yxy B=x
@@ -108,7 +108,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Edge case A=x B=xyy
@@ -130,7 +130,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Edge case A=x B=yxy
@@ -152,7 +152,8 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
+
     /**
      * Edge case A=yx B=x
      */
@@ -173,7 +174,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Edge case A=xy B=x
@@ -195,7 +196,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Edge case A=x B=yx
@@ -217,7 +218,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Edge case A=x B=xy
@@ -239,7 +240,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Regression: handle negative deltas (delta % 2 -> -1)
@@ -261,7 +262,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * Regression: dmax/2 must be ceiled, otherwise outer loop may terminate
@@ -284,7 +285,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
+    };
 
     /**
      * If both input strings are empty, output must be empty too
@@ -306,8 +307,7 @@
         test.deepEqual(actual_lcs_a, expect_lcs);
         test.deepEqual(actual_lcs_b, expect_lcs);
         test.done();
-    }
-
+    };
 }(
     typeof exports === 'undefined' ? (DeltaJS.lcsTest={}) : exports,
     typeof require === 'undefined' ? DeltaJS.lcs : require('deltajs').lcs
