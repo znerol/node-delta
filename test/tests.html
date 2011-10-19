@@ -9,15 +9,19 @@
     </script>
     <script src="delta/fnv132.js"></script>
     <script src="delta/lcs.js"></script>
+    <script src="delta/tree.js"></script>
+    <script src="delta/xcc.js"></script>
     <script src="fnv132Test.js"></script>
     <script src="lcsTest.js"></script>
+    <script src="xccTest.js"></script>
   </head>
   <body>
     <h1 id="nodeunit-header">Delta.js Test Suite</h1>
     <script>
       nodeunit.run({
         'FNV132 Test': DeltaJS.fnv132Test,
-        'LCS Test': DeltaJS.lcsTest
+        'LCS Test': DeltaJS.lcsTest,
+        'XCC Test': DeltaJS.xccTest
       });
     </script>
   </body>
