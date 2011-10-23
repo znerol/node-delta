@@ -169,6 +169,140 @@
 
         test.done();
     }
+
+    exports['must not generate any operation for two equal one-node trees'] = function(test) {
+        var a = new tree.Node('x');
+        var b = new tree.Node('x');
+        var diff = new xcc.Diff(a, b);
+
+        var expect_patch = {'insert': [], 'remove': [], 'update': []};
+        var actual_patch = {'insert': [], 'remove': [], 'update': []};
+        var editor = {
+            'insert': function(nodes) {
+                actual_patch.insert.push(nodes);
+            },
+            'remove': function(nodes) {
+                actual_patch.remove.push(nodes);
+            },
+            'update': function(o, n) {
+                actual_patch.update.push([o, n]);
+            }
+        };
+
+        // Manually match trees
+        b.match(a);
+
+        // Generate patch
+        diff.generatePatch(editor);
+
+        test.deepEqual(actual_patch, expect_patch);
+
+        test.done();
+    }
+
+    exports['should generate one update operation for two different one-node trees'] = function(test) {
+        var a = new tree.Node('x');
+        var b = new tree.Node('y');
+        var diff = new xcc.Diff(a, b);
+
+        var expect_patch = {'insert': [], 'remove': [], 'update': [[a, b]]};
+        var actual_patch = {'insert': [], 'remove': [], 'update': []};
+        var editor = {
+            'insert': function(nodes) {
+                actual_patch.insert.push(nodes);
+            },
+            'remove': function(nodes) {
+                actual_patch.remove.push(nodes);
+            },
+            'update': function(o, n) {
+                actual_patch.update.push([o, n]);
+            }
+        };
+
+        // Manually match trees
+        b.match(a);
+
+        // Generate patch
+        diff.generatePatch(editor);
+
+        test.deepEqual(actual_patch, expect_patch);
+
+        test.done();
+    }
+
+    exports['should generate one remove operation for consecutive sequence of nodes'] = function(test) {
+        var a = new tree.Node();
+        var a1 = new tree.Node();
+        var a2 = new tree.Node();
+        var b = new tree.Node();
+        var diff = new xcc.Diff(a, b);
+
+        var expect_patch = {'insert': [], 'remove': [[a1,a2]], 'update': []};
+        var actual_patch = {'insert': [], 'remove': [], 'update': []};
+        var editor = {
+            'insert': function(nodes) {
+                actual_patch.insert.push(nodes);
+            },
+            'remove': function(nodes) {
+                actual_patch.remove.push(nodes);
+            },
+            'update': function(o, n) {
+                actual_patch.update.push([o, n]);
+            }
+        };
+
+        // Manually build tree
+        a.append(a1);
+        a.append(a2);
+
+        // Manually match trees, b1 and b2 do not have any corresponding nodes
+        // in a.
+        b.match(a);
+
+        // Generate patch
+        diff.generatePatch(editor);
+
+        test.deepEqual(actual_patch, expect_patch);
+
+        test.done();
+    }
+
+    exports['should generate one insert operation for consecutive sequence of nodes'] = function(test) {
+        var a = new tree.Node();
+        var b = new tree.Node();
+        var b1 = new tree.Node();
+        var b2 = new tree.Node();
+        var diff = new xcc.Diff(a, b);
+
+        var expect_patch = {'insert': [[b1, b2]], 'remove': [], 'update': []};
+        var actual_patch = {'insert': [], 'remove': [], 'update': []};
+        var editor = {
+            'insert': function(nodes) {
+                actual_patch.insert.push(nodes);
+            },
+            'remove': function(nodes) {
+                actual_patch.remove.push(nodes);
+            },
+            'update': function(o, n) {
+                actual_patch.update.push([o, n]);
+            }
+        };
+
+        // Manually build tree
+        b.append(b1);
+        b.append(b2);
+
+        // Manually match trees, b1 and b2 do not have any corresponding nodes
+        // in a.
+        b.match(a);
+
+        // Generate patch
+        diff.generatePatch(editor);
+
+        test.deepEqual(actual_patch, expect_patch);
+
+        test.done();
+    }
 }(
     typeof exports === 'undefined' ? (DeltaJS.xccTest={}) : exports,
     typeof require === 'undefined' ? (DeltaJS.xcc) : require('deltajs').xcc,
