@@ -76,7 +76,7 @@
 
         diff.matchTrees();
 
-        test.equals(b1.partner, undefined);
+        test.equals(b1.partner, a1);
         test.equals(b2.partner, undefined);
 
         test.done();
@@ -112,6 +112,60 @@
 
         test.equals(b11.partner, a11);
         test.equals(b22.partner, undefined);
+
+        test.done();
+    }
+
+    /**
+     * Tree a and b both have one leave but with different node values.
+     * Extended update detection should match them nevertheless.
+     */
+    exports.testExtendedUpdateDetectionOnLeaveNodes = function(test) {
+        var a = new tree.Node();
+        var b = new tree.Node();
+        var a1 = new tree.Node('x');
+        var b1 = new tree.Node('y');
+
+        a.append(a1);
+        b.append(b1);
+
+        var diff = new xcc.Diff(a, b);
+
+        diff.matchTrees();
+
+        test.equals(b1.partner, a1);
+
+        test.done();
+    }
+
+    /**
+     * Tree a and b both have one leave but with different node values.
+     * Extended update detection should match them nevertheless.
+     */
+    exports.testExtendedUpdateDetectionOnSubtrees = function(test) {
+        var a = new tree.Node();
+        var a1 = new tree.Node();
+        var a11 = new tree.Node('x');
+        var a12 = new tree.Node('y');
+        var b = new tree.Node();
+        var b1 = new tree.Node();
+        var b11 = new tree.Node('z');
+        var b12 = new tree.Node('w');
+
+        a.append(a1);
+        a1.append(a11);
+        a1.append(a12);
+        b.append(b1);
+        b1.append(b11);
+        b1.append(b12);
+
+        var diff = new xcc.Diff(a, b);
+
+        diff.matchTrees();
+
+        test.equals(b1.partner, a1);
+        test.equals(b11.partner, a11);
+        test.equals(b12.partner, a12);
 
         test.done();
     }
