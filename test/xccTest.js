@@ -177,6 +177,100 @@
         test.done();
     }
 
+    /**
+     * Results taken from diffing the following xml trees with the original
+     * java based xcc implementation:
+     *
+     * a.xml: <R><M><A/><B/></M><M><C/><D/></M></R>
+     * b.xml: <R><M><Ax/></M><M><Bx/><Cx/></M><M><Dx/></M></R>
+     */
+    exports['leaf update detection should produce same results like java implementation (1)'] = function(test) {
+        var a = new tree.Node('R');
+        var a1 = new tree.Node('M');
+        var a11 = new tree.Node('A');
+        var a12 = new tree.Node('B');
+        var a2 = new tree.Node('M');
+        var a21 = new tree.Node('C');
+        var a22 = new tree.Node('D');
+        var b = new tree.Node('R');
+        var b1 = new tree.Node('M');
+        var b11 = new tree.Node('Ax');
+        var b2 = new tree.Node('M');
+        var b21 = new tree.Node('Bx');
+        var b22 = new tree.Node('Cx');
+        var b3 = new tree.Node('M');
+        var b31 = new tree.Node('Dx');
+
+        a.append(a1);
+        a1.append(a11);
+        a1.append(a12);
+        a.append(a2);
+        a2.append(a21);
+        a2.append(a22);
+
+        b.append(b1);
+        b1.append(b11);
+        b.append(b2);
+        b2.append(b21);
+        b2.append(b22);
+        b.append(b3);
+        b3.append(b31);
+
+        var matching = new tree.Matching();
+        var diff = new xcc.Diff(a, b);
+
+        diff.matchTrees(matching);
+
+        test.equals(matching.get(b11), a11); // A -> Ax
+        test.equals(matching.get(a12), undefined); // delete B
+        test.equals(matching.get(b21), a21); // C -> Bx
+        test.equals(matching.get(b22), a22); // D -> Cx
+        test.equals(matching.get(b31), undefined); // insert Dx
+
+        test.done();
+    }
+
+
+    /**
+     * Results taken from diffing the following xml trees with the original
+     * java based xcc implementation:
+     *
+     * a.xml: <R><A/><X/><C/></R>
+     * b.xml: <R><Y/><A/><Z/><C/></R>
+     */
+    exports['leaf update detection should produce same results like java implementation (2)'] = function(test) {
+        var a = new tree.Node('R');
+        var a1 = new tree.Node('A');
+        var a2 = new tree.Node('X');
+        var a3 = new tree.Node('C');
+        var b = new tree.Node('R');
+        var b1 = new tree.Node('Y');
+        var b2 = new tree.Node('A');
+        var b3 = new tree.Node('Z');
+        var b4 = new tree.Node('C');
+
+        a.append(a1);
+        a.append(a2);
+        a.append(a3);
+
+        b.append(b1);
+        b.append(b2);
+        b.append(b3);
+        b.append(b4);
+
+        var matching = new tree.Matching();
+        var diff = new xcc.Diff(a, b);
+
+        diff.matchTrees(matching);
+
+        test.equals(matching.get(b1), undefined); // insert Y
+        test.equals(matching.get(b2), a1); // A -> A
+        test.equals(matching.get(b3), a2); // X -> Z
+        test.equals(matching.get(b4), a3); // C -> C
+
+        test.done();
+    }
+
     exports['must not generate any operation for two equal one-node trees'] = function(test) {
         var a = new tree.Node('x');
         var b = new tree.Node('x');
