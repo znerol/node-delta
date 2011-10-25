@@ -6,11 +6,12 @@
     exports.testMatchRootOnlyEqual = function(test) {
         var a = new tree.Node('x');
         var b = new tree.Node('x');
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        diff.matchTrees();
+        diff.matchTrees(matching);
 
-        test.equals(b.partner, a);
+        test.equals(matching.get(b), a);
 
         test.done();
     };
@@ -22,11 +23,12 @@
     exports.testMatchRootOnlyModified = function(test) {
         var a = new tree.Node('x');
         var b = new tree.Node('y');
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        diff.matchTrees();
+        diff.matchTrees(matching);
 
-        test.equals(b.partner, a);
+        test.equals(matching.get(b), a);
 
         test.done();
     };
@@ -46,12 +48,13 @@
         b.append(b1);
         b.append(b2);
 
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        diff.matchTrees();
+        diff.matchTrees(matching);
 
-        test.equals(b1.partner, undefined);
-        test.equals(b2.partner, a1);
+        test.equals(matching.get(b1), undefined);
+        test.equals(matching.get(b2), a1);
 
         test.done();
     };
@@ -72,12 +75,13 @@
         b.append(b1);
         b1.append(b2);
 
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        diff.matchTrees();
+        diff.matchTrees(matching);
 
-        test.equals(b1.partner, a1);
-        test.equals(b2.partner, undefined);
+        test.equals(matching.get(b1), a1);
+        test.equals(matching.get(b2), undefined);
 
         test.done();
     }
@@ -106,12 +110,13 @@
         b1.append(b11);
         b2.append(b22);
 
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        diff.matchTrees();
+        diff.matchTrees(matching);
 
-        test.equals(b11.partner, a11);
-        test.equals(b22.partner, undefined);
+        test.equals(matching.get(b11), a11);
+        test.equals(matching.get(b22), undefined);
 
         test.done();
     }
@@ -129,11 +134,12 @@
         a.append(a1);
         b.append(b1);
 
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        diff.matchTrees();
+        diff.matchTrees(matching);
 
-        test.equals(b1.partner, a1);
+        test.equals(matching.get(b1), a1);
 
         test.done();
     }
@@ -159,13 +165,14 @@
         b1.append(b11);
         b1.append(b12);
 
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        diff.matchTrees();
+        diff.matchTrees(matching);
 
-        test.equals(b1.partner, a1);
-        test.equals(b11.partner, a11);
-        test.equals(b12.partner, a12);
+        test.equals(matching.get(b1), a1);
+        test.equals(matching.get(b11), a11);
+        test.equals(matching.get(b12), a12);
 
         test.done();
     }
@@ -173,6 +180,7 @@
     exports['must not generate any operation for two equal one-node trees'] = function(test) {
         var a = new tree.Node('x');
         var b = new tree.Node('x');
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
         var expect_patch = {'insert': [], 'remove': [], 'update': []};
@@ -190,10 +198,10 @@
         };
 
         // Manually match trees
-        b.match(a);
+        matching.put(a, b);
 
         // Generate patch
-        diff.generatePatch(editor);
+        diff.generatePatch(matching, editor);
 
         test.deepEqual(actual_patch, expect_patch);
 
@@ -203,6 +211,7 @@
     exports['should generate one update operation for two different one-node trees'] = function(test) {
         var a = new tree.Node('x');
         var b = new tree.Node('y');
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
         var expect_patch = {'insert': [], 'remove': [], 'update': [[a, b]]};
@@ -220,10 +229,10 @@
         };
 
         // Manually match trees
-        b.match(a);
+        matching.put(a, b);
 
         // Generate patch
-        diff.generatePatch(editor);
+        diff.generatePatch(matching, editor);
 
         test.deepEqual(actual_patch, expect_patch);
 
@@ -235,6 +244,7 @@
         var a1 = new tree.Node();
         var a2 = new tree.Node();
         var b = new tree.Node();
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
         var expect_patch = {'insert': [], 'remove': [[a1,a2]], 'update': []};
@@ -257,10 +267,10 @@
 
         // Manually match trees, b1 and b2 do not have any corresponding nodes
         // in a.
-        b.match(a);
+        matching.put(a, b);
 
         // Generate patch
-        diff.generatePatch(editor);
+        diff.generatePatch(matching, editor);
 
         test.deepEqual(actual_patch, expect_patch);
 
@@ -272,6 +282,7 @@
         var b = new tree.Node();
         var b1 = new tree.Node();
         var b2 = new tree.Node();
+        var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
         var expect_patch = {'insert': [[b1, b2]], 'remove': [], 'update': []};
@@ -294,10 +305,10 @@
 
         // Manually match trees, b1 and b2 do not have any corresponding nodes
         // in a.
-        b.match(a);
+        matching.put(a, b);
 
         // Generate patch
-        diff.generatePatch(editor);
+        diff.generatePatch(matching, editor);
 
         test.deepEqual(actual_patch, expect_patch);
 
