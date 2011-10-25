@@ -181,6 +181,34 @@
      * Results taken from diffing the following xml trees with the original
      * java based xcc implementation:
      *
+     * a.xml: <R><A/></R>
+     * b.xml: <R><A><X/></A></R>
+     */
+    exports['leaf update detection should match node when subtree is added'] = function(test) {
+        var a = new tree.Node('R');
+        var a1 = new tree.Node('A');
+        var b = new tree.Node('R');
+        var b1 = new tree.Node('A');
+        var b11 = new tree.Node('X');
+
+        a.append(a1);
+        b.append(b1);
+        b1.append(b11);
+
+        var matching = new tree.Matching();
+        var diff = new xcc.Diff(a, b);
+
+        diff.matchTrees(matching);
+
+        test.equals(matching.get(b1), a1); // A -> A
+
+        test.done();
+    }
+
+    /**
+     * Results taken from diffing the following xml trees with the original
+     * java based xcc implementation:
+     *
      * a.xml: <R><M><A/><B/></M><M><C/><D/></M></R>
      * b.xml: <R><M><Ax/></M><M><Bx/><Cx/></M><M><Dx/></M></R>
      */
