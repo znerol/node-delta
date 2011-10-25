@@ -80,7 +80,7 @@
 
         diff.matchTrees(matching);
 
-        test.equals(matching.get(b1), a1);
+        test.equals(matching.get(b1), undefined);
         test.equals(matching.get(b2), undefined);
 
         test.done();
