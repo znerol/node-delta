@@ -84,7 +84,7 @@
         test.equals(matching.get(b2), undefined);
 
         test.done();
-    }
+    };
 
     /**
      * Tree a has two leaves (a11=x, a12=y) at depth=2 an tree b has two leaves
@@ -119,7 +119,7 @@
         test.equals(matching.get(b22), undefined);
 
         test.done();
-    }
+    };
 
     /**
      * Tree a and b both have one leave but with different node values.
@@ -142,7 +142,7 @@
         test.equals(matching.get(b1), a1);
 
         test.done();
-    }
+    };
 
     /**
      * Tree a and b both have one leave but with different node values.
@@ -175,7 +175,7 @@
         test.equals(matching.get(b12), a12);
 
         test.done();
-    }
+    };
 
     /**
      * Results taken from diffing the following xml trees with the original
@@ -203,7 +203,7 @@
         test.equals(matching.get(b1), a1); // A -> A
 
         test.done();
-    }
+    };
 
     /**
      * Results taken from diffing the following xml trees with the original
@@ -256,7 +256,7 @@
         test.equals(matching.get(b31), undefined); // insert Dx
 
         test.done();
-    }
+    };
 
 
     /**
@@ -297,7 +297,7 @@
         test.equals(matching.get(b4), a3); // C -> C
 
         test.done();
-    }
+    };
 
     exports['must not generate any operation for two equal one-node trees'] = function(test) {
         var a = new tree.Node('x');
@@ -328,7 +328,7 @@
         test.deepEqual(actual_patch, expect_patch);
 
         test.done();
-    }
+    };
 
     exports['should generate one update operation for two different one-node trees'] = function(test) {
         var a = new tree.Node('x');
@@ -359,7 +359,7 @@
         test.deepEqual(actual_patch, expect_patch);
 
         test.done();
-    }
+    };
 
     exports['should generate one remove operation for consecutive sequence of nodes'] = function(test) {
         var a = new tree.Node();
@@ -397,7 +397,7 @@
         test.deepEqual(actual_patch, expect_patch);
 
         test.done();
-    }
+    };
 
     exports['should generate one insert operation for consecutive sequence of nodes'] = function(test) {
         var a = new tree.Node();
@@ -435,7 +435,7 @@
         test.deepEqual(actual_patch, expect_patch);
 
         test.done();
-    }
+    };
 }(
     typeof exports === 'undefined' ? (DeltaJS.xccTest={}) : exports,
     typeof require === 'undefined' ? (DeltaJS.xcc) : require('deltajs').xcc,
