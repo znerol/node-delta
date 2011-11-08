@@ -92,50 +92,49 @@
         // replace original nodes with replacement nodes
         insert_op.toggle();
         expect_nodes = ['c1','c2','c3','c2x','c4'];
-        actual_nodes = Array.prototype.slice.call(r.childNodes).map(function(n) {
-            return n.tagName});
+        actual_nodes = Array.prototype.slice.call(r.childNodes).map(
+            function(n) {return n.tagName});
         test.deepEqual(actual_nodes, expect_nodes);
 
         // switch back from replacement nodes to original nodes
         insert_op.toggle();
         expect_nodes = ['c1','c2','c3','c4'];
-        actual_nodes = Array.prototype.slice.call(r.childNodes).map(function(n) {
-            return n.tagName});
+        actual_nodes = Array.prototype.slice.call(r.childNodes).map(
+            function(n) {return n.tagName});
         test.deepEqual(actual_nodes, expect_nodes);
 
         test.done();
     }
 
-    /*
     exports['Remove operation using operation factory'] = function(test) {
         var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
-        var r = original_doc.firstChild;
-        var before = r.childNodes[3];
-        var nr = new tree.Node('r', r);
-        var replacement_doc = platform.parseXML('<remove><c2/><c3/></remove>');
+        var treeAdapter = new xmltree.DOMTreeAdapter();
+        var original_tree = treeAdapter.adaptDocument(original_doc);
 
         var factory = new xmltree.DOMOperationFactory();
+        var remove_op = factory.createSubtreeRemoveOperation(
+                original_tree, 1, 2);
 
-        // test remove operation
-        var remove_op = factory.createSubtreeInsertOperation(nr, before, replacement_doc.firstChild);
+        var r = original_doc.firstChild;
+        var expect_nodes;
+        var actual_nodes;
 
         // replace original nodes with replacement nodes
         remove_op.toggle();
-        var expect_nodes = ['c1','c2','c3','c2x','c4'];
-        var actual_nodes = Array.prototype.slice.call(r.childNodes).map(function(n) {
-            return n.tagName});
+        expect_nodes = ['c1','c4'];
+        actual_nodes = Array.prototype.slice.call(r.childNodes).map(
+            function(n) {return n.tagName});
         test.deepEqual(actual_nodes, expect_nodes);
 
         // switch back from replacement nodes to original nodes
         remove_op.toggle();
-        var expect_nodes = ['c1','c2','c3','c4'];
-        var actual_nodes = Array.prototype.slice.call(r.childNodes).map(function(n) {
-            return n.tagName});
+        expect_nodes = ['c1','c2','c3','c4'];
+        actual_nodes = Array.prototype.slice.call(r.childNodes).map(
+            function(n) {return n.tagName});
         test.deepEqual(actual_nodes, expect_nodes);
 
         test.done();
     }
-    */
 }(
     typeof exports === 'undefined' ? (DeltaJS.xmltreeTest={}) : exports,
     typeof require === 'undefined' ? DeltaJS.xmltree : require('deltajs').xmltree,
