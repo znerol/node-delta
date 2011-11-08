@@ -1,48 +1,12 @@
-(function(exports){
-    var nodejsParseXML = function (text) {
-        var parseXmlString = require('deltajs').xmlToDom.parseXmlString;
-        return parseXmlString(text);
-    };
-
-    var browserParseXML = function (text) {
-        // IE9 (Chakra): http://msdn.microsoft.com/en-us/library/ff975124(v=vs.85).aspx
-        // No support for IE < 9 (not falling back to ActiveX Component).
-        // FF (Gecko): https://developer.mozilla.org/en/DOM/DOMParser
-        // No official documentation for WebKit (Safari, Chromium, Konqueror)
-        // and Opera but recent versions of these browsers provide DomParser.
-        var xmlParser = new DOMParser();
-        var xmlDoc = xmlParser.parseFromString(text,"text/xml");
-
-        return xmlDoc;
-    };
-
-    var nodejsSerializeXML = function (doc) {
-        // FIXME
-    };
-
-    var browserSerializeXML = function (doc) {
-        // IE9 (Chakra): http://msdn.microsoft.com/en-us/library/ff975124(v=vs.85).aspx
-        // No support for IE < 9
-        // FF (Gecko): https://developer.mozilla.org/en/XMLSerializer
-        // No official documentation for WebKit (Safari, Chromium, Konqueror)
-        // and Opera but recent versions of these browsers provide
-        // XMLSerializer.
-        var serializer = new XMLSerializer();
-        return serializer.serializeToString(doc);
-    };
-
-    var parseXML = (typeof window === 'undefined' ? nodejsParseXML : browserParseXML);
-
-    var serializeXML = (typeof window === 'undefined' ? nodejsSerializeXML : browserSerializeXML);
-
+(function(exports, platform){
     exports.testParseSimpleXML = function(test) {
-        var doc = parseXML('<hello-world/>');
+        var doc = platform.parseXML('<hello-world/>');
         test.equals(doc.firstChild.nodeName, 'hello-world');
         test.done();
     };
 
     exports.testParseSimpleXMLDefaultNS = function(test) {
-        var doc = parseXML('<hello xmlns="http://example.com/schema"><world creator="slartibartfast"/></hello>');
+        var doc = platform.parseXML('<hello xmlns="http://example.com/schema"><world creator="slartibartfast"/></hello>');
         test.equals(doc.firstChild.nodeName, 'hello');
         test.equals(doc.firstChild.namespaceURI, 'http://example.com/schema');
 
@@ -55,11 +19,59 @@
     /*
     exports.testSimpleRoundtrip = function(test) {
         var origText = '<hello-world/>';
-        var doc = parseXML(origText);
-        var serializedText = serializeXML(doc);
+        var doc = platform.parseXML(origText);
+        var serializedText = platform.serializeXML(doc);
         test.equals(serializedText, origText);
         test.done();
     };
     */
 
-}(typeof exports === 'undefined' ? (this.domimplTest={}) : exports));
+    exports['Simple patching scenario'] = function(test) {
+        var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
+        var r = original_doc.firstChild;
+        var c1= r.firstChild;
+        var c2 = c1.nextSibling;
+        var c3 = c2.nextSibling;
+        var c4 = c3.nextSibling;
+        var original_nodes = [c2, c3];
+        var anchor_node = c4;
+
+        var replacement_doc = platform.parseXML('<d><c2x/></d>');
+        var c2xr = replacement_doc.firstChild.firstChild;
+        var c2xo = original_doc.importNode(c2xr, true);
+        var replacement_nodes = [c2xo];
+
+        var expect_siblings;
+        var actual_siblings;
+
+        // replace original nodes with replacement nodes
+        replacement_nodes.forEach(function(n) {
+            r.insertBefore(n, anchor_node);
+        });
+        original_nodes.forEach(function(n) {
+            r.removeChild(n);
+        });
+
+        expect_siblings = [c1, c2xo, c4];
+        actual_siblings = Array.prototype.slice.call(r.childNodes);
+        test.deepEqual(actual_siblings, expect_siblings);
+
+        // switch back from replacement nodes to original nodes
+        original_nodes.forEach(function(n) {
+            r.insertBefore(n, anchor_node);
+        });
+        replacement_nodes.forEach(function(n) {
+            r.removeChild(n);
+        });
+
+        expect_siblings = [c1, c2, c3, c4];
+        actual_siblings = Array.prototype.slice.call(r.childNodes);
+        test.deepEqual(actual_siblings, expect_siblings);
+
+        test.done();
+    }
+
+}(
+    typeof exports === 'undefined' ? (DeltaJS.domimplTest={}) : exports,
+    typeof require === 'undefined' ? DeltaJS.platform : require('deltajs').platform
+));
