@@ -37,18 +37,19 @@
     }
 
     exports['Simple attribute operation'] = function(test) {
-        var original_doc = platform.parseXML('<n id="1" name="test" style="color: black"/>');
+        var original_doc = platform.parseXML('<n id="1" name="test" value="3"/>');
         var original_node = original_doc.firstChild;
         var original_attrs = [
             original_node.getAttributeNode('id'),
             original_node.getAttributeNode('name'),
-            original_node.getAttributeNode('style')
+            original_node.getAttributeNode('value'),
         ];
 
-        var replacement_doc = platform.parseXML('<n name="changed"/>');
+        var replacement_doc = platform.parseXML('<n name="changed" value="2"/>');
         var replacement_node = original_doc.importNode(replacement_doc.firstChild, true);
         var replacement_attrs = [
             replacement_node.getAttributeNode('name'),
+            replacement_node.getAttributeNode('value'),
         ];
 
         var op = new xmltree.DOMNodeAttributeOperation(original_doc, original_node, replacement_node);
