@@ -1,16 +1,16 @@
 (function(exports, resolver) {
     exports['should be invoked 2 * radius + length times'] = function(test) {
         var result,
-            c = new resolver.ContextWindow([], 2);
+            c = new resolver.ContextWindow(2);
 
         result = 0;
-        c.forEach(0, 1, 0, 0, function() {
+        c.forEach(0, [], 1, 0, 0, function() {
             result++;
         });
         test.equals(result, 5);
 
         result = 0;
-        c.forEach(0, 0, 1, 0, function() {
+        c.forEach(0, [], 0, 1, 0, function() {
             result++;
         });
         test.equals(result, 5);
@@ -20,10 +20,10 @@
 
     exports['callback parameters should be three arrays'] = function(test) {
         var count, result,
-            c = new resolver.ContextWindow(['a','b','c','d','e','f'], 0);
+            c = new resolver.ContextWindow(0);
 
         count = 0;
-        c.forEach(2, 1, 2, 3, function(value, head, tail, offset) {
+        c.forEach(2, ['a','b','c','d','e','f'], 1, 2, 3, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -35,10 +35,11 @@
 
     exports['should respond correctly to arbitrary center positions'] = function(test) {
         var count, result,
-            c = new resolver.ContextWindow(['a','b','c','d','e','f'], 0);
+            content = ['a','b','c','d','e','f'], 
+            c = new resolver.ContextWindow(0);
 
         count = 0;
-        c.forEach(-2, 1, 1, 1, function(value, head, tail, offset) {
+        c.forEach(-2, content, 1, 1, 1, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -46,7 +47,7 @@
         test.deepEqual(result, [[undefined], [undefined], [undefined], 0]);
 
         count = 0;
-        c.forEach(-1, 1, 1, 1, function(value, head, tail, offset) {
+        c.forEach(-1, content, 1, 1, 1, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -54,7 +55,7 @@
         test.deepEqual(result, [[undefined], [undefined], ['a'], 0]);
 
         count = 0;
-        c.forEach(0, 1, 1, 1, function(value, head, tail, offset) {
+        c.forEach(0, content, 1, 1, 1, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -62,7 +63,7 @@
         test.deepEqual(result, [['a'], [undefined], ['b'], 0]);
 
         count = 0;
-        c.forEach(1, 1, 1, 1, function(value, head, tail, offset) {
+        c.forEach(1, content, 1, 1, 1, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -70,7 +71,7 @@
         test.deepEqual(result, [['b'], ['a'], ['c'], 0]);
 
         count = 0;
-        c.forEach(5, 1, 1, 1, function(value, head, tail, offset) {
+        c.forEach(5, content, 1, 1, 1, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -78,7 +79,7 @@
         test.deepEqual(result, [['f'], ['e'], [undefined], 0]);
 
         count = 0;
-        c.forEach(6, 1, 1, 1, function(value, head, tail, offset) {
+        c.forEach(6, content, 1, 1, 1, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -86,7 +87,7 @@
         test.deepEqual(result, [[undefined], ['f'], [undefined], 0]);
 
         count = 0;
-        c.forEach(7, 1, 1, 1, function(value, head, tail, offset) {
+        c.forEach(7, content, 1, 1, 1, function(value, head, tail, offset) {
             result = [value, head, tail, offset];
             count++;
         });
@@ -98,10 +99,11 @@
 
     exports['if a radius is given, window should slide and fill empty slots with undefined'] = function(test) {
         var count, result = [],
-            c = new resolver.ContextWindow(['a','b','c','d','e','f'], 2);
+            content = ['a','b','c','d','e','f'],
+            c = new resolver.ContextWindow(2);
 
         count = 0;
-        c.forEach(2, 1, 2, 3, function(value, head, tail, offset) {
+        c.forEach(2, content, 1, 2, 3, function(value, head, tail, offset) {
             result.push([value, head, tail, offset]);
             count++;
         });
@@ -120,10 +122,10 @@
     exports['if value length is zero, starting point should be last element of head'] = function(test) {
         var count, result, c;
 
-        c = new resolver.ContextWindow(['a','b'], 0);
+        c = new resolver.ContextWindow(0);
         count = 0;
         result = [];
-        c.forEach(0, 0, 1, 1, function(value, head, tail, offset) {
+        c.forEach(0, ['a','b'], 0, 1, 1, function(value, head, tail, offset) {
             result.push([value, head, tail, offset]);
             count++;
         });
@@ -132,10 +134,10 @@
                 [[], ['a'], ['b'], 0]
         ]);
 
-        c = new resolver.ContextWindow(['a','b','c'], 1);
+        c = new resolver.ContextWindow(1);
         count = 0;
         result = [];
-        c.forEach(1, 0, 2, 1, function(value, head, tail, offset) {
+        c.forEach(1, ['a','b','c'], 0, 2, 1, function(value, head, tail, offset) {
             result.push([value, head, tail, offset]);
             count++;
         });
@@ -150,14 +152,15 @@
     };
 
     exports['should not fail on border condiditons'] = function(test) {
-        var count, result, c;
+        var count, result, c,
+            content = ['a','b'];
 
-        c = new resolver.ContextWindow(['a','b'], 0);
+        c = new resolver.ContextWindow(0);
 
         // set neither length nor head or tail -> zero length arrays
         count = 0;
         result = [];
-        c.forEach(0, 0, 0, 0, function(value, head, tail, offset) {
+        c.forEach(0, content, 0, 0, 0, function(value, head, tail, offset) {
             result.push([value, head, tail, offset]);
             count++;
         });
@@ -169,7 +172,7 @@
         // set length but no head and tail context
         count = 0;
         result = [];
-        c.forEach(0, 1, 0, 0, function(value, head, tail, offset) {
+        c.forEach(0, content, 1, 0, 0, function(value, head, tail, offset) {
             result.push([value, head, tail, offset]);
             count++;
         });
@@ -181,7 +184,7 @@
         // set head context length but no length or tail
         count = 0;
         result = [];
-        c.forEach(0, 0, 1, 0, function(value, head, tail, offset) {
+        c.forEach(0, content, 0, 1, 0, function(value, head, tail, offset) {
             result.push([value, head, tail, offset]);
             count++;
         });
@@ -193,7 +196,7 @@
         // set tail context but no length or head
         count = 0;
         result = [];
-        c.forEach(0, 0, 0, 1, function(value, head, tail, offset) {
+        c.forEach(0, content, 0, 0, 1, function(value, head, tail, offset) {
             result.push([value, head, tail, offset]);
             count++;
         });
