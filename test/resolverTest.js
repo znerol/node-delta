@@ -27,11 +27,11 @@
         test.done();
     };
 
-    exports['should not resolve path with depth 1 if there are no nodes with depth 1'] = function(test) {
+    exports['should not resolve path with depth 2 if there are no nodes with depth 1'] = function(test) {
         var a = new tree.Node();
         var r = new resolver.UniformDepthResolver();
         var generation = [];
-        var best = r.resolvePath(a, [0], generation);
+        var best = r.resolvePath(a, [0, 0], generation);
 
         test.equals(best, undefined);
         test.equals(generation.length, 0);
@@ -56,7 +56,7 @@
         test.done();
     };
 
-    exports['should not resolve path with depth 2 if there are no nodes with depth 2'] = function(test) {
+    exports['should not resolve path with depth 3 if there are no nodes with depth 2'] = function(test) {
         var a = new tree.Node();
         var a1 = new tree.Node();
         var r = new resolver.UniformDepthResolver();
@@ -64,7 +64,7 @@
         var best;
 
         a.append(a1);
-        best = r.resolvePath(a, [0,0], generation);
+        best = r.resolvePath(a, [0, 0, 0], generation);
 
         test.equals(best, undefined);
         test.equals(generation.length, 0);
@@ -101,6 +101,7 @@
         var a1 = new tree.Node();
         var b1 = new tree.Node();
         var b2 = new tree.Node();
+        var b3 = new tree.Node();
         var r = new resolver.UniformDepthResolver();
         var generation = [];
         var best;
@@ -108,10 +109,11 @@
         a.append(a1);
         a.append(b1);
         b1.append(b2);
-        best = r.resolvePath(a, [0,0], generation);
+        b2.append(b3);
+        best = r.resolvePath(a, [0, 0, 0], generation);
 
-        test.equals(best.node, b2);
-        test.equals(generation[0], b2);
+        test.equals(best.node, b3);
+        test.equals(generation[0], b3);
         test.equals(best.index, 0);
         test.done();
     };
@@ -121,7 +123,8 @@
         var a1 = new tree.Node();
         var a2 = new tree.Node();
         var a21 = new tree.Node();
-        var a22 = new tree.Node();
+        var a211 = new tree.Node();
+        var a212 = new tree.Node();
         var r = new resolver.UniformDepthResolver();
         var generation = [];
         var best;
@@ -129,12 +132,13 @@
         a.append(a1);
         a.append(a2);
         a2.append(a21);
-        a2.append(a22);
+        a21.append(a211);
+        a21.append(a212);
 
-        best = r.resolvePath(a, [0, 1], generation);
+        best = r.resolvePath(a, [0, 1, 1], generation);
 
-        test.equals(best.node, a21);
-        test.equals(generation[0], a21);
+        test.equals(best.node, a211);
+        test.equals(generation[0], a211);
         test.equals(best.index, 0);
         test.done();
     };
@@ -184,6 +188,64 @@
 
         test.done();
     };
+
+    exports['should resolve path to non-existant nodes to parent'] = function(test) {
+        var a = new tree.Node();
+        var r = new resolver.UniformDepthResolver();
+        var generation = [];
+        var best;
+
+        best = r.resolvePath(a, [0], generation);
+
+        test.equals(best.node, undefined);
+        test.equals(best.par, a);
+        test.equals(best.index, -1);
+        test.equals(generation.length, 0);
+        test.done();
+    };
+
+    exports['should resolve path to non-existant node to nearest node in generation'] = function(test) {
+        var a = new tree.Node();
+        var a1 = new tree.Node();
+        var r = new resolver.UniformDepthResolver();
+        var generation = [];
+        var best;
+
+        a.append(a1);
+        best = r.resolvePath(a, [1], generation);
+
+        test.equals(best.node, a1);
+        test.equals(best.index, 0);
+        test.equals(generation.length, 1);
+        test.done();
+    };
+
+    exports['should resolve path to non-existant node to nearest node and parent'] = function(test) {
+        var a = new tree.Node();
+        var a1 = new tree.Node();
+        var a11 = new tree.Node();
+        var a2 = new tree.Node();
+        var a3 = new tree.Node();
+        var a31 = new tree.Node();
+        var r = new resolver.UniformDepthResolver();
+        var generation = [];
+        var best;
+
+        a.append(a1);
+        a1.append(a11);
+        a.append(a2);
+        a.append(a3);
+        a3.append(a31);
+
+        best = r.resolvePath(a, [1, 0], generation);
+
+        test.equals(best.node, a11);
+        test.equals(best.par, a2);
+        test.equals(best.index, 0);
+        test.equals(generation.length, 2);
+        test.done();
+    };
+
 }(
     typeof exports === 'undefined' ? (DeltaJS.resolverTest ={}) : exports,
     typeof require === 'undefined' ? DeltaJS.resolver : require('deltajs').resolver,
