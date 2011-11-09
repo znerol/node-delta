@@ -116,6 +116,29 @@
         test.done();
     };
 
+    exports['should pick nearest node in same generation'] = function(test) {
+        var a = new tree.Node();
+        var a1 = new tree.Node();
+        var a2 = new tree.Node();
+        var a21 = new tree.Node();
+        var a22 = new tree.Node();
+        var r = new resolver.UniformDepthResolver();
+        var generation = [];
+        var best;
+
+        a.append(a1);
+        a.append(a2);
+        a2.append(a21);
+        a2.append(a22);
+
+        best = r.resolvePath(a, [0, 1], generation);
+
+        test.equals(best.node, a21);
+        test.equals(generation[0], a21);
+        test.equals(best.index, 0);
+        test.done();
+    };
+
     exports['generation should contain all nodes with the requested depth'] = function(test) {
         var a = new tree.Node();
         var a1 = new tree.Node();
