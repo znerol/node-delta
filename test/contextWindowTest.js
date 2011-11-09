@@ -148,6 +148,62 @@
 
         test.done();
     };
+
+    exports['should not fail on border condiditons'] = function(test) {
+        var count, result, c;
+
+        c = new resolver.ContextWindow(['a','b'], 0);
+
+        // set neither length nor head or tail -> zero length arrays
+        count = 0;
+        result = [];
+        c.forEach(0, 0, 0, 0, function(value, head, tail, offset) {
+            result.push([value, head, tail, offset]);
+            count++;
+        });
+        test.equals(count, 1);
+        test.deepEqual(result, [
+                [[], [], [], 0]
+        ]);
+
+        // set length but no head and tail context
+        count = 0;
+        result = [];
+        c.forEach(0, 1, 0, 0, function(value, head, tail, offset) {
+            result.push([value, head, tail, offset]);
+            count++;
+        });
+        test.equals(count, 1);
+        test.deepEqual(result, [
+                [['a'], [], [], 0]
+        ]);
+
+        // set head context length but no length or tail
+        count = 0;
+        result = [];
+        c.forEach(0, 0, 1, 0, function(value, head, tail, offset) {
+            result.push([value, head, tail, offset]);
+            count++;
+        });
+        test.equals(count, 1);
+        test.deepEqual(result, [
+                [[], ['a'], [], 0]
+        ]);
+
+        // set tail context but no length or head
+        count = 0;
+        result = [];
+        c.forEach(0, 0, 0, 1, function(value, head, tail, offset) {
+            result.push([value, head, tail, offset]);
+            count++;
+        });
+        test.equals(count, 1);
+        test.deepEqual(result, [
+                [[], [], ['b'], 0]
+        ]);
+
+        test.done();
+    };
 }(
     typeof exports === 'undefined' ? (DeltaJS.contextWindowTest={}) : exports,
     typeof require === 'undefined' ? DeltaJS.resolver : require('deltajs').resolver
