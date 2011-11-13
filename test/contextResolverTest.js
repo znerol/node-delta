@@ -18,7 +18,7 @@
     };
 
     exports['should report zero offset when value is correct and context matches'] = function(test) {
-        var r = new resolver.ContextResolver(0, 0);
+        var r = new resolver.ContextResolver(1, 0, new resolver.ContextWindow(0));
         var result;
 
         result = r.resolve(1, ['a', 'b', 'c'], ['b'], ['a'], ['c']);
@@ -27,7 +27,7 @@
     };
 
     exports['should report zero offset if half of the context nodes match, threshold zero'] = function(test) {
-        var r = new resolver.ContextResolver(0, 0);
+        var r = new resolver.ContextResolver(1, 0, new resolver.ContextWindow(0));
         var result;
 
         result = r.resolve(1, ['a', 'b', 'c'], ['b'], ['a'], ['x']);
