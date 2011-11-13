@@ -1,14 +1,23 @@
 (function(exports, tree) {
-    exports['should return same node if offset is zero'] = function(test) {
-        var a = new tree.Node();
-        var a1 = new tree.Node();
-        var a2 = new tree.Node();
-        var g = new tree.GenerationIndex(a);
-        var result;
+    // Setup
+    var a = new tree.Node();
+    var a1 = new tree.Node();
+    var a11 = new tree.Node();
+    var a2 = new tree.Node();
+    var a21 = new tree.Node();
+    var a22 = new tree.Node();
+    var g = new tree.GenerationIndex(a);
 
-        a.append(a1);
-        a.append(a2);
-        g.buildAll();
+    a.append(a1);
+    a1.append(a11);
+    a.append(a2);
+    a2.append(a21);
+    a2.append(a22);
+
+    g.buildAll();
+
+    exports['should return same node if offset is not specified'] = function(test) {
+        var result;
 
         result = g.get(a);
         test.equals(result, a);
@@ -23,12 +32,8 @@
     };
 
     exports['should return undefined for nodes which are not part of the tree'] = function(test) {
-        var a = new tree.Node();
         var b = new tree.Node();
-        var g = new tree.GenerationIndex(a);
         var result;
-
-        g.buildAll();
 
         result = g.get(a);
         test.equals(result, a);
@@ -40,21 +45,7 @@
     }
 
     exports['should return correct nodes if offset is specified'] = function(test) {
-        var a = new tree.Node();
-        var a1 = new tree.Node();
-        var a11 = new tree.Node();
-        var a2 = new tree.Node();
-        var a21 = new tree.Node();
-        var a22 = new tree.Node();
-        var g = new tree.GenerationIndex(a);
-
-        a.append(a1);
-        a1.append(a11);
-        a.append(a2);
-        a2.append(a21);
-        a2.append(a22);
-
-        g.buildAll();
+        var result;
 
         // Depth = 1
         result = g.get(a1, 0);
@@ -101,21 +92,7 @@
     }
 
     exports['should return undefined if offset is out of tree bounds'] = function(test) {
-        var a = new tree.Node();
-        var a1 = new tree.Node();
-        var a11 = new tree.Node();
-        var a2 = new tree.Node();
-        var a21 = new tree.Node();
-        var a22 = new tree.Node();
-        var g = new tree.GenerationIndex(a);
-
-        a.append(a1);
-        a1.append(a11);
-        a.append(a2);
-        a2.append(a21);
-        a2.append(a22);
-
-        g.buildAll();
+        var result;
 
         // Depth = 1
         result = g.get(a1, -1);
@@ -153,21 +130,7 @@
     }
 
     exports['should return first and last node of a specified generation'] = function(test) {
-        var a = new tree.Node();
-        var a1 = new tree.Node();
-        var a11 = new tree.Node();
-        var a2 = new tree.Node();
-        var a21 = new tree.Node();
-        var a22 = new tree.Node();
-        var g = new tree.GenerationIndex(a);
-
-        a.append(a1);
-        a1.append(a11);
-        a.append(a2);
-        a2.append(a21);
-        a2.append(a22);
-
-        g.buildAll();
+        var result;
 
         // Depth = 0
         result = g.first(0);
@@ -194,21 +157,7 @@
     }
 
     exports['should return undefined for first and last if depth is out of bounds'] = function(test) {
-        var a = new tree.Node();
-        var a1 = new tree.Node();
-        var a11 = new tree.Node();
-        var a2 = new tree.Node();
-        var a21 = new tree.Node();
-        var a22 = new tree.Node();
-        var g = new tree.GenerationIndex(a);
-
-        a.append(a1);
-        a1.append(a11);
-        a.append(a2);
-        a2.append(a21);
-        a2.append(a22);
-
-        g.buildAll();
+        var result;
 
         // Depth = 3
         result = g.first(3);
