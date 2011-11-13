@@ -1,4 +1,5 @@
 (function(exports, resolver, tree) {
+    /*
     exports['should report zero offset when value is on specified index, zero radius'] = function(test) {
         var r = new resolver.ContextResolver(0, 0);
         var result;
@@ -111,6 +112,7 @@
 
         test.done();
     };
+    */
 }(
     typeof exports === 'undefined' ? (DeltaJS.contextResolverTest={}) : exports,
     typeof require === 'undefined' ? DeltaJS.resolver : require('deltajs').resolver,

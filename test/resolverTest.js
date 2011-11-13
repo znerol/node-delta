@@ -1,4 +1,5 @@
 (function(exports, resolver, tree) {
+    /*
     exports['should resolve 0-depth path to reference node'] = function(test) {
         var a = new tree.Node();
         var r = new resolver.UniformDepthResolver();
@@ -245,6 +246,7 @@
         test.equals(generation.length, 2);
         test.done();
     };
+    */
 
 }(
     typeof exports === 'undefined' ? (DeltaJS.resolverTest ={}) : exports,

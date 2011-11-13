@@ -1,4 +1,5 @@
 (function(exports, resolver) {
+    /*
     exports['should be invoked 2 * radius + length times'] = function(test) {
         var result,
             c = new resolver.ContextWindow(2);
@@ -207,6 +208,7 @@
 
         test.done();
     };
+    */
 }(
     typeof exports === 'undefined' ? (DeltaJS.contextWindowTest={}) : exports,
     typeof require === 'undefined' ? DeltaJS.resolver : require('deltajs').resolver
