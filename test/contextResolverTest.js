@@ -88,14 +88,8 @@
         result = r.resolve(5, content, values, head, tail);
         test.equals(result, 4);
 
-        // FIXME: should not match beyond here (radius = 4)
+        // should not match beyond here (radius = 4)
         result = r.resolve(4, content, values, head, tail);
-        test.equals(result, 5);
-
-        result = r.resolve(3, content, values, head, tail);
-        test.equals(result, 6);
-
-        result = r.resolve(2, content, values, head, tail);
         test.equals(result, undefined);
 
         // Forward
