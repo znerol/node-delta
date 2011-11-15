@@ -1,4 +1,8 @@
 {
     "name": "deltajs",
     "main": "./lib/delta.js"
+    "bin": {
+        "djdiff": "bin/djdiff.js",
+        "djpatch": "bin/djpatch.js"
+    }
 }
