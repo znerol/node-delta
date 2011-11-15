@@ -182,17 +182,17 @@
         var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        var expect_patch = {'insert': [], 'remove': [], 'update': [[a, b]]};
+        var expect_patch = {'insert': [], 'remove': [], 'update': [[[], a, b]]};
         var actual_patch = {'insert': [], 'remove': [], 'update': []};
         var editor = {
-            'insert': function(nodes) {
-                actual_patch.insert.push(nodes);
+            'insert': function(path, nodes) {
+                actual_patch.insert.push([path, nodes]);
             },
-            'remove': function(nodes) {
-                actual_patch.remove.push(nodes);
+            'remove': function(path, nodes) {
+                actual_patch.remove.push([path, nodes]);
             },
-            'update': function(o, n) {
-                actual_patch.update.push([o, n]);
+            'update': function(path, o, n) {
+                actual_patch.update.push([path, o, n]);
             }
         };
 
@@ -215,17 +215,17 @@
         var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        var expect_patch = {'insert': [], 'remove': [[a1,a2]], 'update': []};
+        var expect_patch = {'insert': [], 'remove': [[[0], [a1, a2]]], 'update': []};
         var actual_patch = {'insert': [], 'remove': [], 'update': []};
         var editor = {
-            'insert': function(nodes) {
-                actual_patch.insert.push(nodes);
+            'insert': function(path, nodes) {
+                actual_patch.insert.push([path, nodes]);
             },
-            'remove': function(nodes) {
-                actual_patch.remove.push(nodes);
+            'remove': function(path, nodes) {
+                actual_patch.remove.push([path, nodes]);
             },
-            'update': function(o, n) {
-                actual_patch.update.push([o, n]);
+            'update': function(path, o, n) {
+                actual_patch.update.push([path, o, n]);
             }
         };
 
@@ -253,17 +253,17 @@
         var matching = new tree.Matching();
         var diff = new xcc.Diff(a, b);
 
-        var expect_patch = {'insert': [[b1, b2]], 'remove': [], 'update': []};
+        var expect_patch = {'insert': [[[0], [b1, b2]]], 'remove': [], 'update': []};
         var actual_patch = {'insert': [], 'remove': [], 'update': []};
         var editor = {
-            'insert': function(nodes) {
-                actual_patch.insert.push(nodes);
+            'insert': function(path, nodes) {
+                actual_patch.insert.push([path, nodes]);
             },
-            'remove': function(nodes) {
-                actual_patch.remove.push(nodes);
+            'remove': function(path, nodes) {
+                actual_patch.remove.push([path, nodes]);
             },
-            'update': function(o, n) {
-                actual_patch.update.push([o, n]);
+            'update': function(path, o, n) {
+                actual_patch.update.push([path, o, n]);
             }
         };
 
