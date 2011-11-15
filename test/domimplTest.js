@@ -73,5 +73,5 @@
 
 }(
     typeof exports === 'undefined' ? (DeltaJS.domimplTest={}) : exports,
-    typeof require === 'undefined' ? DeltaJS.platform : require('deltajs').platform
+    typeof require === 'undefined' ? DeltaJS.platform : require('../lib/delta/platform.js')
 ));

@@ -310,5 +310,5 @@
     };
 }(
     typeof exports === 'undefined' ? (DeltaJS.lcsTest={}) : exports,
-    typeof require === 'undefined' ? DeltaJS.lcs : require('deltajs').lcs
+    typeof require === 'undefined' ? DeltaJS.lcs : require('../lib/delta/lcs.js')
 ));

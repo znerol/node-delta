@@ -170,5 +170,5 @@
     }
 }(
     typeof exports === 'undefined' ? (DeltaJS.generationIndexTest={}) : exports,
-    typeof require === 'undefined' ? DeltaJS.tree : require('deltajs').tree
+    typeof require === 'undefined' ? DeltaJS.tree : require('../lib/delta/tree.js')
 ));

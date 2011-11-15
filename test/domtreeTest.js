@@ -1,4 +1,4 @@
-(function(exports, xmltree, tree, platform){
+(function(exports, domtree, tree, platform){
     exports['Simple subtree operation'] = function(test) {
         var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
         var r = original_doc.firstChild;
@@ -14,7 +14,7 @@
         var c2xo = original_doc.importNode(c2xr, true);
         var replacement_nodes = [c2xo];
 
-        var op = new xmltree.DOMTreeSequenceOperation(r, before, original_nodes, replacement_nodes);
+        var op = new domtree.DOMTreeSequenceOperation(r, before, original_nodes, replacement_nodes);
 
         var expect_siblings;
         var actual_siblings;
@@ -52,7 +52,7 @@
             replacement_node.getAttributeNode('value'),
         ];
 
-        var op = new xmltree.DOMNodeAttributeOperation(original_node, replacement_node);
+        var op = new domtree.DOMNodeAttributeOperation(original_node, replacement_node);
 
         var expect_attributes;
         var actual_attributes;
@@ -76,14 +76,15 @@
 
     exports['Insert operation using operation factory'] = function(test) {
         var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
-        var treeAdapter = new xmltree.DOMTreeAdapter();
+        var treeAdapter = new domtree.DOMTreeAdapter();
         var original_tree = treeAdapter.adaptDocument(original_doc);
 
         var replacement_doc = platform.parseXML('<insert><c2x/></insert>');
+        var replacement_tree = treeAdapter.adaptDocument(replacement_doc);
 
-        var factory = new xmltree.DOMOperationFactory();
+        var factory = new domtree.DOMOperationFactory();
         var insert_op = factory.createSubtreeInsertOperation(
-                original_tree, 3, replacement_doc.firstChild);
+                original_tree, 3, replacement_tree.children);
 
         var r = original_doc.firstChild;
         var expect_nodes;
@@ -108,10 +109,10 @@
 
     exports['Remove operation using operation factory'] = function(test) {
         var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
-        var treeAdapter = new xmltree.DOMTreeAdapter();
+        var treeAdapter = new domtree.DOMTreeAdapter();
         var original_tree = treeAdapter.adaptDocument(original_doc);
 
-        var factory = new xmltree.DOMOperationFactory();
+        var factory = new domtree.DOMOperationFactory();
         var remove_op = factory.createSubtreeRemoveOperation(
                 original_tree, 1, 2);
 
@@ -136,8 +137,8 @@
         test.done();
     }
 }(
-    typeof exports === 'undefined' ? (DeltaJS.xmltreeTest={}) : exports,
-    typeof require === 'undefined' ? DeltaJS.xmltree : require('deltajs').xmltree,
-    typeof require === 'undefined' ? DeltaJS.tree : require('deltajs').tree,
-    typeof require === 'undefined' ? DeltaJS.platform : require('deltajs').platform
+    typeof exports === 'undefined' ? (DeltaJS.domtreeTest={}) : exports,
+    typeof require === 'undefined' ? DeltaJS.domtree : require('../lib/delta/domtree.js'),
+    typeof require === 'undefined' ? DeltaJS.tree : require('../lib/delta/tree.js'),
+    typeof require === 'undefined' ? DeltaJS.platform : require('../lib/delta/platform.js')
 ));

@@ -284,6 +284,6 @@
     };
 }(
     typeof exports === 'undefined' ? (DeltaJS.xccTest={}) : exports,
-    typeof require === 'undefined' ? (DeltaJS.xcc) : require('deltajs').xcc,
-    typeof require === 'undefined' ? (DeltaJS.tree) : require('deltajs').tree
+    typeof require === 'undefined' ? (DeltaJS.xcc) : require('../lib/delta/xcc.js'),
+    typeof require === 'undefined' ? (DeltaJS.tree) : require('../lib/delta/tree.js')
 ));

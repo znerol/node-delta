@@ -66,6 +66,6 @@
     };
 }(
     typeof exports === 'undefined' ? (DeltaJS.TopDownPathResolverTest={}) : exports,
-    typeof require === 'undefined' ? DeltaJS.resolver : require('deltajs').resolver,
-    typeof require === 'undefined' ? DeltaJS.tree : require('deltajs').tree
+    typeof require === 'undefined' ? DeltaJS.resolver : require('../lib/delta/resolver.js'),
+    typeof require === 'undefined' ? DeltaJS.tree : require('../lib/delta/tree.js')
 ));

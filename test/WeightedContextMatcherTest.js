@@ -126,5 +126,5 @@
     };
 }(
     typeof exports === 'undefined' ? (DeltaJS.WeightedContextMatcherTest={}) : exports,
-    typeof require === 'undefined' ? DeltaJS.resolver : require('deltajs').resolver
+    typeof require === 'undefined' ? DeltaJS.resolver : require('../lib/delta/resolver.js')
 ));

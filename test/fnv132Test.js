@@ -18,5 +18,5 @@
 
 }(
     typeof exports === 'undefined' ? (DeltaJS.fnv132Test={}) : exports,
-    typeof require === 'undefined' ? DeltaJS.fnv132 : require('deltajs').fnv132
+    typeof require === 'undefined' ? DeltaJS.fnv132 : require('../lib/delta/fnv132.js')
 ));
