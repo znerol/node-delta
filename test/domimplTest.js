@@ -16,15 +16,19 @@
         test.done();
     };
 
-    /*
     exports.testSimpleRoundtrip = function(test) {
         var origText = '<hello-world/>';
         var doc = platform.parseXML(origText);
         var serializedText = platform.serializeXML(doc);
+
+        // Remove XML declaration and trim string
+        serializedText = serializedText.replace(/^<\?xml[^>]*>/,'');
+        serializedText = serializedText.replace(/^\s*/,'');
+        serializedText = serializedText.replace(/\s*$/,'');
+
         test.equals(serializedText, origText);
         test.done();
     };
-    */
 
     exports['Simple patching scenario'] = function(test) {
         var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
