@@ -140,7 +140,7 @@ function createTreeFragmentAdapter(documentPayloadType, patchtype) {
         return new deltajs.xmlpayload.XMLFragmentAdapter();
     }
     else if (documentPayloadType === 'json' && patchtype === 'json') {
-        return null;
+        return new deltajs.jsonpayload.JSONFragmentAdapter();
     }
     else {
         throw new Error('Cross format patch files not supported yet');
@@ -272,8 +272,8 @@ function main() {
     // Hack: need to figure out some nice way to inject dependencies properly
     if (options.deltaPayloadType === 'xml') {
         options.treeFragmentAdapter.doc = doc;
-        options.deltaAdapter.fragmentadapter = options.treeFragmentAdapter;
     }
+    options.deltaAdapter.fragmentadapter = options.treeFragmentAdapter;
 
     showFile('patch file', delta, doc, options.deltaPayloadHandler,
             options.deltaAdapter);
