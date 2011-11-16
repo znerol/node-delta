@@ -7,6 +7,7 @@ var path = require('path');
 var deltajs = require('../lib/delta.js');
 var mime = require('mime');
 
+
 /**
  * Ensure that the filepath is accessible and check its mime type.
  */
@@ -116,35 +117,19 @@ function createTreeAdapter(type) {
 /**
  * Return the proper tree adapter for this payload type.
  */
-function createDeltaAdapter(type) {
+function createDeltaAdapter(type, fragadapter) {
     var result;
 
     switch(type) {
         case 'json':
-            result = new deltajs.jsondelta.JSONDeltaAdapter();
+            result = new deltajs.jsondelta.JSONDeltaAdapter(fragadapter);
             break;
         case 'xml':
-            result = new deltajs.domdelta.DOMDeltaAdapter();
+            result = new deltajs.domdelta.DOMDeltaAdapter(fragadapter);
             break;
     }
 
     return result;
-}
-
-
-/**
- * Return proper payload adapter used to embedd tree fragments in patch file.
- */
-function createTreeFragmentAdapter(documentPayloadType, patchtype) {
-    if (documentPayloadType === 'xml' && patchtype === 'xml') {
-        return new deltajs.xmlpayload.XMLFragmentAdapter();
-    }
-    else if (documentPayloadType === 'json' && patchtype === 'json') {
-        return new deltajs.jsonpayload.JSONFragmentAdapter();
-    }
-    else {
-        throw new Error('Cross format patch files not supported yet');
-    }
 }
 
 
@@ -157,32 +142,9 @@ function main() {
         'origenc': 'UTF-8',
         'changedfile': undefined,
         'changedenc': 'UTF-8',
-        'documentPayloadType': undefined,
-        'mimetype': undefined,
-
-        'deltaPayloadType': 'xml',
         'patchfile': undefined,
         'patchenc': 'UTF-8',
-
-        // Parse serialized files or strings into a document specific
-        // structure.  This structure is the DOM for XML files and plain
-        // JavaScript objects for JSON.
-        'documentPayloadHandler': undefined,
-
-        // Serialize patch file
-        'deltaPayloadHandler': undefined,
-
-        // Generate a mapping between the document specific datastructure and
-        // a deltajs tree structure. The tree-adapter is responsible for
-        // calculating the hashes for tree.Node values.
-        'documentTreeAdapter': undefined,
-
-        // Convert delta into a document specific datastructure
-        'deltaAdapter': undefined,
-
-        // Serialize tree fragments into the proper form when required due to
-        // the combination of payload and patch format.
-        'treeFragmentAdapter': undefined
+        'patchtype': 'xml'
     }
 
     var switches = [
@@ -200,11 +162,11 @@ function main() {
     });
 
     parser.on('xml', function(name, value) {
-        options.deltaPayloadType='xml';
+        options.patchtype='xml';
     });
 
     parser.on('json', function(name, value) {
-        options.deltaPayloadType='json';
+        options.patchtype='json';
     });
 
     parser.on(2, function(value) {
@@ -221,46 +183,51 @@ function main() {
 
     parser.parse(process.ARGV);
 
-    options.mimetype = checkfile('original file', options.origfile,
-            options.mimetype);
-    options.mimetype = checkfile('changed file', options.changedfile,
-            options.mimetype);
 
-    options.documentPayloadType = getPayloadType(options.mimetype);
-    if (!options.documentPayloadType) {
+    // Check input files
+    var documentMimetype, documentPayloadType, documentPayloadHandler,
+        documentTreeAdapter;
+
+    documentMimetype = checkfile('original file', options.origfile,
+            documentMimetype);
+    documentMimetype = checkfile('changed file', options.changedfile,
+            documentMimetype);
+
+
+    // Setup document payload handler and tree adapter
+    documentPayloadType = getPayloadType(documentMimetype);
+    if (!documentPayloadType) {
         console.log('This file type is not supported by djdiff');
     }
 
-    options.documentPayloadHandler =
-        createPayloadHandler(options.documentPayloadType);
-    if (!options.documentPayloadHandler) {
+    documentPayloadHandler = createPayloadHandler(documentPayloadType);
+    if (!documentPayloadHandler) {
         console.log('This file type is not supported by djdiff');
     }
 
-    options.documentTreeAdapter =
-        createTreeAdapter(options.documentPayloadType);
+    documentTreeAdapter = createTreeAdapter(documentPayloadType);
 
-    options.deltaPayloadHandler =
-        createPayloadHandler(options.deltaPayloadType);
-    if (!options.deltaPayloadHandler) {
+
+    // Setup delta payload handler
+    var deltaPayloadHandler = createPayloadHandler(options.patchtype);
+    if (!deltaPayloadHandler) {
         console.log('This delta type is not supported by djdiff');
     }
 
-    options.deltaAdapter = createDeltaAdapter(options.deltaPayloadType);
 
-    options.treeFragmentAdapter = createTreeFragmentAdapter(
-            options.documentPayloadType, options.deltaPayloadType);
-
+    // Match trees
     var tree1, tree2, diff, matching;
     tree1 = loadFile('original file', options.origfile, options.origenc,
-            options.documentPayloadHandler, options.documentTreeAdapter);
+            documentPayloadHandler, documentTreeAdapter);
     tree2 = loadFile('changed file', options.changedfile, options.changedenc,
-            options.documentPayloadHandler, options.documentTreeAdapter);
+            documentPayloadHandler, documentTreeAdapter);
 
     matching = new deltajs.tree.Matching();
     diff = new deltajs.xcc.Diff(tree1, tree2);
     diff.matchTrees(matching);
 
+
+    // Construct delta
     var delta = new deltajs.delta.Delta();
     var a_index = new deltajs.tree.DocumentOrderIndex(tree1);
     a_index.buildAll();
@@ -268,19 +235,18 @@ function main() {
     var editor = new deltajs.delta.Editor(delta, fpfactory);
     diff.generatePatch(matching, editor);
 
-    var doc = options.deltaPayloadHandler.createDocument();
-    // Hack: need to figure out some nice way to inject dependencies properly
-    if (options.deltaPayloadType === 'xml') {
-        options.treeFragmentAdapter.doc = doc;
-    }
-    options.deltaAdapter.fragmentadapter = options.treeFragmentAdapter;
 
-    showFile('patch file', delta, doc, options.deltaPayloadHandler,
-            options.deltaAdapter);
+    // Serialize delta
+    var doc = deltaPayloadHandler.createDocument();
+    var fragadapter = documentPayloadHandler.createTreeFragmentAdapter(doc,
+            options.patchtype);
+    deltaAdapter = createDeltaAdapter(options.patchtype, fragadapter);
+
+    showFile('patch file', delta, doc, deltaPayloadHandler, deltaAdapter);
 
     /*
     saveFile('patch file', options.patchfile, options.patchenc, delta, doc,
-            options.deltaPayloadHandler, options.deltaAdapter);
+            deltaPayloadHandler, deltaAdapter);
             */
 }
 
