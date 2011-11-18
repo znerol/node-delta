@@ -30,6 +30,13 @@
         test.done();
     };
 
+    exports['should have access to node type constants through node instances'] = function(test) {
+        var doc = platform.parseXML('<hello-world/>');
+        n = doc.firstChild;
+        test.equals(n.ELEMENT_NODE, 1);
+        test.done();
+    };
+
     exports['Simple patching scenario'] = function(test) {
         var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
         var r = original_doc.firstChild;
