@@ -48,29 +48,34 @@
         test.done();
     }
 
-    exports['should return same hash if qualified names are equal'] = function(test) {
+    exports['should return same hash if qualified element names are equal'] = function(test) {
         var dh1 = new domtree.DOMHash();
         var dh2 = new domtree.DOMHash();
         var dh3 = new domtree.DOMHash();
+        var dh4 = new domtree.DOMHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
         var hash3 = new fnv132.Hash();
+        var hash4 = new fnv132.Hash();
 
         var c1 = doc.createElementNS('urn:test', 'pfx1:c');
         var c2 = doc.createElementNS('urn:test', 'pfx2:c');
         var c3 = doc.createElementNS('urn:test', 'c');
+        var c4 = doc.createElement('c');
 
         dh1.process(c1, hash1);
         dh2.process(c2, hash2);
-        dh2.process(c3, hash3);
+        dh3.process(c3, hash3);
+        dh4.process(c3, hash4);
 
         test.equals(hash1.get(), hash2.get());
         test.equals(hash1.get(), hash3.get());
+        test.equals(hash1.get(), hash4.get());
 
         test.done();
     }
 
-    exports['should return different hash if namespace uris differ'] = function(test) {
+    exports['should return different hash if element namespace uris differ'] = function(test) {
         var dh1 = new domtree.DOMHash();
         var dh2 = new domtree.DOMHash();
         var dh3 = new domtree.DOMHash();
@@ -88,6 +93,92 @@
 
         test.notEqual(hash1.get(), hash2.get());
         test.notEqual(hash1.get(), hash3.get());
+
+        test.done();
+    }
+
+    exports['should return same hash if qualified attribute names are equal'] = function(test) {
+        var dh1 = new domtree.DOMHash();
+        var dh2 = new domtree.DOMHash();
+        var dh3 = new domtree.DOMHash();
+        var hash1 = new fnv132.Hash();
+        var hash2 = new fnv132.Hash();
+        var hash3 = new fnv132.Hash();
+
+        var c1 = doc.createAttributeNS('urn:test', 'pfx1:c');
+        var c2 = doc.createAttributeNS('urn:test', 'pfx2:c');
+        var c3 = doc.createAttributeNS('urn:test', 'c');
+
+        dh1.process(c1, hash1);
+        dh2.process(c2, hash2);
+        dh2.process(c3, hash3);
+
+        test.equals(hash1.get(), hash2.get());
+        test.equals(hash1.get(), hash3.get());
+
+        test.done();
+    }
+
+
+    exports['should return different hash if attribute namespace uris differ'] = function(test) {
+        var dh1 = new domtree.DOMHash();
+        var dh2 = new domtree.DOMHash();
+        var dh3 = new domtree.DOMHash();
+        var dh4 = new domtree.DOMHash();
+        var hash1 = new fnv132.Hash();
+        var hash2 = new fnv132.Hash();
+        var hash3 = new fnv132.Hash();
+        var hash4 = new fnv132.Hash();
+
+        var c1 = doc.createAttributeNS('urn:test1', 'pfx:c');
+        var c2 = doc.createAttributeNS('urn:test2', 'pfx:c');
+        var c3 = doc.createAttributeNS('urn:test3', 'c');
+        var c4 = doc.createAttribute('c');
+
+        dh1.process(c1, hash1);
+        dh2.process(c2, hash2);
+        dh3.process(c3, hash3);
+        dh4.process(c3, hash4);
+
+        test.notEqual(hash1.get(), hash2.get());
+        test.notEqual(hash1.get(), hash3.get());
+        test.notEqual(hash1.get(), hash4.get());
+
+        test.done();
+    }
+
+
+    exports['should return same hash for equal texts'] = function(test) {
+        var dh1 = new domtree.DOMHash();
+        var dh2 = new domtree.DOMHash();
+        var hash1 = new fnv132.Hash();
+        var hash2 = new fnv132.Hash();
+
+        var c1 = doc.createTextNode('thanks for the fish');
+        var c2 = doc.createTextNode('thanks for the fish');
+
+        dh1.process(c1, hash1);
+        dh2.process(c2, hash2);
+
+        test.equals(hash1.get(), hash2.get());
+
+        test.done();
+    }
+
+
+    exports['should return different hash for non-equal texts'] = function(test) {
+        var dh1 = new domtree.DOMHash();
+        var dh2 = new domtree.DOMHash();
+        var hash1 = new fnv132.Hash();
+        var hash2 = new fnv132.Hash();
+
+        var c1 = doc.createTextNode('thanks for the fish');
+        var c2 = doc.createTextNode('Thanks for the fish');
+
+        dh1.process(c1, hash1);
+        dh2.process(c2, hash2);
+
+        test.notEqual(hash1.get(), hash2.get());
 
         test.done();
     }
