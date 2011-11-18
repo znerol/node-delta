@@ -1,34 +1,30 @@
-(function(exports, domtree, fnv132, platform) {
+(function(exports, tree, domtree, fnv132, platform) {
     var doc = platform.createDocument();
 
     exports['should calculate correct value for plain element'] = function(test) {
-        var domhash = new domtree.DOMHash();
-        var hash = new fnv132.Hash();
+        var domhash = new domtree.DOMNodeHash(fnv132.Hash);
+        var a = new tree.Node('a', doc.createElement('a'));
 
-        var a = doc.createElement('a');
-
-        domhash.process(a, hash);
-        test.equals(hash.get(), 0xec585be5);
+        var hash = domhash.process(a);
+        test.equals(hash, 0xec585be5);
 
         test.done();
     };
 
     exports['should calculate correct value for plain element with attribute'] = function(test) {
-        var domhash = new domtree.DOMHash();
-        var hash = new fnv132.Hash();
+        var domhash = new domtree.DOMNodeHash(fnv132.Hash);
+        var b = new tree.Node('b', doc.createElement('b'));
+        b.data.setAttribute('class', 'test');
 
-        var b = doc.createElement('b');
-        b.setAttribute('class', 'test');
-
-        domhash.process(b, hash);
-        test.equals(hash.get(), 0x08f81618);
+        var hash = domhash.process(b);
+        test.equals(hash, 0x08f81618);
 
         test.done();
     };
 
     exports['must not consider order of attributes'] = function(test) {
-        var dh1 = new domtree.DOMHash();
-        var dh2 = new domtree.DOMHash();
+        var dh1 = new domtree.DOMNodeHash();
+        var dh2 = new domtree.DOMNodeHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
 
@@ -40,8 +36,8 @@
         c2.setAttribute('two', '2');
         c2.setAttribute('one', '1');
 
-        dh1.process(c1, hash1);
-        dh2.process(c2, hash2);
+        dh1.processAttribute(c1, hash1);
+        dh2.processAttribute(c2, hash2);
 
         test.equals(hash1.get(), hash2.get());
 
@@ -49,10 +45,10 @@
     }
 
     exports['should return same hash if qualified element names are equal'] = function(test) {
-        var dh1 = new domtree.DOMHash();
-        var dh2 = new domtree.DOMHash();
-        var dh3 = new domtree.DOMHash();
-        var dh4 = new domtree.DOMHash();
+        var dh1 = new domtree.DOMNodeHash();
+        var dh2 = new domtree.DOMNodeHash();
+        var dh3 = new domtree.DOMNodeHash();
+        var dh4 = new domtree.DOMNodeHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
         var hash3 = new fnv132.Hash();
@@ -63,10 +59,10 @@
         var c3 = doc.createElementNS('urn:test', 'c');
         var c4 = doc.createElement('c');
 
-        dh1.process(c1, hash1);
-        dh2.process(c2, hash2);
-        dh3.process(c3, hash3);
-        dh4.process(c3, hash4);
+        dh1.processElement(c1, hash1);
+        dh2.processElement(c2, hash2);
+        dh3.processElement(c3, hash3);
+        dh4.processElement(c3, hash4);
 
         test.equals(hash1.get(), hash2.get());
         test.equals(hash1.get(), hash3.get());
@@ -76,9 +72,9 @@
     }
 
     exports['should return different hash if element namespace uris differ'] = function(test) {
-        var dh1 = new domtree.DOMHash();
-        var dh2 = new domtree.DOMHash();
-        var dh3 = new domtree.DOMHash();
+        var dh1 = new domtree.DOMNodeHash();
+        var dh2 = new domtree.DOMNodeHash();
+        var dh3 = new domtree.DOMNodeHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
         var hash3 = new fnv132.Hash();
@@ -87,9 +83,9 @@
         var c2 = doc.createElementNS('urn:test2', 'pfx:c');
         var c3 = doc.createElementNS('urn:test3', 'c');
 
-        dh1.process(c1, hash1);
-        dh2.process(c2, hash2);
-        dh2.process(c3, hash3);
+        dh1.processElement(c1, hash1);
+        dh2.processElement(c2, hash2);
+        dh2.processElement(c3, hash3);
 
         test.notEqual(hash1.get(), hash2.get());
         test.notEqual(hash1.get(), hash3.get());
@@ -98,9 +94,9 @@
     }
 
     exports['should return same hash if qualified attribute names are equal'] = function(test) {
-        var dh1 = new domtree.DOMHash();
-        var dh2 = new domtree.DOMHash();
-        var dh3 = new domtree.DOMHash();
+        var dh1 = new domtree.DOMNodeHash();
+        var dh2 = new domtree.DOMNodeHash();
+        var dh3 = new domtree.DOMNodeHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
         var hash3 = new fnv132.Hash();
@@ -109,9 +105,9 @@
         var c2 = doc.createAttributeNS('urn:test', 'pfx2:c');
         var c3 = doc.createAttributeNS('urn:test', 'c');
 
-        dh1.process(c1, hash1);
-        dh2.process(c2, hash2);
-        dh2.process(c3, hash3);
+        dh1.processAttribute(c1, hash1);
+        dh2.processAttribute(c2, hash2);
+        dh2.processAttribute(c3, hash3);
 
         test.equals(hash1.get(), hash2.get());
         test.equals(hash1.get(), hash3.get());
@@ -121,10 +117,10 @@
 
 
     exports['should return different hash if attribute namespace uris differ'] = function(test) {
-        var dh1 = new domtree.DOMHash();
-        var dh2 = new domtree.DOMHash();
-        var dh3 = new domtree.DOMHash();
-        var dh4 = new domtree.DOMHash();
+        var dh1 = new domtree.DOMNodeHash();
+        var dh2 = new domtree.DOMNodeHash();
+        var dh3 = new domtree.DOMNodeHash();
+        var dh4 = new domtree.DOMNodeHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
         var hash3 = new fnv132.Hash();
@@ -135,10 +131,10 @@
         var c3 = doc.createAttributeNS('urn:test3', 'c');
         var c4 = doc.createAttribute('c');
 
-        dh1.process(c1, hash1);
-        dh2.process(c2, hash2);
-        dh3.process(c3, hash3);
-        dh4.process(c3, hash4);
+        dh1.processAttribute(c1, hash1);
+        dh2.processAttribute(c2, hash2);
+        dh3.processAttribute(c3, hash3);
+        dh4.processAttribute(c3, hash4);
 
         test.notEqual(hash1.get(), hash2.get());
         test.notEqual(hash1.get(), hash3.get());
@@ -149,16 +145,16 @@
 
 
     exports['should return same hash for equal texts'] = function(test) {
-        var dh1 = new domtree.DOMHash();
-        var dh2 = new domtree.DOMHash();
+        var dh1 = new domtree.DOMNodeHash();
+        var dh2 = new domtree.DOMNodeHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
 
         var c1 = doc.createTextNode('thanks for the fish');
         var c2 = doc.createTextNode('thanks for the fish');
 
-        dh1.process(c1, hash1);
-        dh2.process(c2, hash2);
+        dh1.processText(c1, hash1);
+        dh2.processText(c2, hash2);
 
         test.equals(hash1.get(), hash2.get());
 
@@ -167,23 +163,24 @@
 
 
     exports['should return different hash for non-equal texts'] = function(test) {
-        var dh1 = new domtree.DOMHash();
-        var dh2 = new domtree.DOMHash();
+        var dh1 = new domtree.DOMNodeHash();
+        var dh2 = new domtree.DOMNodeHash();
         var hash1 = new fnv132.Hash();
         var hash2 = new fnv132.Hash();
 
         var c1 = doc.createTextNode('thanks for the fish');
         var c2 = doc.createTextNode('Thanks for the fish');
 
-        dh1.process(c1, hash1);
-        dh2.process(c2, hash2);
+        dh1.processText(c1, hash1);
+        dh2.processText(c2, hash2);
 
         test.notEqual(hash1.get(), hash2.get());
 
         test.done();
     }
 }(
-    typeof exports === 'undefined' ? (DeltaJS.DOMHashTest={}) : exports,
+    typeof exports === 'undefined' ? (DeltaJS.DOMNodeHashTest={}) : exports,
+    typeof require === 'undefined' ? DeltaJS.tree : require('../lib/delta/tree.js'),
     typeof require === 'undefined' ? DeltaJS.domtree : require('../lib/delta/domtree.js'),
     typeof require === 'undefined' ? DeltaJS.fnv132 : require('../lib/delta/fnv132.js'),
     typeof require === 'undefined' ? DeltaJS.platform : require('../lib/delta/platform.js')
