@@ -120,12 +120,31 @@ function createTreeAdapter(type) {
 function createDeltaAdapter(type, fragadapter) {
     var result;
 
-    switch(type) {
+    switch (type) {
         case 'json':
             result = new deltajs.jsondelta.JSONDeltaAdapter(fragadapter);
             break;
         case 'xml':
             result = new deltajs.domdelta.DOMDeltaAdapter(fragadapter);
+            break;
+    }
+
+    return result;
+}
+
+/**
+ * Return proper tree value index for payload type.
+ */
+function createValueIndex(type, tree1, tree2) {
+    var result;
+
+    switch (type) {
+        case 'xml':
+            result = new deltajs.tree.NodeHashIndex(
+                    new deltajs.domtree.DOMNodeHash(deltajs.fnv132.Hash));
+            break;
+        case 'json':
+            // no index
             break;
     }
 
@@ -216,23 +235,40 @@ function main() {
 
 
     // Match trees
-    var tree1, tree2, diff, matching;
+    var tree1, tree2, valindex, diff, matching;
     tree1 = loadFile('original file', options.origfile, options.origenc,
             documentPayloadHandler, documentTreeAdapter);
     tree2 = loadFile('changed file', options.changedfile, options.changedenc,
             documentPayloadHandler, documentTreeAdapter);
 
+    valindex = createValueIndex(documentPayloadType, tree1, tree2);
+
     matching = new deltajs.tree.Matching();
     diff = new deltajs.xcc.Diff(tree1, tree2);
+
+    if (valindex) {
+        diff.equals = function(a, b) {
+            return valindex.get(a) === valindex.get(b);
+        };
+    }
+
     diff.matchTrees(matching);
 
 
     // Construct delta
-    var delta = new deltajs.delta.Delta();
-    var a_index = new deltajs.tree.DocumentOrderIndex(tree1);
+    var nodehash, treehash, delta, a_index, fpfactory, editor;
+    delta = new deltajs.delta.Delta();
+    a_index = new deltajs.tree.DocumentOrderIndex(tree1);
     a_index.buildAll();
-    var fpfactory = new deltajs.delta.FingerprintFactory(a_index, 4);
-    var editor = new deltajs.delta.Editor(delta, fpfactory);
+
+    if (valindex) {
+        nodehash = function(n) {
+            return n && valindex.get(n);
+        };
+    }
+
+    fpfactory = new deltajs.delta.FingerprintFactory(a_index, 4, nodehash);
+    editor = new deltajs.delta.Editor(delta, fpfactory);
     diff.generatePatch(matching, editor);
 
 
