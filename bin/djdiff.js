@@ -275,7 +275,7 @@ function main() {
     // Serialize delta
     var doc = deltaPayloadHandler.createDocument();
     var fragadapter = documentPayloadHandler.createTreeFragmentAdapter(doc,
-            options.patchtype);
+            documentTreeAdapter, options.patchtype);
     deltaAdapter = createDeltaAdapter(options.patchtype, fragadapter);
 
     showFile('patch file', delta, doc, deltaPayloadHandler, deltaAdapter);

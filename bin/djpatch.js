@@ -264,12 +264,14 @@ function main() {
     doc = documentPayloadHandler.parseString(data);
     tree = documentTreeAdapter.adaptDocument(doc);
 
-    valindex = createValueIndex(documentPayloadType);
+    nodevalidx = createValueIndex(documentPayloadType);
+    treevalidx = new deltajs.tree.TreeHashIndex(
+            new deltajs.tree.SimpleTreeHash(deltajs.fnv132.Hash, nodevalidx));
 
     // Read patchfile
     var patch, fragadapter, deltaAdapter;
     fragadapter = documentPayloadHandler.createTreeFragmentAdapter(doc,
-            patchPayloadType);
+            documentTreeAdapter, patchPayloadType);
     deltaAdapter = createDeltaAdapter(patchPayloadType, fragadapter);
 
     patch = loadFile('patch file', options.patchfile, options.patchenc,
@@ -279,11 +281,16 @@ function main() {
     var resolver = new deltajs.resolver.UniformDepthResolver(tree,
             options.radius, options.threshold);
     var handlerfactory = createHandlerFactory(documentPayloadType);
-    var fails = patch.attach(resolver, handlerfactory);
+    var fails = patch.attach(resolver, treevalidx, nodevalidx, handlerfactory);
 
     // Apply patch
     patch.forEach(function(op, handler) {
-        handler.toggle();
+        if (handler) {
+            handler.toggle();
+        }
+        else {
+            console.log('failed to resolve hunk');
+        }
     });
 
     // Serialize tree
