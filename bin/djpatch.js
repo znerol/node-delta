@@ -160,7 +160,7 @@ function createHandlerFactory(type) {
 
     switch (type) {
         case 'xml':
-            result = new deltajs.domtree.DOMOperationFactory();
+            result = new deltajs.domtree.DOMOperationHandlerFactory();
             break;
         case 'json':
             // no index
