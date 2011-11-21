@@ -294,8 +294,7 @@ function main() {
     });
 
     // Serialize tree
-    var outdoc = documentPayloadHandler.createDocument();
-    showFile('changed file', tree, outdoc, documentPayloadHandler, documentTreeAdapter);
+    showFile('changed file', tree, doc, documentPayloadHandler, documentTreeAdapter);
 
     /*
     saveFile('patch file', options.patchfile, options.patchenc, delta, doc,
