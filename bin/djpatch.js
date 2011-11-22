@@ -160,7 +160,7 @@ function createHandlerFactory(type) {
 
     switch (type) {
         case 'xml':
-            result = new deltajs.domtree.DOMOperationHandlerFactory();
+            result = new deltajs.domdelta.DOMOperationHandlerFactory();
             break;
         case 'json':
             // no index
@@ -294,12 +294,8 @@ function main() {
     });
 
     // Serialize tree
-    showFile('changed file', tree, doc, documentPayloadHandler, documentTreeAdapter);
-
-    /*
-    saveFile('patch file', options.patchfile, options.patchenc, delta, doc,
-            deltaPayloadHandler, deltaAdapter);
-            */
+    var buf = documentPayloadHandler.serializeToString(doc);
+    sys.puts(buf);
 }
 
 main();

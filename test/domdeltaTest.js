@@ -1,4 +1,4 @@
-(function(exports, domtree, tree, platform){
+(function(exports, domdelta, domtree, tree, platform){
     exports['Simple subtree operation'] = function(test) {
         var original_doc = platform.parseXML('<r><c1/><c2/><c3/><c4/></r>');
         var r = original_doc.firstChild;
@@ -14,7 +14,7 @@
         var c2xo = original_doc.importNode(c2xr, true);
         var replacement_nodes = [c2xo];
 
-        var op = new domtree.DOMTreeSequenceOperationHandler(r, before, original_nodes, replacement_nodes);
+        var op = new domdelta.DOMTreeSequenceOperationHandler(r, before, original_nodes, replacement_nodes);
 
         var expect_siblings;
         var actual_siblings;
@@ -52,7 +52,7 @@
             replacement_node.getAttributeNode('value'),
         ];
 
-        var op = new domtree.DOMNodeAttributeOperationHandler(original_node, replacement_node);
+        var op = new domdelta.DOMNodeAttributeOperationHandler(original_node, replacement_node);
 
         var expect_attributes;
         var actual_attributes;
@@ -82,7 +82,7 @@
         var replacement_doc = platform.parseXML('<insert><c2x/></insert>');
         var replacement_tree = treeAdapter.adaptDocument(replacement_doc);
 
-        var factory = new domtree.DOMOperationHandlerFactory();
+        var factory = new domdelta.DOMOperationHandlerFactory();
         var insert_op = factory.createSubtreeInsertOperationHandler(
                 original_tree, 3, replacement_tree.children);
 
@@ -112,7 +112,7 @@
         var treeAdapter = new domtree.DOMTreeAdapter();
         var original_tree = treeAdapter.adaptDocument(original_doc);
 
-        var factory = new domtree.DOMOperationHandlerFactory();
+        var factory = new domdelta.DOMOperationHandlerFactory();
         var remove_op = factory.createSubtreeRemoveOperationHandler(
                 original_tree, 1, 2);
 
@@ -137,7 +137,8 @@
         test.done();
     }
 }(
-    typeof exports === 'undefined' ? (DeltaJS.domtreeTest={}) : exports,
+    typeof exports === 'undefined' ? (DeltaJS.domdeltaTest={}) : exports,
+    typeof require === 'undefined' ? DeltaJS.domdelta : require('../lib/delta/domdelta.js'),
     typeof require === 'undefined' ? DeltaJS.domtree : require('../lib/delta/domtree.js'),
     typeof require === 'undefined' ? DeltaJS.tree : require('../lib/delta/tree.js'),
     typeof require === 'undefined' ? DeltaJS.platform : require('../lib/delta/platform.js')
