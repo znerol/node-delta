@@ -36,23 +36,27 @@
         test.done();
     }
 
-    exports['Simple attribute operation'] = function(test) {
-        var original_doc = platform.parseXML('<n id="1" name="test" value="3"/>');
+    exports['Simple node replace operation'] = function(test) {
+        var original_doc = platform.parseXML('<n id="1" name="test" value="3"><a/><b/></n>');
         var original_node = original_doc.firstChild;
         var original_attrs = [
             original_node.getAttributeNode('id'),
             original_node.getAttributeNode('name'),
             original_node.getAttributeNode('value'),
         ];
+        var original_children = [
+            original_node.firstChild,
+            original_node.firstChild.nextSibling,
+        ];
 
-        var replacement_doc = platform.parseXML('<n name="changed" value="2"/>');
+        var replacement_doc = platform.parseXML('<nx name="changed" value="2"/>');
         var replacement_node = original_doc.importNode(replacement_doc.firstChild, true);
         var replacement_attrs = [
             replacement_node.getAttributeNode('name'),
             replacement_node.getAttributeNode('value'),
         ];
 
-        var op = new domdelta.DOMNodeAttributeOperationHandler(original_node, replacement_node);
+        var op = new domdelta.DOMNodeReplaceOperationHandler(original_node, replacement_node);
 
         var expect_attributes;
         var actual_attributes;
@@ -61,15 +65,23 @@
         op.toggle();
 
         expect_attributes = replacement_attrs;
-        actual_attributes = platform.attributesArray(original_node);
+        actual_attributes = platform.attributesArray(original_doc.firstChild);
         test.deepEqual(actual_attributes, expect_attributes);
+
+        expect_children = original_children;
+        actual_children = Array.prototype.slice.call(original_doc.firstChild.childNodes);
+        test.deepEqual(actual_children, expect_children);
 
         // switch back from replacement attrs to original attrs
         op.toggle();
 
         expect_attributes = original_attrs;
-        actual_attributes = platform.attributesArray(original_node);
+        actual_attributes = platform.attributesArray(original_doc.firstChild);
         test.deepEqual(actual_attributes, expect_attributes);
+
+        expect_children = original_children;
+        actual_children = Array.prototype.slice.call(original_doc.firstChild.childNodes);
+        test.deepEqual(actual_children, expect_children);
 
         test.done();
     }
