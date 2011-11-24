@@ -1,4 +1,7 @@
 (function(exports, deltamod, tree){
+    /**
+     * Fake context generator returning an empty array on every input
+     */
     var nullctxgen = {
         'head': function() {return []},
         'tail': function() {return []}
