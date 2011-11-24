@@ -256,19 +256,12 @@ function main() {
 
 
     // Construct delta
-    var nodehash, treehash, delta, a_index, fpfactory, editor;
+    var delta, a_index, editor;
     delta = new deltajs.delta.Delta();
     a_index = new deltajs.tree.DocumentOrderIndex(tree1);
     a_index.buildAll();
 
-    if (valindex) {
-        nodehash = function(n) {
-            return n && valindex.get(n);
-        };
-    }
-
-    fpfactory = new deltajs.delta.FingerprintFactory(a_index, 4, nodehash);
-    editor = new deltajs.delta.Editor(delta, fpfactory);
+    editor = new deltajs.delta.Editor(delta, 4, a_index, valindex);
     diff.generatePatch(matching, editor);
 
 
