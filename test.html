@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>Example Test Suite</title>
+    <link rel="stylesheet" href="test/nodeunit/nodeunit.css" type="text/css" />
+    <script src="test/nodeunit/nodeunit.js"></script>
+    <script>
+        // Initialize DeltaJS Namespace
+        DeltaJS = {};
+    </script>
+    <script src="lib/delta/fnv132.js"></script>
+    <script src="lib/delta/lcs.js"></script>
+    <script src="lib/delta/tree.js"></script>
+    <script src="lib/delta/xcc.js"></script>
+    <script src="lib/delta/resolver.js"></script>
+    <script src="lib/delta/delta.js"></script>
+
+    <script src="lib/delta/platform.js"></script>
+    <script src="lib/delta/domtree.js"></script>
+    <script src="lib/delta/domdelta.js"></script>
+
+    <script src="test/domimplTest.js"></script>
+    <script src="test/domdeltaTest.js"></script>
+    <script src="test/DOMNodeHashTest.js"></script>
+
+    <script src="test/ContextGeneratorTest.js"></script>
+    <script src="test/DocumentOrderIndexTest.js"></script>
+    <script src="test/TopDownPathResolverTest.js"></script>
+    <script src="test/WeightedContextMatcherTest.js"></script>
+    <script src="test/contextResolverTest.js"></script>
+    <script src="test/contextWindowTest.js"></script>
+    <script src="test/generationIndexTest.js"></script>
+    <script src="test/resolverTest.js"></script>
+
+    <script src="test/fnv132Test.js"></script>
+    <script src="test/lcsTest.js"></script>
+    <script src="test/xccTest.js"></script>
+    <script src="test/deltaTest.js"></script>
+  </head>
+  <body>
+    <h1 id="nodeunit-header">Delta.js Test Suite</h1>
+    <script>
+      nodeunit.run({
+        'DOM Implementation Test': DeltaJS.domimplTest,
+        'DOM Delta Adapter Test': DeltaJS.domdeltaTest,
+        'DOM Node Hash Test': DeltaJS.DOMNodeHashTest,
+
+        'FNV132 Test': DeltaJS.fnv132Test,
+        'LCS Test': DeltaJS.lcsTest,
+        'XCC Test': DeltaJS.xccTest,
+        'Delta Test': DeltaJS.deltaTest,
+
+        'Context Generator Test': DeltaJS.contextGeneratorTest,
+        'Context Resolver Test': DeltaJS.contextResolverTest,
+        'Context Window Test': DeltaJS.contextWindowTest,
+        'Document Order Index Test': DeltaJS.DocumentOrderIndexTest,
+        'Generation Index Test': DeltaJS.generationIndexTest,
+        'Resolver Test': DeltaJS.resolverTest,
+        'Top Down Path Resolver Test': DeltaJS.TopDownPathResolverTest,
+        'Weighted Context Matcher Test': DeltaJS.WeightedContextMatcherTest
+      });
+    </script>
+  </body>
+</html>
