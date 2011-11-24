@@ -278,10 +278,21 @@ function main() {
             patchPayloadHandler, deltaAdapter);
 
     // Resolve operations
+    a_index = new deltajs.tree.DocumentOrderIndex(tree);
+    a_index.buildAll();
+
     var resolver = new deltajs.resolver.UniformDepthResolver(tree,
-            options.radius, options.threshold);
+            options.radius, options.threshold, a_index);
+
+    resolver.equalContent = function(docnode, patchnode) {
+        return treevalidx.get(docnode) === treevalidx.get(patchnode);
+    }
+    resolver.equalContext = function(docnode, value) {
+        return nodevalidx.get(docnode) === value;
+    }
+
     var handlerfactory = createHandlerFactory(documentPayloadType);
-    var fails = patch.attach(resolver, treevalidx, nodevalidx, handlerfactory);
+    var fails = patch.attach(resolver, handlerfactory);
 
     // Apply patch
     patch.forEach(function(op, handler) {
