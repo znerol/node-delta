@@ -281,8 +281,8 @@ function main() {
     a_index = new deltajs.tree.DocumentOrderIndex(tree);
     a_index.buildAll();
 
-    var resolver = new deltajs.resolver.UniformDepthResolver(tree,
-            options.radius, options.threshold, a_index);
+    var resolver = new deltajs.resolver.ContextResolver(tree, a_index,
+            options.radius, options.threshold);
 
     resolver.equalContent = function(docnode, patchnode) {
         return treevalidx.get(docnode) === treevalidx.get(patchnode);
