@@ -256,13 +256,14 @@ function main() {
 
 
     // Construct delta
-    var delta, a_index, editor;
+    var delta, a_index, contextgen, updater;
     delta = new deltajs.delta.Delta();
     a_index = new deltajs.tree.DocumentOrderIndex(tree1);
     a_index.buildAll();
 
-    editor = new deltajs.delta.Editor(delta, 4, a_index, valindex);
-    diff.generatePatch(matching, editor);
+    contextgen = new deltajs.delta.ContextGenerator(4, a_index, valindex);
+    updater = diff.createUpdater(matching);
+    delta.collect(tree1, matching, contextgen, updater);
 
 
     // Serialize delta
