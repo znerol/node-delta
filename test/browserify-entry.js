@@ -1,0 +1,17 @@
+DELTAJS_ALLTESTS = {
+    "Context Generator Test"            : require("./ContextGeneratorTest.js"),
+    "Context Resolver Test"             : require("./contextResolverTest.js"),
+    "Context Window Test"               : require("./contextWindowTest.js"),
+    "Delta Test"                        : require("./deltaTest.js"),
+    "Document Order Index Test"         : require("./DocumentOrderIndexTest.js"),
+    "DOM Delta Test"                    : require("./domdeltaTest.js"),
+    "DOM Implementation Test"           : require("./domimplTest.js"),
+    "DOM Node Hash Test"                : require("./DOMNodeHashTest.js"),
+    "FNV-1 32 Test"                     : require("./fnv132Test.js"),
+    "Generation Index Test"             : require("./generationIndexTest.js"),
+    "LCS Test"                          : require("./lcsTest.js"),
+    "Resolver Test"                     : require("./resolverTest.js"),
+    "Top-Down Path Resolver Test"       : require("./TopDownPathResolverTest.js"),
+    "Weighted Context Matcher Test"     : require("./WeightedContextMatcherTest.js"),
+    "XCC Test"                          : require("./xccTest.js"),
+};

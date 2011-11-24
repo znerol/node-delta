@@ -1,8 +1,17 @@
 {
-    "name": "deltajs",
-    "main": "./lib/delta.js"
-    "bin": {
-        "djdiff": "bin/djdiff.js",
-        "djpatch": "bin/djpatch.js"
-    }
+  "name": "deltajs",
+  "version": "0.0.1",
+  "description": "Diff and patch engine for DOM trees",
+  "main": "./lib/main",
+  "bin": {
+    "djdiff": "bin/djdiff.js",
+    "djpatch": "bin/djpatch.js"
+  },
+  "dependencies": {
+    "xmlshim": ">= 0.0.1"
+  },
+  "devDependencies": {
+    "nodeunit": "0.6.x",
+    "browserify": ">= 1.8.0"
+  }
 }

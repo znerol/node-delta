@@ -1,0 +1,5 @@
+*~
+.*.swp
+dist/browser-test/deltajs-test.js
+node_modules
+!node_modules/xmlshim
