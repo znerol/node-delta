@@ -73,7 +73,7 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     tail = ['a21', 'a22', 'a221', 'a222'];
     result = r.find([1], body, head, tail);
 
-    // SUBTREE UPDATE
+    // SUBTREE REMOVE
     // resolve a3..a4
     var b3      = new tree.Node('a3'    );
     var b31     = new tree.Node('a31'   );
@@ -82,13 +82,73 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     b3.append(b31);
     b31.append(b311);
 
-    debugger;
     body = [b3, b4];
     head = ['a22', 'a221', 'a222', 'a23'];
     tail = ['a41', undefined, undefined, undefined];
     result = r.find([2], body, head, tail);
 
     test.deepEqual(result, [a, a3]);
+
+    // SUBTREE INSERT
+    // resolve a2, target node is first node after head
+    body = []
+    head = [undefined, 'a', 'a1', 'a11'];
+    tail = ['a2', 'a21', 'a22', 'a221'];
+    result = r.find([1], body, head, tail);
+
+    test.deepEqual(result, [a, a2]);
+    test.done();
+}
+
+exports['should resolve correct path to existing nodes (depth:2)'] = function(test) {
+    var r = new resolver.ContextResolver(a, nodeindex);
+    var body, head, tail, result;
+
+    // NODE UPDATE
+    // resolve a22
+    body = [new tree.Node('a22')];
+    head = ['a1', 'a11', 'a2', 'a21'];
+    tail = ['a221', 'a222', 'a23', 'a3'];
+    result = r.find([1, 1], body, head, tail);
+
+    // NODE REMOVE
+    // resolve a21
+    body = [new tree.Node('a21')];
+    head = [undefined, 'a1', 'a11', 'a2'];
+    tail = ['a22', 'a221', 'a222', 'a23'];
+    result = r.find([1, 1], body, head, tail);
+
+    // SUBTREE INSERT
+    // resolve a41, target node is first node after head
+    body = []
+    head = ['a3', 'a31', 'a311', 'a4'];
+    tail = ['a41', undefined, undefined, undefined];
+    result = r.find([3, 0], body, head, tail);
+
+    test.deepEqual(result, [a, a4, a41]);
+    test.done();
+};
+
+exports['should reject path if any body node does not match exactly'] = function(test) {
+    var r = new resolver.ContextResolver(a, nodeindex);
+    var body, head, tail, result;
+
+    // SUBTREE REMOVE
+    // resolve a3..a4
+    var b3      = new tree.Node('a3'    );
+    var b31     = new tree.Node('a31'   );
+    var b311    = new tree.Node('wrong' );
+    var b4      = new tree.Node('a4'    );
+    b3.append(b31);
+    b31.append(b311);
+
+    body = [b3, b4];
+    head = ['a22', 'a221', 'a222', 'a23'];
+    tail = ['a41', undefined, undefined, undefined];
+    result = r.find([2], body, head, tail);
+
+    test.strictEqual(result, undefined);
+
     test.done();
 };
 
