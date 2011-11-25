@@ -4,7 +4,7 @@ var optparse = require('optparse');
 var sys = require('sys');
 var fs  = require('fs');
 var path = require('path');
-var deltajs = require('../lib/delta.js');
+var deltajs = require('deltajs');
 var mime = require('mime');
 
 
