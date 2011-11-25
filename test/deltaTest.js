@@ -37,7 +37,7 @@ exports['should generate one update operation for two different one-node trees']
     var updater = deltamod.defaultMatchingUpdater(matching);
 
     var expect_operations = [
-        new deltamod.Operation(deltamod.UPDATE_TYPE, [], [], [], [a], [b])
+        new deltamod.Operation(deltamod.UPDATE_NODE_TYPE, [], [], [], [a], [b])
         ];
 
     // Manually match trees
@@ -61,7 +61,7 @@ exports['should generate one remove operation for consecutive sequence of nodes'
     var updater = deltamod.defaultMatchingUpdater(matching);
 
     var expect_operations = [
-        new deltamod.Operation(deltamod.REMOVE_TYPE, [0], [], [], [a1, a2], [])
+        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [0], [], [], [a1, a2], [])
         ];
 
     // Manually build tree
@@ -90,7 +90,7 @@ exports['should generate one insert operation for consecutive sequence of nodes'
     var updater = deltamod.defaultMatchingUpdater(matching);
 
     var expect_operations = [
-        new deltamod.Operation(deltamod.INSERT_TYPE, [0], [], [], [], [b1, b2])
+        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [0], [], [], [], [b1, b2])
         ];
 
     // Manually build tree
