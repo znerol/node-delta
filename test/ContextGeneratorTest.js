@@ -35,20 +35,20 @@ exports['should return empty context when radius is zero'] = function(test) {
     test.done();
 };
 
-exports['if radius is 2, head should return 2 nodes up to but not including the anchor'] = function(test) {
+exports['if radius is 2, head should return 2 nodes including the anchor'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
     var head = ctxgen.head(b, 0);
 
-    test.deepEqual(head, ['r', 'a']);
+    test.deepEqual(head, ['a', 'b']);
 
     test.done();
 };
 
-exports['if radius is 2, tail should return 2 nodes where anchor is the first'] = function(test) {
+exports['if radius is 2, tail should return 2 nodes following the anchor'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
     var tail = ctxgen.tail(b, 0);
 
-    test.deepEqual(tail, ['b', 'c']);
+    test.deepEqual(tail, ['c', 'd']);
 
     test.done();
 };
