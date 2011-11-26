@@ -1,9 +1,13 @@
 var tree = require('deltajs').tree;
 var domtree = require('deltajs').domtree;
 var fnv132 = require('deltajs').fnv132;
-var platform = require('deltajs').platform;
+var xmlshim = require('xmlshim');
+var doc;
 
-var doc = platform.createDocument();
+exports.setUp = function(callback) {
+    doc = xmlshim.implementation.createDocument('', '', null);
+    callback();
+}
 
 exports['should calculate correct value for plain element'] = function(test) {
     var domhash = new domtree.DOMNodeHash(fnv132.Hash);

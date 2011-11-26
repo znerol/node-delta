@@ -5,7 +5,6 @@ DELTAJS_ALLTESTS = {
     "Delta Test"                        : require("./deltaTest.js"),
     "Document Order Index Test"         : require("./DocumentOrderIndexTest.js"),
     "DOM Delta Test"                    : require("./domdeltaTest.js"),
-    "DOM Implementation Test"           : require("./domimplTest.js"),
     "DOM Node Hash Test"                : require("./DOMNodeHashTest.js"),
     "FNV-1 32 Test"                     : require("./fnv132Test.js"),
     "Generation Index Test"             : require("./generationIndexTest.js"),
