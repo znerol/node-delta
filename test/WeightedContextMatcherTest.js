@@ -1,7 +1,7 @@
-var resolver = require('deltajs').resolver;
+var contextmatcher = require('deltajs').contextmatcher;
 
 exports['should report match quality 1 if pattern matches subject'] = function(test) {
-    var matcher = new resolver.WeightedContextMatcher(0);
+    var matcher = new contextmatcher.WeightedContextMatcher(0);
     var subject = ['a', 'b', 'c'];
     var result;
 
@@ -21,7 +21,7 @@ exports['should report match quality 1 if pattern matches subject'] = function(t
 };
 
 exports['should report match quality 0 if pattern does not matches subject'] = function(test) {
-    var matcher = new resolver.WeightedContextMatcher(0);
+    var matcher = new contextmatcher.WeightedContextMatcher(0);
     var subject = ['a', 'b', 'c'];
     var result;
 
@@ -33,7 +33,7 @@ exports['should report match quality 0 if pattern does not matches subject'] = f
 };
 
 exports['should report match quality 1 if pattern and context match subject'] = function(test) {
-    var matcher = new resolver.WeightedContextMatcher(1);
+    var matcher = new contextmatcher.WeightedContextMatcher(1);
     var subject = ['a', 'b', 'c'];
     var result;
 
@@ -53,7 +53,7 @@ exports['should report match quality 1 if pattern and context match subject'] = 
 };
 
 exports['should report match quality 0.5 if only half of context match subject'] = function(test) {
-    var matcher = new resolver.WeightedContextMatcher(1);
+    var matcher = new contextmatcher.WeightedContextMatcher(1);
     var subject = ['a', 'b', 'c'];
     var result;
 
