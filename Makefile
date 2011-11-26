@@ -11,6 +11,6 @@ browser-coverage: browser
 	$(JSCOV) dist/browser-test dist/browser-test-cov
 
 browser-test: browser
-	 $(BROWSER) dist/browser-test/test.html
+	 $(BROWSER) dist/browser-test/test.html &
 
 .PHONY: test browser-test
