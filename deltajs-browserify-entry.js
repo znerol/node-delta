@@ -1,0 +1,1 @@
+DeltaJS = require('./lib/main');

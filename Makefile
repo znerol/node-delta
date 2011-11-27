@@ -6,6 +6,11 @@ test:
 
 browser:
 	node_modules/.bin/browserify test-browserify-entry.js > dist/browser-test/deltajs-test.js
+	node_modules/.bin/browserify deltajs-browserify-entry.js > dist/browser/delta.js
+
+examples: browser
+	cp dist/browser/delta.js examples/xcc/delta.js
+	cp dist/browser/delta.js examples/lcs/delta.js
 
 browser-coverage: browser
 	$(JSCOV) dist/browser-test dist/browser-test-cov
