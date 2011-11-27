@@ -1,4 +1,4 @@
-var tree = require('deltajs').tree;
+var tree = require('../lib/delta/tree');
 
 // Setup
 var a = new tree.Node();

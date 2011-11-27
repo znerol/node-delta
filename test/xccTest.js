@@ -1,5 +1,5 @@
-var xcc = require('deltajs').xcc;
-var tree = require('deltajs').tree;
+var xcc = require('../lib/delta/xcc');
+var tree = require('../lib/delta/tree');
 
 /**
  * Test two trees consisting of only one node each. Node values are equal.

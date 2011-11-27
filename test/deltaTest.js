@@ -1,5 +1,5 @@
-var deltamod = require('deltajs').delta;
-var tree = require('deltajs').tree;
+var deltamod = require('../lib/delta/delta');
+var tree = require('../lib/delta/tree');
 
 /**
  * Fake context generator returning an empty array on every input

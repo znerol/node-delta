@@ -1,5 +1,5 @@
-var deltamod = require('deltajs').delta;
-var tree = require('deltajs').tree;
+var deltamod = require('../lib/delta/delta');
+var tree = require('../lib/delta/tree');
 
 var r = new tree.Node('r');
 var a = new tree.Node('a');

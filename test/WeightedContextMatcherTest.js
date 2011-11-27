@@ -1,4 +1,4 @@
-var contextmatcher = require('deltajs').contextmatcher;
+var contextmatcher = require('../lib/delta/contextmatcher');
 
 exports['should report match quality 1 if pattern matches subject'] = function(test) {
     var matcher = new contextmatcher.WeightedContextMatcher(0);

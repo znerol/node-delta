@@ -1,4 +1,4 @@
-var fnv132 = require('deltajs').fnv132;
+var fnv132 = require('../lib/delta/fnv132');
 
 exports.testFNVHashEmptyString = function(test) {
     hash = new fnv132.Hash();

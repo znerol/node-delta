@@ -1,4 +1,4 @@
-var lcs = require('deltajs').lcs;
+var lcs = require('../lib/delta/lcs');
 
 /**
  * Example from myers paper

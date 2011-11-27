@@ -1,4 +1,4 @@
-var resolver = require('deltajs').resolver;
+var resolver = require('../lib/delta/resolver');
 
 /*
    exports['should be invoked 2 * radius + length times'] = function(test) {

@@ -1,5 +1,5 @@
-var resolver = require('deltajs').resolver;
-var tree = require('deltajs').tree;
+var resolver = require('../lib/delta/resolver');
+var tree = require('../lib/delta/tree');
 
 // Setup
 var a = new tree.Node();

@@ -1,6 +1,6 @@
-var domdelta = require('deltajs').domdelta;
-var domtree = require('deltajs').domtree;
-var tree = require('deltajs').tree;
+var domdelta = require('../lib/delta/domdelta');
+var domtree = require('../lib/delta/domtree');
+var tree = require('../lib/delta/tree');
 var xmlshim = require('xmlshim');
 var dp;
 
