@@ -108,3 +108,50 @@ exports['should generate one insert operation for consecutive sequence of nodes'
 
     test.done();
 };
+
+exports['should generate separate operations for non-consecutive siblings'] = function(test) {
+    var a = new tree.Node('r');     // match
+    var a1 = new tree.Node('a');    // match
+    var a2 = new tree.Node('x');    // no match
+    var a3 = new tree.Node('b');    // match
+    var a4 = new tree.Node('x');    // no match
+
+    var b = new tree.Node('r');     // match
+    var b1 = new tree.Node('a');    // match
+    var b2 = new tree.Node('y');    // no match
+    var b3 = new tree.Node('b');    // match
+    var b4 = new tree.Node('y');    // no match
+
+    var delta = new deltamod.Delta();
+    var matching = new tree.Matching();
+    var updater = deltamod.defaultMatchingUpdater(matching);
+
+    var expect_operations = [
+        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [1], [], [], [a2], [b2]),
+        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [3], [], [], [a4], [b4])
+        ];
+
+    // Manually build tree
+    a.append(a1);
+    a.append(a2);
+    a.append(a3);
+    a.append(a4);
+
+    b.append(b1);
+    b.append(b2);
+    b.append(b3);
+    b.append(b4);
+
+    // Manually match trees, b1 and b2 do not have any corresponding nodes
+    // in a.
+    matching.put(a, b);
+    matching.put(a1, b1);
+    matching.put(a3, b3);
+
+    // Generate patch
+    delta.collect(a, matching, nullctxgen, updater);
+
+    test.deepEqual(delta.operations, expect_operations);
+
+    test.done();
+};
