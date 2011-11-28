@@ -1,5 +1,6 @@
 BROWSER=firefox
 JSCOV=jscoverage
+JSDOC=/home/lo/sw/jsdoc-3/jsdoc
 
 test:
 	node test.js
@@ -17,5 +18,8 @@ browser-coverage: browser
 
 browser-test: browser
 	 $(BROWSER) dist/browser-test/test.html >/dev/null 2>&1 &
+
+jsdoc:
+	$(JSDOC) --recurse --destination doc/jsdoc/ lib/delta/
 
 .PHONY: test browser-test
