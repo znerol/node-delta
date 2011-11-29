@@ -1,6 +1,7 @@
 BROWSER=firefox
 JSCOV=jscoverage
 JSDOC=/home/lo/sw/jsdoc-3/jsdoc
+JSDOCTK=/home/lo/sw/jsdoc-toolkit
 
 test:
 	node test.js
@@ -20,6 +21,9 @@ browser-test: browser
 	 $(BROWSER) dist/browser-test/test.html >/dev/null 2>&1 &
 
 jsdoc:
-	$(JSDOC) --recurse --destination doc/jsdoc/ lib/delta/
+	java -jar $(JSDOCTK)/jsrun.jar $(JSDOCTK)/app/run.js --verbose --recursive --template=./doc/_themes/jsdoc-for-sphinx/ --directory=./doc/jsdoc/ ./lib/delta/
+
+doc: jsdoc
+	(cd doc && make html)
 
 .PHONY: test browser-test
