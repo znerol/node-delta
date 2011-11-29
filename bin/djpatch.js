@@ -4,8 +4,8 @@ var optparse = require('optparse');
 var sys = require('sys');
 var fs  = require('fs');
 var path = require('path');
-var deltajs = require('deltajs');
 var mime = require('mime');
+var deltajs = require('../lib/main');
 
 
 /**
@@ -15,13 +15,13 @@ function checkfile(description, filepath, wantmime) {
     var filemime;
 
     if (!filepath || !path.existsSync(filepath)) {
-        console.log('Path to ' + description + ' missing. Use the -h switch for help.');
+        console.error('Path to ' + description + ' missing. Use the -h switch for help.');
         process.exit(1);
     }
 
     filemime = mime.lookup(filepath);
     if (wantmime && filemime !== wantmime) {
-        console.log(description + ' is of the wrong type');
+        console.error(description + ' is of the wrong type');
         process.exit(1);
     }
     return filemime;
@@ -164,7 +164,7 @@ function createHandlerFactory(type) {
             break;
         case 'json':
             // no index
-            console.log('JSON patch handler factory for not implemented yet');
+            console.error('JSON patch handler factory for not implemented yet');
             sys.exit(1);
             break;
     }
@@ -230,12 +230,12 @@ function main() {
     // Setup document payload handler and tree adapter
     documentPayloadType = getPayloadType(documentMimetype);
     if (!documentPayloadType) {
-        console.log('This file type is not supported by djdiff');
+        console.error('This file type is not supported by djdiff');
     }
 
     documentPayloadHandler = createPayloadHandler(documentPayloadType);
     if (!documentPayloadHandler) {
-        console.log('This file type is not supported by djdiff');
+        console.error('This file type is not supported by djdiff');
     }
 
     documentTreeAdapter = createTreeAdapter(documentPayloadType);
@@ -249,12 +249,12 @@ function main() {
     // Setup patch payload handler and tree adapter
     patchPayloadType = getPayloadType(patchMimetype);
     if (!patchPayloadType) {
-        console.log('This patch type is not supported by djdiff');
+        console.error('This patch type is not supported by djdiff');
     }
 
     patchPayloadHandler = createPayloadHandler(patchPayloadType);
     if (!patchPayloadHandler) {
-        console.log('This patch type is not supported by djdiff');
+        console.error('This patch type is not supported by djdiff');
     }
 
 
@@ -300,7 +300,7 @@ function main() {
             handler.toggle();
         }
         else {
-            console.log('failed to resolve hunk');
+            console.error('failed to resolve hunk');
         }
     });
 
