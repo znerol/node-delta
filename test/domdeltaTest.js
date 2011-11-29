@@ -119,13 +119,14 @@ exports['Insert operation using operation factory'] = function(test) {
     var original_doc = dp.parseFromString('<r><c1/><c2/><c3/><c4/></r>', 'text/xml');
     var treeAdapter = new domtree.DOMTreeAdapter();
     var original_tree = treeAdapter.adaptDocument(original_doc);
+    var original_c4 = original_tree.children[3];
 
     var replacement_doc = dp.parseFromString('<insert><c2x/></insert>', 'text/xml');
     var replacement_tree = treeAdapter.adaptDocument(replacement_doc);
 
     var factory = new domdelta.DOMOperationHandlerFactory();
     var insert_op = factory.createForestUpdateOperationHandler(
-            original_tree, 3, 0, replacement_tree.children);
+            original_tree, original_c4, 0, replacement_tree.children);
 
     var r = original_doc.firstChild;
     var expect_nodes;
@@ -152,10 +153,11 @@ exports['Remove operation using operation factory'] = function(test) {
     var original_doc = dp.parseFromString('<r><c1/><c2/><c3/><c4/></r>', 'text/xml');
     var treeAdapter = new domtree.DOMTreeAdapter();
     var original_tree = treeAdapter.adaptDocument(original_doc);
+    var original_c2 = original_tree.children[1];
 
     var factory = new domdelta.DOMOperationHandlerFactory();
     var remove_op = factory.createForestUpdateOperationHandler(
-            original_tree, 1, 2, []);
+            original_tree, original_c2, 2, []);
 
     var r = original_doc.firstChild;
     var expect_nodes;

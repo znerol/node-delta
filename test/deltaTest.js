@@ -191,7 +191,7 @@ exports['should attach one handler for each operation in delta'] = function(test
         },
         createForestUpdateOperationHandler: function(node, start, length, replacement) {
             test.deepEqual(node, a);
-            test.strictEqual(start, 1);
+            test.strictEqual(start, a2);
             test.strictEqual(length, 1);
             test.deepEqual(replacement, [b21, b22]);
         }
