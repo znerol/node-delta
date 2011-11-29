@@ -155,3 +155,59 @@ exports['should generate separate operations for non-consecutive siblings'] = fu
 
     test.done();
 };
+
+exports['should attach one handler for each operation in delta'] = function(test) {
+    var a = new tree.Node('r');     // update node op
+    var a1 = new tree.Node('a');    // match
+    var a2 = new tree.Node('x');    // update forest op
+    var a3 = new tree.Node('b');    // match
+
+    // update node op on root
+    var b = new tree.Node('p');
+
+    // update forest op on a2
+    var b21 = new tree.Node('y');
+    var b22 = new tree.Node('z');
+
+    var delta = new deltamod.Delta();
+    var dummyresolver = {
+        find: function(path) {
+                  if (path.length === 0) {
+                      return [a];
+                  }
+                  else if (path.length === 1 && path[0] === 1) {
+                      return [a, a2];
+                  }
+                  else {
+                      throw new Error('dummyresolver: unexpected path');
+                  }
+              }
+    };
+
+    var testfactory = {
+        createNodeUpdateOperationHandler: function(oldnode, newnode) {
+            test.deepEqual(oldnode, a);
+            test.deepEqual(newnode, b);
+        },
+        createForestUpdateOperationHandler: function(node, start, length, replacement) {
+            test.deepEqual(node, a);
+            test.strictEqual(start, 1);
+            test.strictEqual(length, 1);
+            test.deepEqual(replacement, [b21, b22]);
+        }
+    };
+
+    // Manually build up tree
+    a.append(a1);
+    a.append(a2);
+    a.append(a3);
+
+    // Manually create patch operations
+    delta.add(new deltamod.Operation(deltamod.UPDATE_NODE_TYPE, [], [], [], [a], [b]));
+    delta.add(new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [1], [], [], [a2], [b21, b22]));
+
+    // Test attach-method using the dummyresolver and the testfactory
+    delta.attach(dummyresolver, testfactory);
+
+    test.done();
+};
