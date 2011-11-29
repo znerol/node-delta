@@ -184,14 +184,16 @@ function main() {
         'changedenc': 'UTF-8',
         'patchfile': undefined,
         'patchenc': 'UTF-8',
-        'radius': 4,
+        'radius': 6,
+        'threshold': 0.7,
     }
 
     var switches = [
-        ['-h', '--help',    'Show this help'],
-        ['-r', '--radius',  'Search radius for fuzzy matching'],
-        ['-o', '--output',  'Write output to file path'],
-        ['-d', '--debug',   'Log actions to console'],
+        ['-h', '--help',            'Show this help'],
+        ['-r', '--radius NUMBER',   'Search radius for fuzzy matching (default: 6)'],
+        ['-t', '--threshold NUMBER','Threshold value for fuzzy matching (default: 0.7)'],
+        ['-o', '--output FILE',     'Write output to file path'],
+        ['-d', '--debug',           'Log actions to console'],
         ];
 
     var parser = new optparse.OptionParser(switches);
@@ -202,7 +204,11 @@ function main() {
     });
 
     parser.on('radius', function(name, value) {
-        options.radius=value
+        options.radius=value;
+    });
+
+    parser.on('threshold', function(name, value) {
+        options.threshold=value;
     });
 
     parser.on('output', function(name, value) {
