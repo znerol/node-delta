@@ -26,8 +26,8 @@ var valindex = {'get': function(n) {return n && n.value}};
 
 exports['should return empty context when radius is zero'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(0, nodeindex, valindex);
-    var head = ctxgen.head(a, 0);
-    var tail = ctxgen.tail(b, 0);
+    var head = ctxgen.head(a);
+    var tail = ctxgen.tail(b);
 
     test.deepEqual(head, []);
     test.deepEqual(tail, []);
@@ -35,20 +35,48 @@ exports['should return empty context when radius is zero'] = function(test) {
     test.done();
 };
 
-exports['if radius is 2, head should return 2 nodes including the anchor'] = function(test) {
+exports['if radius is 2, head should return 2 nodes preceeding the anchor'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var head = ctxgen.head(b, 0);
+    var head = ctxgen.head(b);
 
-    test.deepEqual(head, ['a', 'b']);
+    test.deepEqual(head, ['r', 'a']);
 
     test.done();
 };
 
 exports['if radius is 2, tail should return 2 nodes following the anchor'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(b, 0);
+    var tail = ctxgen.tail(b);
 
     test.deepEqual(tail, ['c', 'd']);
 
     test.done();
 };
+
+exports['head context must be undefined for root node'] = function(test) {
+    var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
+    var head = ctxgen.head(r);
+
+    test.deepEqual(head, [undefined, undefined]);
+
+    test.done();
+}
+
+exports['by default tail context must start with the following sibling'] = function(test) {
+    var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
+    var tail = ctxgen.tail(r);
+
+    test.deepEqual(tail, [undefined, undefined]);
+
+    test.done();
+}
+
+exports['when flatbody is true, tail context must be nodes following root in docorder'] = function(test) {
+    var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
+    var tail = ctxgen.tail(r, true);
+
+    test.deepEqual(tail, ['a', 'b']);
+
+    test.done();
+}
+
