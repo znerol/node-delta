@@ -7,7 +7,7 @@ test:
 	node test.js
 
 browser:
-	node_modules/.bin/browserify test-browserify-entry.js > dist/browser-test/deltajs-test.js
+	node_modules/.bin/browserify --ignore fixtures --plugin 'fileify:["fixtures", "test/fixtures"]' test-browserify-entry.js > dist/browser-test/deltajs-test.js
 	node_modules/.bin/browserify deltajs-browserify-entry.js > dist/browser/delta.js
 
 examples: browser
