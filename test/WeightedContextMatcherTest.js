@@ -71,3 +71,26 @@ exports['should report match quality 0.5 if only half of context match subject']
 
     test.done();
 };
+
+exports['should invoke equals callback with pattern values and specified flags'] = function(test) {
+    var matcher = new contextmatcher.WeightedContextMatcher(1);
+    var subject = ['a', 'b', 'c'];
+    var expect = [
+        {'subject': subject, 'offset': 1, 'value': 'head', 'flag': 'content'},
+        {'subject': subject, 'offset': 0, 'value': 'cnt', 'flag': 'context'},
+        {'subject': subject, 'offset': 2, 'value': 'tail', 'flag': 'context'}
+    ];
+    var actual = [];
+
+    matcher.equal = function(subject, offset, value, flag) {
+        actual.push({
+            'subject': subject, 'offset': offset, 'value': value, 'flag': flag});
+        return true;
+    }
+
+    matcher.setPattern(['head'], ['cnt'], ['tail']);
+    result = matcher.matchQuality(subject, 1, 'content', 'context');
+    test.deepEqual(actual, expect);
+
+    test.done();
+};
