@@ -290,9 +290,18 @@ function main() {
     var resolver = new deltajs.resolver.ContextResolver(tree, a_index,
             options.radius, options.threshold);
 
-    resolver.equalContent = function(docnode, patchnode) {
-        return treevalidx.get(docnode) === treevalidx.get(patchnode);
+    resolver.equalContent = function(docnode, patchnode, type) {
+        if (type === deltamod.UPDATE_FOREST_TYPE) {
+            return treevalidx.get(docnode) === treevalidx.get(patchnode);
+        }
+        else if (type === deltamod.UPDATE_NODE_TYPE) {
+            return nodevalidx.get(docnode) === nodevalidx.get(patchnode);
+        }
+        else {
+            throw new Error('Got unknown operation type in equalContent cb: ' + type);
+        }
     }
+
     resolver.equalContext = function(docnode, value) {
         return nodevalidx.get(docnode) === value;
     }
