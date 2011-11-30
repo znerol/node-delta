@@ -1,6 +1,8 @@
 *~
 .*.swp
 dist/browser-test/deltajs-test.js
+dist/browser-test-cov
+dist/browser/delta.js
 examples/*/delta.js
 node_modules/*
 !node_modules/xmlshim
