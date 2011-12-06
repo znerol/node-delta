@@ -44,8 +44,8 @@ exports['must not consider order of attributes'] = function(test) {
     c2.setAttribute('two', '2');
     c2.setAttribute('one', '1');
 
-    dh1.processAttribute(c1, hash1);
-    dh2.processAttribute(c2, hash2);
+    dh1.processElement(c1, hash1);
+    dh2.processElement(c2, hash2);
 
     test.equals(hash1.get(), hash2.get());
 
