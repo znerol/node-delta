@@ -153,6 +153,39 @@ function createValueIndex(type, tree1, tree2) {
 
 
 /**
+ * Setup diff options for given payload type
+ */
+function createXccOptions(type) {
+    var result;
+
+    function rejectUpdateOnXMLElementContainingSingleTextNode(node) {
+        var result = false;
+        var domnode = node.data;
+
+        if (domnode.childNodes.length === 1 &&
+                domnode.firstChild.nodeType === domnode.TEXT_NODE) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    switch (type) {
+        case 'xml':
+            result = {
+                'ludRejectCallbacks': [
+                    rejectUpdateOnXMLElementContainingSingleTextNode
+                ],
+                'detectLeafUpdates': true
+            };
+            break;
+    }
+
+    return result;
+}
+
+
+/**
  * Parse options and command line arguments and initialize the diff algorithm
  */
 function main() {
@@ -161,13 +194,16 @@ function main() {
         'origenc': 'UTF-8',
         'changedfile': undefined,
         'changedenc': 'UTF-8',
+        'filetype': undefined,
         'patchfile': undefined,
         'patchenc': 'UTF-8',
-        'patchtype': 'xml'
+        'patchtype': 'xml',
+        'debug': false
     }
 
     var switches = [
         ['-h', '--help',    'Show this help'],
+        ['-p', '--payload STRING', 'Specify payload type (xml or json, default: detect)'],
         ['-x', '--xml',     'Use XML patch format (default)'],
         ['-j', '--json',    'Use JSON patch format'],
         ['-d', '--debug',   'Log actions to console'],
@@ -180,12 +216,21 @@ function main() {
         sys.puts(parser.toString());
     });
 
+    parser.on('payload', function(name, value) {
+        options.filetype=value;
+    });
+
     parser.on('xml', function(name, value) {
         options.patchtype='xml';
     });
 
     parser.on('json', function(name, value) {
         options.patchtype='json';
+    });
+
+    parser.on('debug', function(name, value) {
+        console.warn('debug enabled');
+        options.debug=true;
     });
 
     parser.on(2, function(value) {
@@ -207,16 +252,20 @@ function main() {
     var documentMimetype, documentPayloadType, documentPayloadHandler,
         documentTreeAdapter;
 
-    documentMimetype = checkfile('original file', options.origfile,
-            documentMimetype);
-    documentMimetype = checkfile('changed file', options.changedfile,
-            documentMimetype);
+    if (!options.filetype) {
+        documentMimetype = checkfile('original file', options.origfile,
+                documentMimetype);
+        documentMimetype = checkfile('changed file', options.changedfile,
+                documentMimetype);
 
-
-    // Setup document payload handler and tree adapter
-    documentPayloadType = getPayloadType(documentMimetype);
-    if (!documentPayloadType) {
-        console.error('This file type is not supported by djdiff');
+        // Setup document payload handler and tree adapter
+        documentPayloadType = getPayloadType(documentMimetype);
+        if (!documentPayloadType) {
+            console.error('This file type is not supported by djdiff');
+        }
+    }
+    else {
+        documentPayloadType = options.filetype;
     }
 
     documentPayloadHandler = createPayloadHandler(documentPayloadType);
@@ -235,16 +284,17 @@ function main() {
 
 
     // Match trees
-    var tree1, tree2, valindex, diff, matching;
+    var tree1, tree2, valindex, diff, matching, diffopt;
     tree1 = loadFile('original file', options.origfile, options.origenc,
             documentPayloadHandler, documentTreeAdapter);
     tree2 = loadFile('changed file', options.changedfile, options.changedenc,
             documentPayloadHandler, documentTreeAdapter);
 
     valindex = createValueIndex(documentPayloadType, tree1, tree2);
+    diffopt = createXccOptions(documentPayloadType);
 
     matching = new deltajs.tree.Matching();
-    diff = new deltajs.xcc.Diff(tree1, tree2);
+    diff = new deltajs.xcc.Diff(tree1, tree2, diffopt);
 
     if (valindex) {
         diff.equals = function(a, b) {
@@ -252,7 +302,18 @@ function main() {
         };
     }
 
+    var t1, t2;
+    if (options.debug) {
+        t1 = new Date();
+        console.warn('begin match trees');
+    }
+
     diff.matchTrees(matching);
+
+    if (options.debug) {
+        t2 = new Date();
+        console.warn('match trees took', t2.getTime() - t1.getTime());
+    }
 
 
     // Construct delta
