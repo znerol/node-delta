@@ -198,7 +198,8 @@ function main() {
         'patchfile': undefined,
         'patchenc': 'UTF-8',
         'patchtype': 'xml',
-        'debug': false
+        'debug': false,
+        'xmldocopt': false
     }
 
     var switches = [
@@ -206,7 +207,8 @@ function main() {
         ['-p', '--payload STRING', 'Specify payload type (xml or json, default: detect)'],
         ['-x', '--xml',     'Use XML patch format (default)'],
         ['-j', '--json',    'Use JSON patch format'],
-        ['-d', '--debug',   'Log actions to console'],
+        ['--xmldocopt',     'Enable optimization for XML documents. Treat elements containing exactly one text node as a single unit.'],
+        ['-d', '--debug',   'Log actions to console']
         ];
 
     var parser = new optparse.OptionParser(switches);
@@ -231,6 +233,10 @@ function main() {
     parser.on('debug', function(name, value) {
         console.warn('debug enabled');
         options.debug=true;
+    });
+
+    parser.on('xmldocopt', function(name, value) {
+        options.xmldocopt = true;
     });
 
     parser.on(2, function(value) {
@@ -291,7 +297,9 @@ function main() {
             documentPayloadHandler, documentTreeAdapter);
 
     valindex = createValueIndex(documentPayloadType, tree1, tree2);
-    diffopt = createXccOptions(documentPayloadType);
+    if (options.xmldocopt) {
+        diffopt = createXccOptions(documentPayloadType);
+    }
 
     matching = new deltajs.tree.Matching();
     diff = new deltajs.xcc.Diff(tree1, tree2, diffopt);
