@@ -13,6 +13,7 @@ browser:
 examples: browser
 	cp dist/browser/delta.js examples/xcc/delta.js
 	cp dist/browser/delta.js examples/lcs/delta.js
+	cp dist/browser/delta.js examples/srcdiff/delta.js
 
 browser-coverage: browser
 	$(JSCOV) dist/browser-test dist/browser-test-cov
