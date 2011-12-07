@@ -35,11 +35,11 @@ exports['should return empty context when radius is zero'] = function(test) {
     test.done();
 };
 
-exports['if radius is 2, head should return 2 nodes preceeding the anchor'] = function(test) {
+exports['if radius is 2, head should return 2 nodes up to and including anchor'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
     var head = ctxgen.head(b);
 
-    test.deepEqual(head, ['r', 'a']);
+    test.deepEqual(head, ['a', 'b']);
 
     test.done();
 };
@@ -53,11 +53,20 @@ exports['if radius is 2, tail should return 2 nodes following the anchor'] = fun
     test.done();
 };
 
-exports['head context must be undefined for root node'] = function(test) {
+exports['head context must be undefined for undefined anchor'] = function(test) {
+    var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
+    var head = ctxgen.head(undefined);
+
+    test.deepEqual(head, [undefined, undefined]);
+
+    test.done();
+}
+
+exports['head context must contain root node if root is the anchor'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
     var head = ctxgen.head(r);
 
-    test.deepEqual(head, [undefined, undefined]);
+    test.deepEqual(head, [undefined, 'r']);
 
     test.done();
 }
@@ -80,3 +89,11 @@ exports['when flatbody is true, tail context must be nodes following root in doc
     test.done();
 }
 
+exports['should return proper head when anchor falls behind eof'] = function(test) {
+    var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
+    var head = ctxgen.head(d);
+
+    test.deepEqual(head, ['c', 'd']);
+
+    test.done();
+}
