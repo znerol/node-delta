@@ -152,6 +152,36 @@ exports['should reject path if any body node does not match exactly'] = function
     test.done();
 };
 
+exports['should resolve path to parent node when path points past last child'] = function(test) {
+    var r = new resolver.ContextResolver(a, nodeindex);
+    var body, head, tail, result;
+
+    // INSERT PAST a23
+    body = [],
+    head = ['a22', 'a221', 'a222', 'a23'];
+    tail = ['a3', 'a31', 'a311', 'a4'];
+    result = r.find([1, 3], body, head, tail);
+
+    test.deepEqual(result, [a, a2]);
+
+    test.done();
+};
+
+exports['should resolve path to root node when path points to EOF'] = function(test) {
+    var r = new resolver.ContextResolver(a, nodeindex);
+    var body, head, tail, result;
+
+    // INSERT AT END OF FILE
+    body = [],
+    head = ['a31', 'a311', 'a4', 'a41'];
+    tail = [undefined, undefined, undefined, undefined];
+    result = r.find([4], body, head, tail);
+
+    test.deepEqual(result, [a]);
+
+    test.done();
+};
+
 /*
 exports['should not resolve path with depth 2 if there are no nodes with depth 1'] = function(test) {
     var a = new tree.Node();
