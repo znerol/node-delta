@@ -291,10 +291,10 @@ function main() {
             options.radius, options.threshold);
 
     resolver.equalContent = function(docnode, patchnode, type) {
-        if (type === deltamod.UPDATE_FOREST_TYPE) {
+        if (type === deltajs.delta.UPDATE_FOREST_TYPE) {
             return treevalidx.get(docnode) === treevalidx.get(patchnode);
         }
-        else if (type === deltamod.UPDATE_NODE_TYPE) {
+        else if (type === deltajs.delta.UPDATE_NODE_TYPE) {
             return nodevalidx.get(docnode) === nodevalidx.get(patchnode);
         }
         else {
