@@ -173,7 +173,7 @@ exports['SVG roundtrip'] = function(test) {
         delta.collect(tree1patched, matching, contextgen, updater);
 
         delta.forEach(function(op) {
-            throw new Exception('Should not produce any operation for two identical trees');
+            throw new Error('Should not produce any operation for two identical trees');
         });
     }());
 
@@ -210,7 +210,7 @@ exports['SVG identity'] = function(test) {
     delta.collect(tree1, matching, contextgen, updater);
 
     delta.forEach(function(op) {
-        throw new Exception('Should not produce any operation for two identical trees');
+        throw new Error('Should not produce any operation for two identical trees');
     });
 
     test.done();
