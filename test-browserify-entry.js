@@ -13,5 +13,7 @@ DELTAJS_ALLTESTS = {
     "Top-Down Path Resolver Test"       : require("./test/TopDownPathResolverTest.js"),
     "Weighted Context Matcher Test"     : require("./test/WeightedContextMatcherTest.js"),
     "XCC Test"                          : require("./test/xccTest.js"),
-    "XML Diff/Patch Roundtrip Test"     : require("./test/xmlRoundtripTest.js"),
+    "Docdiff Test"                      : require("./test/docdiffTest.js"),
+    "XCC XML Diff/Patch Roundtrip Test" : require("./test/xmlRoundtripTest.js"),
+    "Docdiff XML Diff/Patch Roundtrip Test" : require("./test/docdiffXMLRoundtripTest.js"),
 };
