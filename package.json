@@ -8,10 +8,15 @@
     "djpatch": "bin/djpatch.js"
   },
   "dependencies": {
-    "xmlshim": ">= 0.0.1"
+    "mime": "1.2.x",
+    "optparse": "1.0.x",
+    "xmlshim": "0.0.x"
   },
   "devDependencies": {
-    "nodeunit": "0.6.x",
-    "browserify": ">= 1.8.0"
+    "browserify": "1.8.x",
+    "connect": "1.8.x",
+    "fileify": "0.3.x",
+    "findit": "0.1.x",
+    "nodeunit": "0.6.x"
   }
 }
