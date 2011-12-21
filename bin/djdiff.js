@@ -273,10 +273,7 @@ function main() {
     var d = new diff.Diff(diffProfile, documentProfile, deltaProfile);
     var delta = d.diff(doc1, doc2);
 
-    // Serialize delta
-    var doc = deltaProfile.createOutputDocument(delta, documentProfile);
-
-    showFile('patch file', doc, deltaProfile.payloadHandler);
+    showFile('patch file', delta.data, deltaProfile.payloadHandler);
 
     /*
     saveFile('patch file', options.patchfile, options.patchenc, delta, doc,
