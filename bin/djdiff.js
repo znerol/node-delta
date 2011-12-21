@@ -30,39 +30,6 @@ function checkfile(description, filepath, wantmime) {
 
 
 /**
- * Parses and loads a file using the given adapter classes
- */
-function loadFile(description, filepath, encoding, payloadhandler, dataadapter) {
-    var data, doc, tree;
-    data = fs.readFileSync(filepath, encoding);
-    doc = payloadhandler.parseString(data);
-    tree = dataadapter.adaptDocument(doc);
-    return tree;
-}
-
-
-/**
- * Save data to a file using the given adapter and payload handler
- */
-function saveFile(description, filepath, encoding, data, doc, payloadhandler, docadapter) {
-    var buf;
-    docadapter.createDocument(doc, data);
-    buf = payloadhandler.serializeToString(doc);
-    fs.writeFileSync(filepath, buf, encoding);
-}
-
-
-/**
- * Write serialized data to stdout
- */
-function showFile(description, doc, payloadhandler) {
-    var buf;
-    buf = payloadhandler.serializeToString(doc);
-    sys.puts(buf);
-}
-
-
-/**
  * Return the payload type for a given mimetype.
  */
 function getPayloadType(mimetype) {
@@ -76,16 +43,16 @@ function getPayloadType(mimetype) {
 
 
 /**
- * Return proper input profile
+ * Return proper diff profile
  */
-function getInputProfile(type) {
+function getDiffProfile(type) {
     var result;
     switch(type) {
-        case 'json':
-            result = require('../lib/profiles/input-json-tree');
+        case 'bonematch':
+            result = require('../lib/profiles/diff-bonematch');
             break;
-        case 'xml':
-            result = require('../lib/profiles/input-xml-tree');
+        case 'xcc':
+            result = require('../lib/profiles/diff-xcc');
             break;
     }
 
@@ -130,43 +97,11 @@ function getDeltaProfile(type) {
 
 
 /**
- * Setup diff options for given payload type
- */
-function createXccOptions(type) {
-    var result;
-
-    function rejectUpdateOnXMLElementContainingSingleTextNode(node) {
-        var result = false;
-        var domnode = node.data;
-
-        if (domnode.childNodes.length === 1 &&
-                domnode.firstChild.nodeType === domnode.TEXT_NODE) {
-            result = true;
-        }
-
-        return result;
-    }
-
-    switch (type) {
-        case 'xml':
-            result = {
-                'ludRejectCallbacks': [
-                    rejectUpdateOnXMLElementContainingSingleTextNode
-                ],
-                'detectLeafUpdates': true
-            };
-            break;
-    }
-
-    return result;
-}
-
-
-/**
  * Parse options and command line arguments and initialize the diff algorithm
  */
 function main() {
     var options = {
+        'algo': 'bonematch',
         'origfile': undefined,
         'origenc': 'UTF-8',
         'changedfile': undefined,
@@ -182,6 +117,7 @@ function main() {
     var switches = [
         ['-h', '--help',    'Show this help'],
         ['-p', '--payload STRING', 'Specify payload type (xml or json, default: detect)'],
+        ['-g', '--algo STRING', 'Specify algorithm (bonematch or xcc, default: bonematch)'],
         ['-x', '--xml',     'Use XML patch format (default)'],
         ['-j', '--json',    'Use JSON patch format'],
         ['--xmldocopt',     'Enable optimization for XML documents. Treat elements containing exactly one text node as a single unit.'],
@@ -197,6 +133,10 @@ function main() {
 
     parser.on('payload', function(name, value) {
         options.filetype=value;
+    });
+
+    parser.on('algo', function(name, value) {
+        options.algo=value;
     });
 
     parser.on('xml', function(name, value) {
@@ -232,7 +172,8 @@ function main() {
 
 
     // Check input files
-    var documentMimetype, documentPayloadType, documentProfile, deltaProfile;
+    var documentMimetype, documentPayloadType, diffProfile, documentProfile,
+        deltaProfile;
 
     if (!options.filetype) {
         documentMimetype = checkfile('original file', options.origfile,
@@ -244,41 +185,48 @@ function main() {
         documentPayloadType = getPayloadType(documentMimetype);
         if (!documentPayloadType) {
             console.error('This file type is not supported by djdiff');
+            process.exit(1);
         }
     }
     else {
         documentPayloadType = options.filetype;
     }
 
+    // Setup algorithm profile
+    diffProfile = getDiffProfile(options.algo);
+    if (!diffProfile) {
+        console.error('The specified algorithm is not supported');
+        process.exit(1);
+    }
+
+    // Setup input profile
     documentProfile = getDocumentProfile(documentPayloadType);
     if (!documentProfile) {
-        console.error('The file type "'+ documentPayloadType +'" is not supported by djdiff');
+        console.error('The file type "' + documentPayloadType + '" is not supported by djdiff');
+        process.exit(1);
     }
 
-    // Setup delta payload handler
+    // Setup delta profile
     deltaProfile = getDeltaProfile(options.patchtype);
     if (!deltaProfile) {
-        console.error('This delta type is not supported by djdiff');
+        console.error('The patch type "' + options.patchtype + '" is not supported by djdiff');
+        process.exit(1);
     }
 
+    // Read input files
+    var doc1 = documentProfile.loadOriginalDocument(
+            fs.readFileSync(options.origfile, options.origenc),
+            options.origfile);
+    var doc2 = documentProfile.loadInputDocument(
+            fs.readFileSync(options.changedfile, options.changedenc),
+            options.changedfile);
+
     // Run diff
-    var doc1 = documentProfile.createOriginalDocument(
-        documentProfile.payloadHandler.parseString(fs.readFileSync(options.origfile, options.origenc)),
-        options.origfile)
-    var doc2 = documentProfile.createInputDocument(
-        documentProfile.payloadHandler.parseString(fs.readFileSync(options.changedfile, options.changedenc)),
-        options.changedfile)
-
-    var diffProfile = require('../lib/profiles/diff-bonematch');
     var d = new diff.Diff(diffProfile, documentProfile, deltaProfile);
-    var delta = d.diff(doc1, doc2);
+    var deltadoc = d.diff(doc1, doc2);
 
-    showFile('patch file', delta.data, deltaProfile.payloadHandler);
-
-    /*
-    saveFile('patch file', options.patchfile, options.patchenc, delta, doc,
-            deltaProfile.payloadHandler, deltaAdapter);
-            */
+    // Write result to stdout
+    sys.puts(deltaProfile.serializeDocument(deltadoc));
 }
 
 main();
