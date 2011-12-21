@@ -4,7 +4,7 @@ var domtree = require('../lib/delta/domtree');
 var fnv132 = require('../lib/delta/fnv132');
 var resolver = require('../lib/delta/resolver');
 var tree = require('../lib/delta/tree');
-var bonematch = require('../lib/delta/bonematch');
+var skelmatch = require('../lib/delta/skelmatch');
 var xmlpayload = require('../lib/delta/xmlpayload');
 
 var fixtures;
@@ -37,7 +37,7 @@ exports['SVG roundtrip'] = function(test) {
         // match trees
         var valindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
         var matching = new tree.Matching();
-        var diff = new bonematch.Diff(tree1, tree2);
+        var diff = new skelmatch.Diff(tree1, tree2);
         diff.equals = function(a, b) {
             return valindex.get(a) === valindex.get(b);
         };
@@ -158,7 +158,7 @@ exports['SVG roundtrip'] = function(test) {
         // match trees
         var valindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
         var matching = new tree.Matching();
-        var diff = new bonematch.Diff(tree1patched, tree2);
+        var diff = new skelmatch.Diff(tree1patched, tree2);
         diff.equals = function(a, b) {
             return valindex.get(a) === valindex.get(b);
         };
@@ -196,7 +196,7 @@ exports['SVG identity'] = function(test) {
     // match trees
     var valindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
     var matching = new tree.Matching();
-    var diff = new bonematch.Diff(tree1, tree2);
+    var diff = new skelmatch.Diff(tree1, tree2);
     diff.equals = function(a, b) {
         return valindex.get(a) === valindex.get(b);
     };

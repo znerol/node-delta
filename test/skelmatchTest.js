@@ -1,4 +1,4 @@
-var bonematch = require('../lib/delta/bonematch');
+var skelmatch = require('../lib/delta/skelmatch');
 var tree = require('../lib/delta/tree');
 
 /**
@@ -9,7 +9,7 @@ exports.testMatchRootOnlyEqual = function(test) {
     var a = new tree.Node('x');
     var b = new tree.Node('x');
     var matching = new tree.Matching();
-    var diff = new bonematch.Diff(a, b);
+    var diff = new skelmatch.Diff(a, b);
 
     diff.matchTrees(matching);
 
@@ -26,7 +26,7 @@ exports.testMatchRootOnlyModified = function(test) {
     var a = new tree.Node('x');
     var b = new tree.Node('y');
     var matching = new tree.Matching();
-    var diff = new bonematch.Diff(a, b);
+    var diff = new skelmatch.Diff(a, b);
 
     diff.matchTrees(matching);
 
@@ -51,7 +51,7 @@ exports.testMatchLeaves = function(test) {
     b.append(b2);
 
     var matching = new tree.Matching();
-    var diff = new bonematch.Diff(a, b);
+    var diff = new skelmatch.Diff(a, b);
 
     diff.matchTrees(matching);
 
@@ -78,7 +78,7 @@ exports.testNoMatchForLeavesWhenDepthIsDifferent = function(test) {
     b1.append(b2);
 
     var matching = new tree.Matching();
-    var diff = new bonematch.Diff(a, b);
+    var diff = new skelmatch.Diff(a, b);
 
     diff.matchTrees(matching);
 
@@ -113,7 +113,7 @@ exports.testNoMatchForLeavesOnDifferentBranches = function(test) {
     b2.append(b22);
 
     var matching = new tree.Matching();
-    var diff = new bonematch.Diff(a, b);
+    var diff = new skelmatch.Diff(a, b);
 
     diff.matchTrees(matching);
 
@@ -141,7 +141,7 @@ exports["should match common structure even if no leaf nodes match"] = function(
     b1.append(b11);
 
     var matching = new tree.Matching();
-    var diff = new bonematch.Diff(a, b);
+    var diff = new skelmatch.Diff(a, b);
 
     diff.matchTrees(matching);
 

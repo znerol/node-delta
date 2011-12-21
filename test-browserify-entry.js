@@ -13,7 +13,7 @@ DELTAJS_ALLTESTS = {
     "Top-Down Path Resolver Test"       : require("./test/TopDownPathResolverTest.js"),
     "Weighted Context Matcher Test"     : require("./test/WeightedContextMatcherTest.js"),
     "XCC Test"                          : require("./test/xccTest.js"),
-    "Bone-match Test"                      : require("./test/bonematchTest.js"),
+    "Skel-match Test"                      : require("./test/skelmatchTest.js"),
     "XCC XML Diff/Patch Roundtrip Test" : require("./test/xmlRoundtripTest.js"),
-    "Bone-match XML Diff/Patch Roundtrip Test" : require("./test/bonematchXMLRoundtripTest.js"),
+    "Skel-match XML Diff/Patch Roundtrip Test" : require("./test/skelmatchXMLRoundtripTest.js"),
 };

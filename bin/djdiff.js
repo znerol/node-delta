@@ -36,7 +36,7 @@ function checkfile(description, filepath, wantmime) {
  */
 function main() {
     var options = {
-        'algo': 'bonematch',
+        'algo': 'skelmatch',
         'origfile': undefined,
         'origenc': 'UTF-8',
         'changedfile': undefined,
@@ -52,7 +52,7 @@ function main() {
     var switches = [
         ['-h', '--help',    'Show this help'],
         ['-p', '--payload STRING', 'Specify payload type (xml or json, default: detect)'],
-        ['-g', '--algo STRING', 'Specify algorithm (bonematch or xcc, default: bonematch)'],
+        ['-g', '--algo STRING', 'Specify algorithm (skelmatch or xcc, default: skelmatch)'],
         ['-x', '--xml',     'Use XML patch format (default)'],
         ['-j', '--json',    'Use JSON patch format'],
         ['--xmldocopt',     'Enable optimization for XML documents. Treat elements containing exactly one text node as a single unit.'],
