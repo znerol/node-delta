@@ -6,7 +6,7 @@ var fs  = require('fs');
 var path = require('path');
 var mime = require('mime');
 var diff = require('../lib/delta/diff');
-
+var profiles = require('../lib/profiles');
 
 
 /**
@@ -29,71 +29,6 @@ function checkfile(description, filepath, wantmime) {
 }
 
 
-/**
- * Return the payload type for a given mimetype.
- */
-function getPayloadType(mimetype) {
-    if (mimetype === 'application/json') {
-        return 'json';
-    }
-    else if (mimetype === 'application/xml' || mimetype.slice(-4) === '+xml') {
-        return 'xml';
-    }
-}
-
-
-/**
- * Return proper diff profile
- */
-function getDiffProfile(type) {
-    var result;
-    switch(type) {
-        case 'bonematch':
-            result = require('../lib/profiles/diff-bonematch');
-            break;
-        case 'xcc':
-            result = require('../lib/profiles/diff-xcc');
-            break;
-    }
-
-    return result;
-}
-
-
-/**
- * Return proper document profile
- */
-function getDocumentProfile(type) {
-    var result;
-    switch(type) {
-        case 'json':
-            result = require('../lib/profiles/doc-json-tree');
-            break;
-        case 'xml':
-            result = require('../lib/profiles/doc-xml-tree');
-            break;
-    }
-
-    return result;
-}
-
-
-/**
- * Return proper delta profile
- */
-function getDeltaProfile(type) {
-    var result;
-    switch(type) {
-        case 'json':
-            result = require('../lib/profiles/output-json-delta.js');
-            break;
-        case 'xml':
-            result = require('../lib/profiles/output-xml-delta.js');
-            break;
-    }
-
-    return result;
-}
 
 
 /**
@@ -182,7 +117,7 @@ function main() {
                 documentMimetype);
 
         // Setup document payload handler and tree adapter
-        documentPayloadType = getPayloadType(documentMimetype);
+        documentPayloadType = profiles.getPayloadType(documentMimetype);
         if (!documentPayloadType) {
             console.error('This file type is not supported by djdiff');
             process.exit(1);
@@ -193,21 +128,21 @@ function main() {
     }
 
     // Setup algorithm profile
-    diffProfile = getDiffProfile(options.algo);
+    diffProfile = profiles.getDiffProfile(options.algo);
     if (!diffProfile) {
         console.error('The specified algorithm is not supported');
         process.exit(1);
     }
 
     // Setup input profile
-    documentProfile = getDocumentProfile(documentPayloadType);
+    documentProfile = profiles.getDocumentProfile(documentPayloadType);
     if (!documentProfile) {
         console.error('The file type "' + documentPayloadType + '" is not supported by djdiff');
         process.exit(1);
     }
 
     // Setup delta profile
-    deltaProfile = getDeltaProfile(options.patchtype);
+    deltaProfile = profiles.getDeltaProfile(options.patchtype);
     if (!deltaProfile) {
         console.error('The patch type "' + options.patchtype + '" is not supported by djdiff');
         process.exit(1);
