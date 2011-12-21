@@ -5,7 +5,8 @@ var sys = require('sys');
 var fs  = require('fs');
 var path = require('path');
 var mime = require('mime');
-var deltajs = require('../lib/main');
+var diff = require('../lib/delta/diff');
+
 
 
 /**
@@ -54,9 +55,8 @@ function saveFile(description, filepath, encoding, data, doc, payloadhandler, do
 /**
  * Write serialized data to stdout
  */
-function showFile(description, data, doc, payloadhandler, docadapter) {
+function showFile(description, doc, payloadhandler) {
     var buf;
-    docadapter.createDocument(doc, data);
     buf = payloadhandler.serializeToString(doc);
     sys.puts(buf);
 }
@@ -76,18 +76,16 @@ function getPayloadType(mimetype) {
 
 
 /**
- * Return the proper payload handler for the given mime type. Return undefined
- * if no suitable payload handler is available.
+ * Return proper input profile
  */
-function createPayloadHandler(type) {
+function getInputProfile(type) {
     var result;
-
     switch(type) {
         case 'json':
-            result = new deltajs.jsonpayload.JSONPayloadHandler();
+            result = require('../lib/profiles/input-json-tree');
             break;
         case 'xml':
-            result = new deltajs.xmlpayload.XMLPayloadHandler();
+            result = require('../lib/profiles/input-xml-tree');
             break;
     }
 
@@ -96,17 +94,16 @@ function createPayloadHandler(type) {
 
 
 /**
- * Return the proper tree adapter for this payload type.
+ * Return proper document profile
  */
-function createTreeAdapter(type) {
+function getDocumentProfile(type) {
     var result;
-
     switch(type) {
         case 'json':
-            result = new deltajs.jsobjecttree.JSObjectTreeAdapter();
+            result = require('../lib/profiles/doc-json-tree');
             break;
         case 'xml':
-            result = new deltajs.domtree.DOMTreeAdapter();
+            result = require('../lib/profiles/doc-xml-tree');
             break;
     }
 
@@ -115,36 +112,16 @@ function createTreeAdapter(type) {
 
 
 /**
- * Return the proper tree adapter for this payload type.
+ * Return proper delta profile
  */
-function createDeltaAdapter(type, fragadapter) {
+function getDeltaProfile(type) {
     var result;
-
-    switch (type) {
+    switch(type) {
         case 'json':
-            result = new deltajs.jsondelta.JSONDeltaAdapter(fragadapter);
+            result = require('../lib/profiles/output-json-delta.js');
             break;
         case 'xml':
-            result = new deltajs.domdelta.DOMDeltaAdapter(fragadapter);
-            break;
-    }
-
-    return result;
-}
-
-/**
- * Return proper tree value index for payload type.
- */
-function createValueIndex(type, tree1, tree2) {
-    var result;
-
-    switch (type) {
-        case 'xml':
-            result = new deltajs.tree.NodeHashIndex(
-                    new deltajs.domtree.DOMNodeHash(deltajs.fnv132.Hash));
-            break;
-        case 'json':
-            // no index
+            result = require('../lib/profiles/output-xml-delta.js');
             break;
     }
 
@@ -255,8 +232,7 @@ function main() {
 
 
     // Check input files
-    var documentMimetype, documentPayloadType, documentPayloadHandler,
-        documentTreeAdapter;
+    var documentMimetype, documentPayloadType, documentProfile, deltaProfile;
 
     if (!options.filetype) {
         documentMimetype = checkfile('original file', options.origfile,
@@ -274,78 +250,37 @@ function main() {
         documentPayloadType = options.filetype;
     }
 
-    documentPayloadHandler = createPayloadHandler(documentPayloadType);
-    if (!documentPayloadHandler) {
-        console.error('This file type is not supported by djdiff');
+    documentProfile = getDocumentProfile(documentPayloadType);
+    if (!documentProfile) {
+        console.error('The file type "'+ documentPayloadType +'" is not supported by djdiff');
     }
 
-    documentTreeAdapter = createTreeAdapter(documentPayloadType);
-
-
     // Setup delta payload handler
-    var deltaPayloadHandler = createPayloadHandler(options.patchtype);
-    if (!deltaPayloadHandler) {
+    deltaProfile = getDeltaProfile(options.patchtype);
+    if (!deltaProfile) {
         console.error('This delta type is not supported by djdiff');
     }
 
+    // Run diff
+    var doc1 = documentProfile.createOriginalDocument(
+        documentProfile.payloadHandler.parseString(fs.readFileSync(options.origfile, options.origenc)),
+        options.origfile)
+    var doc2 = documentProfile.createInputDocument(
+        documentProfile.payloadHandler.parseString(fs.readFileSync(options.changedfile, options.changedenc)),
+        options.changedfile)
 
-    // Match trees
-    var tree1, tree2, valindex, diff, matching, diffopt;
-    tree1 = loadFile('original file', options.origfile, options.origenc,
-            documentPayloadHandler, documentTreeAdapter);
-    tree2 = loadFile('changed file', options.changedfile, options.changedenc,
-            documentPayloadHandler, documentTreeAdapter);
-
-    valindex = createValueIndex(documentPayloadType, tree1, tree2);
-    if (options.xmldocopt) {
-        diffopt = createXccOptions(documentPayloadType);
-    }
-
-    matching = new deltajs.tree.Matching();
-    diff = new deltajs.xcc.Diff(tree1, tree2, diffopt);
-
-    if (valindex) {
-        diff.equals = function(a, b) {
-            return valindex.get(a) === valindex.get(b);
-        };
-    }
-
-    var t1, t2;
-    if (options.debug) {
-        t1 = new Date();
-        console.warn('begin match trees');
-    }
-
-    diff.matchTrees(matching);
-
-    if (options.debug) {
-        t2 = new Date();
-        console.warn('match trees took', t2.getTime() - t1.getTime());
-    }
-
-
-    // Construct delta
-    var delta, a_index, contextgen, updater;
-    delta = new deltajs.delta.Delta();
-    a_index = new deltajs.tree.DocumentOrderIndex(tree1);
-    a_index.buildAll();
-
-    contextgen = new deltajs.delta.ContextGenerator(4, a_index, valindex);
-    updater = diff.createUpdater(matching);
-    delta.collect(tree1, matching, contextgen, updater);
-
+    var diffProfile = require('../lib/profiles/diff-bonematch');
+    var d = new diff.Diff(diffProfile, documentProfile, deltaProfile);
+    var delta = d.diff(doc1, doc2);
 
     // Serialize delta
-    var doc = deltaPayloadHandler.createDocument();
-    var fragadapter = documentPayloadHandler.createTreeFragmentAdapter(doc,
-            documentTreeAdapter, options.patchtype);
-    deltaAdapter = createDeltaAdapter(options.patchtype, fragadapter);
+    var doc = deltaProfile.createOutputDocument(delta, documentProfile);
 
-    showFile('patch file', delta, doc, deltaPayloadHandler, deltaAdapter);
+    showFile('patch file', doc, deltaProfile.payloadHandler);
 
     /*
     saveFile('patch file', options.patchfile, options.patchenc, delta, doc,
-            deltaPayloadHandler, deltaAdapter);
+            deltaProfile.payloadHandler, deltaAdapter);
             */
 }
 
