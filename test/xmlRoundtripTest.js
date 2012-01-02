@@ -1,11 +1,6 @@
-var deltamod = require('../lib/delta/delta');
-var domdelta = require('../lib/delta/domdelta');
-var domtree = require('../lib/delta/domtree');
-var fnv132 = require('../lib/delta/fnv132');
-var resolver = require('../lib/delta/resolver');
-var tree = require('../lib/delta/tree');
-var xcc = require('../lib/delta/xcc');
-var xmlpayload = require('../lib/delta/xmlpayload');
+var profiles = require('../lib/profiles');
+var diffcmd = require('../lib/delta/diff');
+var patchcmd = require('../lib/delta/patch');
 
 var fixtures;
 try {
@@ -18,47 +13,28 @@ catch (e) {
     fixtures = require('./fixtures');
 }
 
-exports['SVG roundtrip'] = function(test) {
-    var payloadHandler = new xmlpayload.XMLPayloadHandler();
-    var treeAdapter = new domtree.DOMTreeAdapter();
+var xccDiffProfile = profiles.getDiffProfile('xcc');
+var skelmatchDiffProfile = profiles.getDiffProfile('skelmatch');
+var docProfile = profiles.getDocumentProfile('xml');
+var deltaProfile = profiles.getDeltaProfile('xml');
+var resolverProfile = profiles.getResolverProfile();
 
+exports['SVG roundtrip (XCC)'] = function(test) {
     // generate patch within an immediately invoked function expression in
     // order to keep all those vars from bleeding over into following test
     // parts. A string containing the serialized XML representation of a delta
     // will be assigned to the variable patch.
     var patch = (function() {
         // load tree1 and tree2
-        var doc1 = payloadHandler.parseString(fixtures['logo-1.svg']);
-        var doc2 = payloadHandler.parseString(fixtures['logo-2.svg']);
+        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
 
-        var tree1 = treeAdapter.adaptDocument(doc1);
-        var tree2 = treeAdapter.adaptDocument(doc2);
+        var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
+        var deltadoc = d.diff(doc1, doc2);
 
-        // match trees
-        var valindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
-        var matching = new tree.Matching();
-        var diff = new xcc.Diff(tree1, tree2);
-        diff.equals = function(a, b) {
-            return valindex.get(a) === valindex.get(b);
-        };
-        diff.matchTrees(matching);
+        test.equal(deltadoc.delta.operations.length, 4);
 
-        // construct patch
-        var delta = new deltamod.Delta();
-        var a_index = new tree.DocumentOrderIndex(tree1);
-        a_index.buildAll();
-
-        var contextgen = new deltamod.ContextGenerator(4, a_index, valindex);
-        var updater = diff.createUpdater(matching);
-        delta.collect(tree1, matching, contextgen, updater);
-
-        // Serialize delta
-        var deltadoc = payloadHandler.createDocument();
-        var fragadapter = payloadHandler.createTreeFragmentAdapter(deltadoc,
-                treeAdapter, 'xml');
-        var deltaAdapter = new domdelta.DOMDeltaAdapter(fragadapter);
-        deltaAdapter.createDocument(deltadoc, delta);
-        return payloadHandler.serializeToString(deltadoc);
+        return deltaProfile.serializeDocument(deltadoc);
     }());
 
     test.ok(typeof patch === 'string');
@@ -67,53 +43,16 @@ exports['SVG roundtrip'] = function(test) {
     // Apply the generated patch to logo-1 fixture.
     var logo1patched = (function(){
         // Load tree1 and delta
-        var doc = payloadHandler.parseString(fixtures['logo-1.svg']);
-        var deltadoc = payloadHandler.parseString(patch);
+        var doc = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var fragadapter = docProfile.createFragmentAdapter('xml');
+        var deltadoc = deltaProfile.loadDocument(patch, fragadapter);
 
-        var tree1 = treeAdapter.adaptDocument(doc);
+        var p = new patchcmd.Patch(resolverProfile, docProfile, deltaProfile);
+        var fails = p.patch(doc, deltadoc);
 
-        var fragadapter = payloadHandler.createTreeFragmentAdapter(deltadoc,
-                treeAdapter, 'xml');
-        var deltaAdapter = new domdelta.DOMDeltaAdapter(fragadapter);
-        var delta = deltaAdapter.adaptDocument(deltadoc);
+        test.equal(fails, 0);
 
-        // Resolve operations
-        var nodevalidx= new tree.NodeHashIndex(
-            new domtree.DOMNodeHash(fnv132.Hash));
-        var treevalidx = new tree.TreeHashIndex(
-            new tree.SimpleTreeHash(fnv132.Hash, nodevalidx));
-        var a_index = new tree.DocumentOrderIndex(tree1);
-        a_index.buildAll();
-
-        var res = new resolver.ContextResolver(tree1, a_index);
-        res.equalContent = function(docnode, patchnode, type) {
-            if (type === deltamod.UPDATE_FOREST_TYPE) {
-                return treevalidx.get(docnode) === treevalidx.get(patchnode);
-            }
-            else if (type === deltamod.UPDATE_NODE_TYPE) {
-                return nodevalidx.get(docnode) === nodevalidx.get(patchnode);
-            }
-            else {
-                throw new Error('Got unknown operation type in equalContent cb: ' + type);
-            }
-        };
-        res.equalContext = function(docnode, value) {
-            return nodevalidx.get(docnode) === value;
-        };
-
-        var handlerfactory = new domdelta.DOMOperationHandlerFactory();
-        var fails = delta.attach(res, handlerfactory);
-
-        // Apply patch
-        delta.forEach(function(op, handler) {
-            if (handler) {
-                handler.toggle();
-            }
-            else {
-                throw new Error('failed to resolve hunk');
-            }
-        });
-        return payloadHandler.serializeToString(doc);
+        return docProfile.serializeDocument(doc);
     }());
 
     test.ok(typeof logo1patched === 'string');
@@ -122,22 +61,13 @@ exports['SVG roundtrip'] = function(test) {
     // Compare tree hash values of logo-2 and logo-1-patched. They should be
     // equal now.
     (function(){
-        var doc1 = payloadHandler.parseString(fixtures['logo-1.svg']);
-        var doc1patched = payloadHandler.parseString(logo1patched);
-        var doc2 = payloadHandler.parseString(fixtures['logo-2.svg']);
+        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc1patched = docProfile.loadInputDocument(logo1patched);
+        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
 
-        var tree1 = treeAdapter.adaptDocument(doc1);
-        var tree1patched = treeAdapter.adaptDocument(doc1patched);
-        var tree2 = treeAdapter.adaptDocument(doc2);
-
-        var nodevalidx= new tree.NodeHashIndex(
-            new domtree.DOMNodeHash(fnv132.Hash));
-        var treevalidx = new tree.TreeHashIndex(
-            new tree.SimpleTreeHash(fnv132.Hash, nodevalidx));
-
-        var hash1 = treevalidx.get(tree1);
-        var hash1patched = treevalidx.get(tree1patched);
-        var hash2 = treevalidx.get(tree2);
+        var hash1 = doc1.treevalueindex.get(doc1.tree);
+        var hash1patched = doc1patched.treevalueindex.get(doc1patched.tree);
+        var hash2 = doc2.treevalueindex.get(doc2.tree);
 
         test.notEqual(hash1, hash1patched);
         test.notEqual(hash1, hash2);
@@ -148,70 +78,111 @@ exports['SVG roundtrip'] = function(test) {
     // any operation.
     (function(){
         // load tree1 and tree2
-        var doc1patched = payloadHandler.parseString(logo1patched);
-        var doc2 = payloadHandler.parseString(fixtures['logo-2.svg']);
+        var doc1patched = docProfile.loadOriginalDocument(logo1patched);
+        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
 
-        var tree1patched = treeAdapter.adaptDocument(doc1patched);
-        var tree2 = treeAdapter.adaptDocument(doc2);
+        var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
+        var deltadoc = d.diff(doc1patched, doc2);
 
-        // match trees
-        var valindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
-        var matching = new tree.Matching();
-        var diff = new xcc.Diff(tree1patched, tree2);
-        diff.equals = function(a, b) {
-            return valindex.get(a) === valindex.get(b);
-        };
-        diff.matchTrees(matching);
-
-        // construct patch
-        var delta = new deltamod.Delta();
-        var a_index = new tree.DocumentOrderIndex(tree1patched);
-        a_index.buildAll();
-
-        var contextgen = new deltamod.ContextGenerator(4, a_index, valindex);
-        var updater = diff.createUpdater(matching);
-        delta.collect(tree1patched, matching, contextgen, updater);
-
-        delta.forEach(function(op) {
-            throw new Error('Should not produce any operation for two identical trees');
-        });
+        test.equal(deltadoc.delta.operations.length, 0);
     }());
 
     test.done();
 };
 
-exports['SVG identity'] = function(test) {
-    var payloadHandler = new xmlpayload.XMLPayloadHandler();
-    var treeAdapter = new domtree.DOMTreeAdapter();
-
+exports['SVG identity (XCC)'] = function(test) {
     // load tree1 and tree2
-    var doc1 = payloadHandler.parseString(fixtures['logo-1.svg']);
-    var doc2 = payloadHandler.parseString(fixtures['logo-1.svg']);
+    var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+    var doc2 = docProfile.loadInputDocument(fixtures['logo-1.svg']);
 
-    var tree1 = treeAdapter.adaptDocument(doc1);
-    var tree2 = treeAdapter.adaptDocument(doc2);
+    var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
+    var deltadoc = d.diff(doc1, doc2);
 
-    // match trees
-    var valindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
-    var matching = new tree.Matching();
-    var diff = new xcc.Diff(tree1, tree2);
-    diff.equals = function(a, b) {
-        return valindex.get(a) === valindex.get(b);
-    };
-    diff.matchTrees(matching);
+    test.equal(deltadoc.delta.operations.length, 0);
 
-    // construct patch
-    var delta = new deltamod.Delta();
-    var a_index = new tree.DocumentOrderIndex(tree1);
-    a_index.buildAll();
+    test.done();
+};
 
-    var contextgen = new deltamod.ContextGenerator(4, a_index, valindex);
-    var updater = diff.createUpdater(matching);
-    delta.collect(tree1, matching, contextgen, updater);
+exports['SVG roundtrip (Skel-Match)'] = function(test) {
+    // generate patch within an immediately invoked function expression in
+    // order to keep all those vars from bleeding over into following test
+    // parts. A string containing the serialized XML representation of a delta
+    // will be assigned to the variable patch.
+    var patch = (function() {
+        // load tree1 and tree2
+        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
 
-    delta.forEach(function(op) {
-        throw new Error('Should not produce any operation for two identical trees');
-    });
+        var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
+        var deltadoc = d.diff(doc1, doc2);
+
+        test.equal(deltadoc.delta.operations.length, 4);
+
+        return deltaProfile.serializeDocument(deltadoc);
+    }());
+
+    test.ok(typeof patch === 'string');
+    test.ok(patch.length > 0);
+
+    // Apply the generated patch to logo-1 fixture.
+    var logo1patched = (function(){
+        // Load tree1 and delta
+        var doc = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var fragadapter = docProfile.createFragmentAdapter('xml');
+        var deltadoc = deltaProfile.loadDocument(patch, fragadapter);
+
+        var p = new patchcmd.Patch(resolverProfile, docProfile, deltaProfile);
+        var fails = p.patch(doc, deltadoc);
+
+        test.equal(fails, 0);
+
+        return docProfile.serializeDocument(doc);
+    }());
+
+    test.ok(typeof logo1patched === 'string');
+    test.ok(logo1patched.length > 0);
+
+    // Compare tree hash values of logo-2 and logo-1-patched. They should be
+    // equal now.
+    (function(){
+        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc1patched = docProfile.loadInputDocument(logo1patched);
+        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+
+        var hash1 = doc1.treevalueindex.get(doc1.tree);
+        var hash1patched = doc1patched.treevalueindex.get(doc1patched.tree);
+        var hash2 = doc2.treevalueindex.get(doc2.tree);
+
+        test.notEqual(hash1, hash1patched);
+        test.notEqual(hash1, hash2);
+        test.equal(hash2, hash1patched);
+    }());
+
+    // Compute diff between logo-2 and logo-1-patched. It should not contain
+    // any operation.
+    (function(){
+        // load tree1 and tree2
+        var doc1patched = docProfile.loadOriginalDocument(logo1patched);
+        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+
+        var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
+        var deltadoc = d.diff(doc1patched, doc2);
+
+        test.equal(deltadoc.delta.operations.length, 0);
+    }());
+
+    test.done();
+};
+
+exports['SVG identity (Skel-Match)'] = function(test) {
+    // load tree1 and tree2
+    var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+    var doc2 = docProfile.loadInputDocument(fixtures['logo-1.svg']);
+
+    var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
+    var deltadoc = d.diff(doc1, doc2);
+
+    test.equal(deltadoc.delta.operations.length, 0);
 
     test.done();
 };
