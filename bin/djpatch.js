@@ -132,13 +132,13 @@ function main() {
     var fragadapter = documentProfile.createFragmentAdapter(patchPayloadType);
     var deltadoc = deltaProfile.loadDocument(
             fs.readFileSync(options.patchfile, options.patchenc),
-            options.patchfile, fragadapter);
+            fragadapter, options.patchfile);
 
     var p = new patch.Patch(resolverProfile, documentProfile);
     p.patch(doc, deltadoc);
 
     // Serialize tree
-    sys.puts(documentProfile.payloadHandler.serializeToString(doc.data));
+    sys.puts(documentProfile.serializeDocument(doc.data));
 }
 
 main();
