@@ -2,18 +2,20 @@ BROWSER=firefox
 JSCOV=jscoverage
 JSDOC=/home/lo/sw/jsdoc-3/jsdoc
 JSDOCTK=/home/lo/sw/jsdoc-toolkit
+BROWSERIFY=node_modules/.bin/browserify
 
 test:
 	node test.js
 
 browser:
-	node_modules/.bin/browserify --ignore fixtures --plugin 'fileify:["fixtures", "test/fixtures"]' test-browserify-entry.js > dist/browser-test/deltajs-test.js
-	node_modules/.bin/browserify deltajs-browserify-entry.js > dist/browser/delta.js
+	$(BROWSERIFY) --ignore fixtures --plugin 'fileify:["fixtures", "test/fixtures"]' test-browserify-entry.js > dist/browser-test/deltajs-test.js
+	$(BROWSERIFY) deltajs-browserify-entry.js > dist/browser/delta.js
+	$(BROWSERIFY) deltajs-browserify-entry.js > dist/browser/delta.js
+	$(BROWSERIFY) examples/srcdiff/srcdiff-entry.js > examples/srcdiff/srcdiff.js
 
 examples: browser
 	cp dist/browser/delta.js examples/xcc/delta.js
 	cp dist/browser/delta.js examples/lcs/delta.js
-	cp dist/browser/delta.js examples/srcdiff/delta.js
 
 browser-coverage: browser
 	$(JSCOV) dist/browser-test dist/browser-test-cov

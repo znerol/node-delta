@@ -4,5 +4,6 @@ dist/browser-test/deltajs-test.js
 dist/browser-test-cov
 dist/browser/delta.js
 examples/*/delta.js
+examples/srcdiff/srcdiff.js
 node_modules/*
 !node_modules/xmlshim
