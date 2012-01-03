@@ -5,5 +5,7 @@ dist/browser-test-cov
 dist/browser/delta.js
 examples/*/delta.js
 examples/srcdiff/srcdiff.js
+examples/vizmerge/src/delta
+examples/vizmerge/src/profiles
 node_modules/*
 !node_modules/xmlshim
