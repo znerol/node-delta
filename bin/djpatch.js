@@ -138,7 +138,7 @@ function main() {
     p.patch(doc, deltadoc);
 
     // Serialize tree
-    sys.puts(documentProfile.serializeDocument(doc.data));
+    sys.puts(documentProfile.serializeDocument(doc));
 }
 
 main();
