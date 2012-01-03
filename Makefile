@@ -3,6 +3,7 @@ JSCOV=jscoverage
 JSDOC=/home/lo/sw/jsdoc-3/jsdoc
 JSDOCTK=/home/lo/sw/jsdoc-toolkit
 BROWSERIFY=node_modules/.bin/browserify
+RJS=node_modules/.bin/r.js
 
 test:
 	node test.js
@@ -12,6 +13,8 @@ browser:
 	$(BROWSERIFY) deltajs-browserify-entry.js > dist/browser/delta.js
 	$(BROWSERIFY) deltajs-browserify-entry.js > dist/browser/delta.js
 	$(BROWSERIFY) examples/srcdiff/srcdiff-entry.js > examples/srcdiff/srcdiff.js
+	$(RJS) -convert lib/delta examples/vizmerge/src/delta
+	$(RJS) -convert lib/profiles examples/vizmerge/src/profiles
 
 examples: browser
 	cp dist/browser/delta.js examples/xcc/delta.js
