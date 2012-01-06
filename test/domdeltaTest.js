@@ -2,7 +2,7 @@ var domdelta = require('../lib/delta/domdelta');
 var domtree = require('../lib/delta/domtree');
 var tree = require('../lib/delta/tree');
 var xmlshim = require('xmlshim');
-var dp;
+var dp, dm;
 
 function attributesArray(node) {
     var result, i, n;
@@ -24,6 +24,7 @@ function attributesArray(node) {
 
 exports.setUp = function(callback) {
     dp = new xmlshim.DOMParser;
+    dm = new domdelta.DOMOperationNodeDataMap();
     callback();
 }
 
@@ -36,14 +37,16 @@ exports['Simple subtree operation'] = function(test) {
     var c3 = c2.nextSibling;
     var c4 = c3.nextSibling;
     var original_nodes = [c2, c3];
-    var before = c4;
+    var rnode = new tree.Node(r.nodeName, r);
+    var before = new tree.Node(c4.nodeName, c4);
 
     var replacement_doc = dp.parseFromString('<d><c2x/></d>', 'text/xml');
     var c2xr = replacement_doc.firstChild.firstChild;
     var c2xo = original_doc.importNode(c2xr, true);
     var replacement_nodes = [c2xo];
 
-    var op = new domdelta.DOMTreeSequenceOperationHandler(r, before, original_nodes, replacement_nodes);
+    var op = new domdelta.DOMTreeSequenceOperationHandler(rnode, before, dm,
+            original_nodes, replacement_nodes);
 
     var expect_siblings;
     var actual_siblings;
@@ -68,6 +71,7 @@ exports['Simple subtree operation'] = function(test) {
 exports['Simple node replace operation'] = function(test) {
     var original_doc = dp.parseFromString('<n id="1" name="test" value="3"><a/><b/></n>', 'text/xml');
     var original_node = original_doc.firstChild;
+    var rnode = new tree.Node(original_node.nodeName, original_node);
     var original_attrs = [
         original_node.getAttributeNode('id'),
         original_node.getAttributeNode('name'),
@@ -85,7 +89,8 @@ exports['Simple node replace operation'] = function(test) {
         replacement_node.getAttributeNode('value'),
         ];
 
-    var op = new domdelta.DOMNodeReplaceOperationHandler(original_node, replacement_node);
+    var op = new domdelta.DOMNodeReplaceOperationHandler(rnode, dm,
+            original_node, replacement_node);
 
     var expect_attributes;
     var actual_attributes;
