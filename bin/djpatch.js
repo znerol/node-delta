@@ -38,6 +38,7 @@ function main() {
         'origenc': 'UTF-8',
         'changedfile': undefined,
         'changedenc': 'UTF-8',
+        'filetype': undefined,
         'patchfile': undefined,
         'patchenc': 'UTF-8',
         'radius': 6,
@@ -46,6 +47,7 @@ function main() {
 
     var switches = [
         ['-h', '--help',            'Show this help'],
+        ['-p', '--payload STRING', 'Specify payload type (xml or json, default: detect)'],
         ['-r', '--radius NUMBER',   'Search radius for fuzzy matching (default: 6)'],
         ['-t', '--threshold NUMBER','Threshold value for fuzzy matching (default: 0.7)'],
         ['-o', '--output FILE',     'Write output to file path'],
@@ -57,6 +59,10 @@ function main() {
 
     parser.on('help', function(name, value) {
         sys.puts(parser.toString());
+    });
+
+    parser.on('payload', function(name, value) {
+        options.filetype=value;
     });
 
     parser.on('radius', function(name, value) {
