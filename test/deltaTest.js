@@ -174,12 +174,11 @@ exports['should attach one handler for each operation in delta'] = function(test
     var dummyresolver = {
         find: function(path) {
                   if (path.length === 0) {
-                      return new resolver.ResolverResult(
-                              new tree.Anchor(a), [], 0, 1);
+                      return new resolver.ResolverResult(new tree.Anchor(a));
                   }
                   else if (path.length === 1 && path[0] === 1) {
                       return new resolver.ResolverResult(
-                              new tree.Anchor(a, a2), [], 0, 1);
+                              new tree.Anchor(a, a2));
                   }
                   else {
                       throw new Error('dummyresolver: unexpected path');
