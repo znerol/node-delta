@@ -174,10 +174,12 @@ exports['should attach one handler for each operation in delta'] = function(test
     var dummyresolver = {
         find: function(path) {
                   if (path.length === 0) {
-                      return new resolver.ResolverResult(a, undefined, []);
+                      return new resolver.ResolverResult(
+                              new tree.Anchor(a), [], 0, 1);
                   }
                   else if (path.length === 1 && path[0] === 1) {
-                      return new resolver.ResolverResult(a, a, [1]);
+                      return new resolver.ResolverResult(
+                              new tree.Anchor(a, a, 1), [], 0, 1);
                   }
                   else {
                       throw new Error('dummyresolver: unexpected path');
@@ -186,13 +188,13 @@ exports['should attach one handler for each operation in delta'] = function(test
     };
 
     var testfactory = {
-        createNodeUpdateOperationHandler: function(oldnode, newnode) {
-            test.deepEqual(oldnode, a);
+        createNodeUpdateOperationHandler: function(anchor, newnode) {
+            test.deepEqual(anchor.target, a);
             test.deepEqual(newnode, b);
         },
-        createForestUpdateOperationHandler: function(node, start, length, replacement) {
-            test.deepEqual(node, a);
-            test.strictEqual(start, 1);
+        createForestUpdateOperationHandler: function(anchor, length, replacement) {
+            test.deepEqual(anchor.base, a);
+            test.strictEqual(anchor.index, 1);
             test.strictEqual(length, 1);
             test.deepEqual(replacement, [b21, b22]);
         }

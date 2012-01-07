@@ -51,7 +51,10 @@ exports['should resolve 0-depth path to root node'] = function(test) {
     tail = ['a1', 'a11', 'a2', 'a21'];
     result = r.find([], body, head, tail);
 
-    test.deepEqual(result.getTarget(), a);
+    test.strictEqual(result.anchor.target, a);
+    test.strictEqual(result.anchor.base, undefined);
+    test.strictEqual(result.anchor.index, undefined);
+    test.strictEqual(result.tail.length, 0);
     test.done();
 };
 
@@ -65,16 +68,20 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     head = [undefined, undefined, undefined, 'a'];
     tail = ['a11', 'a2', 'a21', 'a22'];
     result = r.find([0], body, head, tail);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a1);
+    test.strictEqual(result.anchor.target, a1);
+    test.strictEqual(result.anchor.base, a);
+    test.strictEqual(result.anchor.index, 0);
+    test.strictEqual(result.tail.length, 0);
 
     // resolve a2
     body = [new tree.Node('a2')];
     head = [undefined, 'a', 'a1', 'a11'];
     tail = ['a21', 'a22', 'a221', 'a222'];
     result = r.find([1], body, head, tail);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a2);
+    test.strictEqual(result.anchor.target, a2);
+    test.strictEqual(result.anchor.base, a);
+    test.strictEqual(result.anchor.index, 1);
+    test.strictEqual(result.tail.length, 0);
 
     // SUBTREE REMOVE
     // resolve a3..a4
@@ -89,9 +96,10 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     head = ['a22', 'a221', 'a222', 'a23'];
     tail = ['a41', undefined, undefined, undefined];
     result = r.find([2], body, head, tail);
-
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a3);
+    test.strictEqual(result.anchor.target, a3);
+    test.strictEqual(result.anchor.base, a);
+    test.strictEqual(result.anchor.index, 2);
+    test.strictEqual(result.tail.length, 0);
 
     // SUBTREE INSERT
     // resolve a2, target node is first node after head
@@ -99,9 +107,11 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     head = [undefined, 'a', 'a1', 'a11'];
     tail = ['a2', 'a21', 'a22', 'a221'];
     result = r.find([1], body, head, tail);
+    test.strictEqual(result.anchor.target, a2);
+    test.strictEqual(result.anchor.base, a);
+    test.strictEqual(result.anchor.index, 1);
+    test.strictEqual(result.tail.length, 0);
 
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a2);
     test.done();
 }
 
@@ -115,9 +125,10 @@ exports['should resolve correct path to existing nodes (depth:2)'] = function(te
     head = ['a1', 'a11', 'a2', 'a21'];
     tail = ['a221', 'a222', 'a23', 'a3'];
     result = r.find([1, 1], body, head, tail);
-
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a22);
+    test.strictEqual(result.anchor.target, a22);
+    test.strictEqual(result.anchor.base, a2);
+    test.strictEqual(result.anchor.index, 1);
+    test.strictEqual(result.tail.length, 0);
 
     // NODE REMOVE
     // resolve a21
@@ -125,9 +136,10 @@ exports['should resolve correct path to existing nodes (depth:2)'] = function(te
     head = [undefined, 'a1', 'a11', 'a2'];
     tail = ['a22', 'a221', 'a222', 'a23'];
     result = r.find([1, 1], body, head, tail);
-
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a21);
+    test.strictEqual(result.anchor.target, a21);
+    test.strictEqual(result.anchor.base, a2);
+    test.strictEqual(result.anchor.index, 0);
+    test.strictEqual(result.tail.length, 0);
 
     // SUBTREE INSERT
     // resolve a41, target node is first node after head
@@ -135,9 +147,10 @@ exports['should resolve correct path to existing nodes (depth:2)'] = function(te
     head = ['a3', 'a31', 'a311', 'a4'];
     tail = ['a41', undefined, undefined, undefined];
     result = r.find([3, 0], body, head, tail);
-
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a41);
+    test.strictEqual(result.anchor.target, a41);
+    test.strictEqual(result.anchor.base, a4);
+    test.strictEqual(result.anchor.index, 0);
+    test.strictEqual(result.tail.length, 0);
 
     test.done();
 };
@@ -160,7 +173,8 @@ exports['should reject path if body node does not match exactly'] = function(tes
     tail = ['a41', undefined, undefined, undefined];
     result = r.find([2], body, head, tail);
 
-    test.strictEqual(result, undefined);
+    test.strictEqual(result.anchor, undefined);
+    test.deepEqual(result.tail, [2]);
 
     test.done();
 };
@@ -174,10 +188,10 @@ exports['should resolve when path points past last child'] = function(test) {
     head = ['a22', 'a221', 'a222', 'a23'];
     tail = ['a3', 'a31', 'a311', 'a4'];
     result = r.find([1, 3], body, head, tail);
-
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getAnchor(), a2);
-    test.equal(result.getTargetIndex(), 3);
+    test.strictEqual(result.anchor.target, undefined);
+    test.strictEqual(result.anchor.base, a2);
+    test.strictEqual(result.anchor.index, 3);
+    test.strictEqual(result.tail.length, 0);
 
     test.done();
 };
@@ -191,10 +205,10 @@ exports['should resolve path to root node when path points to EOF'] = function(t
     head = ['a31', 'a311', 'a4', 'a41'];
     tail = [undefined, undefined, undefined, undefined];
     result = r.find([4], body, head, tail);
-
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getAnchor(), a);
-    test.equal(result.getTargetIndex(), 4);
+    test.strictEqual(result.anchor.target, undefined);
+    test.strictEqual(result.anchor.base, a);
+    test.strictEqual(result.anchor.index, 4);
+    test.strictEqual(result.tail.length, 0);
 
     test.done();
 };

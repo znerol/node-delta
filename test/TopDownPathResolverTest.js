@@ -20,8 +20,8 @@ exports['should resolve to root node if path is empty'] = function(test) {
     var result;
 
     result = r.resolve([]);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a);
+    test.equal(result.tail.length, 0);
+    test.deepEqual(result.anchor.target, a);
 
     test.done();
 };
@@ -30,24 +30,24 @@ exports['should resolve to correct node if path exists'] = function(test) {
     var result;
 
     result = r.resolve([0]);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a1);
+    test.equal(result.tail.length, 0);
+    test.deepEqual(result.anchor.target, a1);
 
     result = r.resolve([0, 0]);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a11);
+    test.equal(result.tail.length, 0);
+    test.deepEqual(result.anchor.target, a11);
 
     result = r.resolve([1]);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a2);
+    test.equal(result.tail.length, 0);
+    test.deepEqual(result.anchor.target, a2);
 
     result = r.resolve([1, 0]);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a21);
+    test.equal(result.tail.length, 0);
+    test.deepEqual(result.anchor.target, a21);
 
     result = r.resolve([1, 1]);
-    test.equal(result.isComplete(), true);
-    test.deepEqual(result.getTarget(), a22);
+    test.equal(result.tail.length, 0);
+    test.deepEqual(result.anchor.target, a22);
 
     test.done();
 };
@@ -56,45 +56,46 @@ exports['should resolve to anchor if leaf does not exist'] = function(test) {
     var result;
 
     result = r.resolve([-1]);
-    test.equal(result.isComplete(), true);
-    test.equal(result.getTarget(), undefined);
-    test.equal(result.getAnchor(), a);
-    test.equal(result.getTargetIndex(), -1);
+    test.equal(result.tail.length, 0);
+    test.equal(result.anchor.target, undefined);
+    test.equal(result.anchor.base, a);
+    test.equal(result.anchor.index, -1);
 
     result = r.resolve([2]);
-    test.equal(result.isComplete(), true);
-    test.equal(result.getTarget(), undefined);
-    test.equal(result.getAnchor(), a);
-    test.equal(result.getTargetIndex(), 2);
+    test.equal(result.tail.length, 0);
+    test.equal(result.anchor.target, undefined);
+    test.equal(result.anchor.base, a);
+    test.equal(result.anchor.index, 2);
 
     result = r.resolve([0, -1]);
-    test.equal(result.isComplete(), true);
-    test.equal(result.getTarget(), undefined);
-    test.equal(result.getAnchor(), a1);
-    test.equal(result.getTargetIndex(), -1);
+    test.equal(result.tail.length, 0);
+    test.equal(result.anchor.target, undefined);
+    test.equal(result.anchor.base, a1);
+    test.equal(result.anchor.index, -1);
 
     result = r.resolve([0, 0, 1]);
-    test.equal(result.isComplete(), true);
-    test.equal(result.getTarget(), undefined);
-    test.equal(result.getAnchor(), a11);
-    test.equal(result.getTargetIndex(), 1);
+    test.equal(result.tail.length, 0);
+    test.equal(result.anchor.target, undefined);
+    test.equal(result.anchor.base, a11);
+    test.equal(result.anchor.index, 1);
 
     result = r.resolve([0, 1]);
-    test.equal(result.isComplete(), true);
-    test.equal(result.getTarget(), undefined);
-    test.equal(result.getAnchor(), a1);
-    test.equal(result.getTargetIndex(), 1);
+    test.equal(result.tail.length, 0);
+    test.equal(result.anchor.target, undefined);
+    test.equal(result.anchor.base, a1);
+    test.equal(result.anchor.index, 1);
 
     test.done();
 };
 
-exports['should report failure if path is not resolvable'] = function(test) {
+exports['should resolve as far as possible and report unresolvable part of path in tail'] = function(test) {
     var result;
 
     result = r.resolve([0, 3, 5, 0, 1]);
-    test.equal(result.isComplete(), false);
-    test.equal(result.getTarget(), undefined);
-    test.equal(result.getAnchor(), undefined);
+    test.deepEqual(result.tail, [5, 0, 1]);
+    test.equal(result.anchor.target, undefined);
+    test.equal(result.anchor.base, a1);
+    test.equal(result.anchor.index, 3);
 
     test.done();
 };
