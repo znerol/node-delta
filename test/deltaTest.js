@@ -1,5 +1,6 @@
 var deltamod = require('../lib/delta/delta');
 var tree = require('../lib/delta/tree');
+var resolver = require('../lib/delta/resolver');
 
 /**
  * Fake context generator returning an empty array on every input
@@ -173,10 +174,10 @@ exports['should attach one handler for each operation in delta'] = function(test
     var dummyresolver = {
         find: function(path) {
                   if (path.length === 0) {
-                      return [a];
+                      return new resolver.ResolverResult(a, undefined, []);
                   }
                   else if (path.length === 1 && path[0] === 1) {
-                      return [a, a2];
+                      return new resolver.ResolverResult(a, a, [1]);
                   }
                   else {
                       throw new Error('dummyresolver: unexpected path');

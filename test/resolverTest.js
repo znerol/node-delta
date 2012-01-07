@@ -51,7 +51,7 @@ exports['should resolve 0-depth path to root node'] = function(test) {
     tail = ['a1', 'a11', 'a2', 'a21'];
     result = r.find([], body, head, tail);
 
-    test.deepEqual(result, [a]);
+    test.deepEqual(result.getTarget(), a);
     test.done();
 };
 
@@ -65,13 +65,16 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     head = [undefined, undefined, undefined, 'a'];
     tail = ['a11', 'a2', 'a21', 'a22'];
     result = r.find([0], body, head, tail);
-    test.deepEqual(result, [a, a1]);
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getTarget(), a1);
 
     // resolve a2
     body = [new tree.Node('a2')];
     head = [undefined, 'a', 'a1', 'a11'];
     tail = ['a21', 'a22', 'a221', 'a222'];
     result = r.find([1], body, head, tail);
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getTarget(), a2);
 
     // SUBTREE REMOVE
     // resolve a3..a4
@@ -87,7 +90,8 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     tail = ['a41', undefined, undefined, undefined];
     result = r.find([2], body, head, tail);
 
-    test.deepEqual(result, [a, a3]);
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getTarget(), a3);
 
     // SUBTREE INSERT
     // resolve a2, target node is first node after head
@@ -96,7 +100,8 @@ exports['should resolve correct path to existing nodes (depth:1)'] = function(te
     tail = ['a2', 'a21', 'a22', 'a221'];
     result = r.find([1], body, head, tail);
 
-    test.deepEqual(result, [a, a2]);
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getTarget(), a2);
     test.done();
 }
 
@@ -111,12 +116,18 @@ exports['should resolve correct path to existing nodes (depth:2)'] = function(te
     tail = ['a221', 'a222', 'a23', 'a3'];
     result = r.find([1, 1], body, head, tail);
 
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getTarget(), a22);
+
     // NODE REMOVE
     // resolve a21
     body = [new tree.Node('a21')];
     head = [undefined, 'a1', 'a11', 'a2'];
     tail = ['a22', 'a221', 'a222', 'a23'];
     result = r.find([1, 1], body, head, tail);
+
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getTarget(), a21);
 
     // SUBTREE INSERT
     // resolve a41, target node is first node after head
@@ -125,11 +136,13 @@ exports['should resolve correct path to existing nodes (depth:2)'] = function(te
     tail = ['a41', undefined, undefined, undefined];
     result = r.find([3, 0], body, head, tail);
 
-    test.deepEqual(result, [a, a4, a41]);
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getTarget(), a41);
+
     test.done();
 };
 
-exports['should reject path if any body node does not match exactly'] = function(test) {
+exports['should reject path if body node does not match exactly'] = function(test) {
     var r = new resolver.ContextResolver(a, nodeindex);
     var body, head, tail, result;
 
@@ -152,7 +165,7 @@ exports['should reject path if any body node does not match exactly'] = function
     test.done();
 };
 
-exports['should resolve path to parent node when path points past last child'] = function(test) {
+exports['should resolve when path points past last child'] = function(test) {
     var r = new resolver.ContextResolver(a, nodeindex);
     var body, head, tail, result;
 
@@ -162,7 +175,9 @@ exports['should resolve path to parent node when path points past last child'] =
     tail = ['a3', 'a31', 'a311', 'a4'];
     result = r.find([1, 3], body, head, tail);
 
-    test.deepEqual(result, [a, a2]);
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getAnchor(), a2);
+    test.equal(result.getTargetIndex(), 3);
 
     test.done();
 };
@@ -177,7 +192,9 @@ exports['should resolve path to root node when path points to EOF'] = function(t
     tail = [undefined, undefined, undefined, undefined];
     result = r.find([4], body, head, tail);
 
-    test.deepEqual(result, [a]);
+    test.equal(result.isComplete(), true);
+    test.deepEqual(result.getAnchor(), a);
+    test.equal(result.getTargetIndex(), 4);
 
     test.done();
 };
