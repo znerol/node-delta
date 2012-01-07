@@ -34,8 +34,8 @@ var valindex = {'get': function(n) {return n && n.value}};
 
 exports['should return empty context when radius is zero'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(0, nodeindex, valindex);
-    var head = ctxgen.head(a);
-    var tail = ctxgen.tail(b);
+    var head = ctxgen.head(new tree.Anchor(r, a));
+    var tail = ctxgen.tail(new tree.Anchor(r, b));
 
     test.deepEqual(head, []);
     test.deepEqual(tail, []);
@@ -45,7 +45,7 @@ exports['should return empty context when radius is zero'] = function(test) {
 
 exports['if radius is 2, head should return 2 nodes up to par'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var head = ctxgen.head(b);
+    var head = ctxgen.head(new tree.Anchor(r, b), 1);
 
     test.deepEqual(head, ['r', 'a']);
 
@@ -54,27 +54,16 @@ exports['if radius is 2, head should return 2 nodes up to par'] = function(test)
 
 exports['if radius is 2, tail should return 2 nodes following par in docorder'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(b);
+    var tail = ctxgen.tail(new tree.Anchor(r, b), 1);
 
     test.deepEqual(tail, ['e', 'f']);
 
     test.done();
 };
 
-exports['context must be undefined for undefined anchor'] = function(test) {
-    var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var head = ctxgen.head(undefined);
-    var tail = ctxgen.tail(undefined);
-
-    test.deepEqual(head, [undefined, undefined]);
-    test.deepEqual(tail, [undefined, undefined]);
-
-    test.done();
-}
-
 exports['head context must not contain root node if root is the anchor'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var head = ctxgen.head(r);
+    var head = ctxgen.head(new tree.Anchor(r));
 
     test.deepEqual(head, [undefined, undefined]);
 
@@ -83,7 +72,7 @@ exports['head context must not contain root node if root is the anchor'] = funct
 
 exports['when deep is true, tail context must begin with the following sibling'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(b, undefined, true);
+    var tail = ctxgen.tail(new tree.Anchor(r, b), 1, true);
 
     test.deepEqual(tail, ['c', 'd']);
 
@@ -92,7 +81,7 @@ exports['when deep is true, tail context must begin with the following sibling']
 
 exports['tail context must not contain root node if root is the anchor and deep is true'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(r, undefined, true);
+    var tail = ctxgen.tail(new tree.Anchor(r), 1, true);
 
     test.deepEqual(tail, [undefined, undefined]);
 
@@ -101,7 +90,7 @@ exports['tail context must not contain root node if root is the anchor and deep 
 
 exports['if radius is 2, head should return 2 nodes up to given index'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var head = ctxgen.head(r, 1);
+    var head = ctxgen.head(new tree.Anchor(r, b));
 
     test.deepEqual(head, ['r', 'a']);
 
@@ -110,7 +99,7 @@ exports['if radius is 2, head should return 2 nodes up to given index'] = functi
 
 exports['if radius is 2, tail should return 2 nodes following given index in docorder'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(r, 1);
+    var tail = ctxgen.tail(new tree.Anchor(r, b), 1);
 
     test.deepEqual(tail, ['e', 'f']);
 
@@ -119,25 +108,16 @@ exports['if radius is 2, tail should return 2 nodes following given index in doc
 
 exports['when deep is true, tail context must begin with the sibling following index'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(r, 1, true);
+    var tail = ctxgen.tail(new tree.Anchor(r, b), 1, true);
 
     test.deepEqual(tail, ['c', 'd']);
 
     test.done();
 }
 
-exports['head should end with parent when index is 0'] = function(test) {
-    var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var head = ctxgen.head(b, 0);
-
-    test.deepEqual(head, ['a', 'b']);
-
-    test.done();
-}
-
 exports['head should end with last node in docorder if index is > children'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var head = ctxgen.head(b, 2);
+    var head = ctxgen.head(new tree.Anchor(r, b, 2));
 
     test.deepEqual(head, ['f', 'g']);
 
@@ -146,7 +126,7 @@ exports['head should end with last node in docorder if index is > children'] = f
 
 exports['tail should begin with first child when index is -1'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(b, -1);
+    var tail = ctxgen.tail(new tree.Anchor(r, b, -1), 1);
 
     test.deepEqual(tail, ['e', 'f']);
 
@@ -155,10 +135,10 @@ exports['tail should begin with first child when index is -1'] = function(test) 
 
 exports['tail should begin with next node in docorder when index is > children'] = function(test) {
     var ctxgen = new deltamod.ContextGenerator(2, nodeindex, valindex);
-    var tail = ctxgen.tail(b, 2);
+    var tail = ctxgen.tail(new tree.Anchor(r, b, 2), 1);
     test.deepEqual(tail, ['c', 'd']);
 
-    tail = ctxgen.tail(b, 2, true);
+    tail = ctxgen.tail(new tree.Anchor(r, b, 2), 1, true);
     test.deepEqual(tail, ['c', 'd']);
 
     test.done();
