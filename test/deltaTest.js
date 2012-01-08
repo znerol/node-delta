@@ -187,17 +187,17 @@ exports['should attach one handler for each operation in delta'] = function(test
     };
 
     var testfactory = {
-        createOperationHandler: function(anchor, op) {
-            switch (op.type) {
+        createOperationHandler: function(anchor, type, path, remove, insert) {
+            switch (type) {
                 case deltamod.UPDATE_FOREST_TYPE:
                     test.deepEqual(anchor.base, a);
                     test.strictEqual(anchor.index, 1);
-                    test.strictEqual(length, 1);
-                    test.deepEqual(replacement, [b21, b22]);
+                    test.strictEqual(remove.length, 1);
+                    test.deepEqual(insert, [b21, b22]);
                     break;
                 case deltamod.UPDATE_NODE_TYPE:
                     test.deepEqual(anchor.target, a);
-                    test.deepEqual(newnode, b);
+                    test.deepEqual(insert, [b]);
                     break
                 default:
                     throw new Error('Encountered unexpected operation type');
