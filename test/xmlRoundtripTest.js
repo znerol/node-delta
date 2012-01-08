@@ -32,7 +32,7 @@ exports['SVG roundtrip (XCC)'] = function(test) {
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 4);
+        test.equal(deltadoc.entries.length, 4);
 
         return deltaProfile.serializeDocument(deltadoc);
     }());
@@ -84,7 +84,7 @@ exports['SVG roundtrip (XCC)'] = function(test) {
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 0);
+        test.equal(deltadoc.entries.length, 0);
     }());
 
     test.done();
@@ -98,7 +98,7 @@ exports['SVG identity (XCC)'] = function(test) {
     var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);
 
-    test.equal(deltadoc.delta.operations.length, 0);
+    test.equal(deltadoc.entries.length, 0);
 
     test.done();
 };
@@ -116,7 +116,7 @@ exports['SVG roundtrip (Skel-Match)'] = function(test) {
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 4);
+        test.equal(deltadoc.entries.length, 4);
 
         return deltaProfile.serializeDocument(deltadoc);
     }());
@@ -168,7 +168,7 @@ exports['SVG roundtrip (Skel-Match)'] = function(test) {
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 0);
+        test.equal(deltadoc.entries.length, 0);
     }());
 
     test.done();
@@ -182,7 +182,7 @@ exports['SVG identity (Skel-Match)'] = function(test) {
     var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);
 
-    test.equal(deltadoc.delta.operations.length, 0);
+    test.equal(deltadoc.entries.length, 0);
 
     test.done();
 };
@@ -202,7 +202,7 @@ exports['HTML roundtrip (XCC)'] = function(test) {
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 6);
+        test.equal(deltadoc.entries.length, 6);
 
         return deltaProfile.serializeDocument(deltadoc);
     }());
@@ -254,7 +254,7 @@ exports['HTML roundtrip (XCC)'] = function(test) {
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 0);
+        test.equal(deltadoc.entries.length, 0);
     }());
 
     test.done();
@@ -268,7 +268,7 @@ exports['HTML identity (XCC)'] = function(test) {
     var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);
 
-    test.equal(deltadoc.delta.operations.length, 0);
+    test.equal(deltadoc.entries.length, 0);
 
     test.done();
 };
@@ -286,7 +286,7 @@ exports['HTML roundtrip (Skel-Match)'] = function(test) {
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 6);
+        test.equal(deltadoc.entries.length, 6);
 
         return deltaProfile.serializeDocument(deltadoc);
     }());
@@ -338,7 +338,7 @@ exports['HTML roundtrip (Skel-Match)'] = function(test) {
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
 
-        test.equal(deltadoc.delta.operations.length, 0);
+        test.equal(deltadoc.entries.length, 0);
     }());
 
     test.done();
@@ -352,7 +352,7 @@ exports['HTML identity (Skel-Match)'] = function(test) {
     var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);
 
-    test.equal(deltadoc.delta.operations.length, 0);
+    test.equal(deltadoc.entries.length, 0);
 
     test.done();
 };
