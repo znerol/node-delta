@@ -140,7 +140,7 @@ function main() {
             fs.readFileSync(options.patchfile, options.patchenc),
             fragadapter, options.patchfile);
 
-    var p = new patch.Patch(resolverProfile, documentProfile);
+    var p = new patch.Patch(resolverProfile, documentProfile, deltaProfile);
     p.patch(doc, deltadoc);
 
     // Serialize tree
