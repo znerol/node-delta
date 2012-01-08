@@ -13,19 +13,16 @@ var nullctxgen = {
 exports['must not generate any operation for two equal one-node trees'] = function(test) {
     var a = new tree.Node('x');
     var b = new tree.Node('x');
-    var delta = new deltamod.Delta();
     var matching = new tree.Matching();
-    var updater = deltamod.defaultMatchingUpdater(matching);
-
-    var expect_operations = [];
+    var collector = new deltamod.DeltaCollector(matching, a, b);
 
     // Manually match trees
     matching.put(a, b);
 
     // Generate patch
-    delta.collect(a, matching, nullctxgen, updater);
-
-    test.deepEqual(delta.operations, expect_operations);
+    collector.forEachChange(function(op) {
+        throw new Error('Encountered unexpected operation ' + op.toString());
+    });
 
     test.done();
 };
@@ -33,37 +30,35 @@ exports['must not generate any operation for two equal one-node trees'] = functi
 exports['should generate one update operation for two different one-node trees'] = function(test) {
     var a = new tree.Node('x');
     var b = new tree.Node('y');
-    var delta = new deltamod.Delta();
     var matching = new tree.Matching();
-    var updater = deltamod.defaultMatchingUpdater(matching);
-
-    var expect_operations = [
-        new deltamod.Operation(deltamod.UPDATE_NODE_TYPE, [], [], [], [a], [b])
-        ];
+    var collector = new deltamod.DeltaCollector(matching, a, b);
 
     // Manually match trees
     matching.put(a, b);
 
-    // Generate patch
-    delta.collect(a, matching, nullctxgen, updater);
+    var expect_operations = [
+        new deltamod.AttachedOperation(new tree.Anchor(a),
+                deltamod.UPDATE_NODE_TYPE, [], [a], [b])
+        ];
+    var actual_operations = [];
 
-    test.deepEqual(delta.operations, expect_operations);
+    // Generate patch
+    collector.forEachChange(function(op) {
+        actual_operations.push(op);
+    });
+
+    test.deepEqual(actual_operations, expect_operations);
 
     test.done();
 };
 
 exports['should generate one remove operation for consecutive sequence of nodes'] = function(test) {
-    var a = new tree.Node();
-    var a1 = new tree.Node();
-    var a2 = new tree.Node();
-    var b = new tree.Node();
-    var delta = new deltamod.Delta();
+    var a = new tree.Node('a');
+    var a1 = new tree.Node('a1');
+    var a2 = new tree.Node('a2');
+    var b = new tree.Node('a');
     var matching = new tree.Matching();
-    var updater = deltamod.defaultMatchingUpdater(matching);
-
-    var expect_operations = [
-        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [0], [], [], [a1, a2], [])
-        ];
+    var collector = new deltamod.DeltaCollector(matching, a, b);
 
     // Manually build tree
     a.append(a1);
@@ -73,10 +68,18 @@ exports['should generate one remove operation for consecutive sequence of nodes'
     // in a.
     matching.put(a, b);
 
-    // Generate patch
-    delta.collect(a, matching, nullctxgen, updater);
+    var expect_operations = [
+        new deltamod.AttachedOperation(new tree.Anchor(a, a1),
+                deltamod.UPDATE_FOREST_TYPE, [0], [a1, a2], [])
+        ];
+    var actual_operations = [];
 
-    test.deepEqual(delta.operations, expect_operations);
+    // Generate patch
+    collector.forEachChange(function(op) {
+        actual_operations.push(op);
+    });
+
+    test.deepEqual(actual_operations, expect_operations);
 
     test.done();
 };
@@ -86,13 +89,8 @@ exports['should generate one insert operation for consecutive sequence of nodes'
     var b = new tree.Node();
     var b1 = new tree.Node();
     var b2 = new tree.Node();
-    var delta = new deltamod.Delta();
     var matching = new tree.Matching();
-    var updater = deltamod.defaultMatchingUpdater(matching);
-
-    var expect_operations = [
-        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [0], [], [], [], [b1, b2])
-        ];
+    var collector = new deltamod.DeltaCollector(matching, a, b);
 
     // Manually build tree
     b.append(b1);
@@ -102,10 +100,18 @@ exports['should generate one insert operation for consecutive sequence of nodes'
     // in a.
     matching.put(a, b);
 
-    // Generate patch
-    delta.collect(a, matching, nullctxgen, updater);
+    var expect_operations = [
+        new deltamod.AttachedOperation(new tree.Anchor(a, a, 0),
+                deltamod.UPDATE_FOREST_TYPE, [0], [], [b1, b2])
+        ];
+    var actual_operations = [];
 
-    test.deepEqual(delta.operations, expect_operations);
+    // Generate patch
+    collector.forEachChange(function(op) {
+        actual_operations.push(op);
+    });
+
+    test.deepEqual(actual_operations, expect_operations);
 
     test.done();
 };
@@ -123,14 +129,8 @@ exports['should generate separate operations for non-consecutive siblings'] = fu
     var b3 = new tree.Node('b');    // match
     var b4 = new tree.Node('y');    // no match
 
-    var delta = new deltamod.Delta();
     var matching = new tree.Matching();
-    var updater = deltamod.defaultMatchingUpdater(matching);
-
-    var expect_operations = [
-        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [1], [], [], [a2], [b2]),
-        new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [3], [], [], [a4], [b4])
-        ];
+    var collector = new deltamod.DeltaCollector(matching, a, b);
 
     // Manually build tree
     a.append(a1);
@@ -149,10 +149,20 @@ exports['should generate separate operations for non-consecutive siblings'] = fu
     matching.put(a1, b1);
     matching.put(a3, b3);
 
-    // Generate patch
-    delta.collect(a, matching, nullctxgen, updater);
+    var expect_operations = [
+        new deltamod.AttachedOperation(new tree.Anchor(a, a2),
+                deltamod.UPDATE_FOREST_TYPE, [1], [a2], [b2]),
+        new deltamod.AttachedOperation(new tree.Anchor(a, a4),
+                deltamod.UPDATE_FOREST_TYPE, [3], [a4], [b4])
+        ];
+    var actual_operations = [];
 
-    test.deepEqual(delta.operations, expect_operations);
+    // Generate patch
+    collector.forEachChange(function(op) {
+        actual_operations.push(op);
+    });
+
+    test.deepEqual(actual_operations, expect_operations);
 
     test.done();
 };
@@ -170,7 +180,6 @@ exports['should attach one handler for each operation in delta'] = function(test
     var b21 = new tree.Node('y');
     var b22 = new tree.Node('z');
 
-    var delta = new deltamod.Delta();
     var dummyresolver = {
         find: function(path) {
                   if (path.length === 0) {
@@ -186,36 +195,31 @@ exports['should attach one handler for each operation in delta'] = function(test
               }
     };
 
-    var testfactory = {
-        createOperationHandler: function(anchor, type, path, remove, insert) {
-            switch (type) {
-                case deltamod.UPDATE_FOREST_TYPE:
-                    test.deepEqual(anchor.base, a);
-                    test.strictEqual(anchor.index, 1);
-                    test.strictEqual(remove.length, 1);
-                    test.deepEqual(insert, [b21, b22]);
-                    break;
-                case deltamod.UPDATE_NODE_TYPE:
-                    test.deepEqual(anchor.target, a);
-                    test.deepEqual(insert, [b]);
-                    break
-                default:
-                    throw new Error('Encountered unexpected operation type');
-            }
-        }
-    };
+    var attacher = new deltamod.Attacher(dummyresolver);
+    var actual_op;
 
     // Manually build up tree
     a.append(a1);
     a.append(a2);
     a.append(a3);
 
-    // Manually create patch operations
-    delta.add(new deltamod.Operation(deltamod.UPDATE_NODE_TYPE, [], [], [], [a], [b]));
-    delta.add(new deltamod.Operation(deltamod.UPDATE_FOREST_TYPE, [1], [], [], [a2], [b21, b22]));
+    actual_op = attacher.attach({
+        'type': deltamod.UPDATE_NODE_TYPE,
+        'path': [],
+        'remove': [a],
+        'insert': [b]
+    });
+    test.deepEqual(actual_op, new deltamod.AttachedOperation(
+                new tree.Anchor(a), deltamod.UPDATE_NODE_TYPE, [], [a], [b]));
 
-    // Test attach-method using the dummyresolver and the testfactory
-    delta.attach(dummyresolver, testfactory);
+    actual_op = attacher.attach({
+        'type': deltamod.UPDATE_FOREST_TYPE,
+        'path': [1],
+        'remove': [a2],
+        'insert': [b21, b22]
+    });
+    test.deepEqual(actual_op, new deltamod.AttachedOperation(
+                new tree.Anchor(a, a2), deltamod.UPDATE_FOREST_TYPE, [1], [a2], [b21, b22]));
 
     test.done();
 };

@@ -171,10 +171,12 @@ exports['should reject path if body node does not match exactly'] = function(tes
     body = [b3, b4];
     head = ['a22', 'a221', 'a222', 'a23'];
     tail = ['a41', undefined, undefined, undefined];
-    result = r.find([2], body, head, tail);
 
-    test.strictEqual(result.anchor, undefined);
-    test.deepEqual(result.tail, [2]);
+    test.throws(function(){
+        result = r.find([2], body, head, tail);
+    });
+
+    test.strictEqual(result, undefined);
 
     test.done();
 };
