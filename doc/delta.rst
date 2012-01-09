@@ -6,6 +6,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   jsdoc/Delta.rst
-   jsdoc/Operation.rst
+   jsdoc/DeltaCollector.rst
+   jsdoc/AttachedOperation.rst
+   jsdoc/Attacher.rst
    jsdoc/ParameterBuffer.rst

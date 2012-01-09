@@ -8,3 +8,4 @@ Contents:
 
    jsdoc/ContextResolver.rst
    jsdoc/TopDownPathResolver.rst
+   jsdoc/ResolverResult.rst

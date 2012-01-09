@@ -6,6 +6,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   jsdoc/Anchor.rst
    jsdoc/Node.rst
    jsdoc/Matching.rst
    jsdoc/DocumentOrderIndex.rst

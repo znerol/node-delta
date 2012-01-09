@@ -11,10 +11,13 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   highlevel.rst
    lcs.rst
    tree.rst
    xcc.rst
+   skelmatch.rst
    delta.rst
+   contextdelta.rst
    contextmatcher.rst
    resolver.rst
    hash.rst
