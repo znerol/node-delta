@@ -2,17 +2,6 @@ var profiles = require('../lib/profiles');
 var diffcmd = require('../lib/delta/diff');
 var patchcmd = require('../lib/delta/patch');
 
-var fixtures;
-try {
-    // Browserify/fileify export fixtures as a module, therefore we have to try
-    // the require module-method here.
-    fixtures = require('fixtures');
-}
-catch (e) {
-    // Fallback to relative require under node.js
-    fixtures = require('./fixtures');
-}
-
 var xccDiffProfile = profiles.getDiffProfile('xcc');
 var skelmatchDiffProfile = profiles.getDiffProfile('skelmatch');
 var docProfile = profiles.getDocumentProfile('xml');
@@ -26,8 +15,8 @@ exports['SVG roundtrip (XCC)'] = function(test) {
     // will be assigned to the variable patch.
     var patch = (function() {
         // load tree1 and tree2
-        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
-        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-2'));
 
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
@@ -44,7 +33,7 @@ exports['SVG roundtrip (XCC)'] = function(test) {
     // Apply the generated patch to logo-1 fixture.
     var logo1patched = (function(){
         // Load tree1 and delta
-        var doc = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
         var fragadapter = docProfile.createFragmentAdapter('xml');
         var deltadoc = deltaProfile.loadDocument(patch, fragadapter);
 
@@ -62,9 +51,9 @@ exports['SVG roundtrip (XCC)'] = function(test) {
     // Compare tree hash values of logo-2 and logo-1-patched. They should be
     // equal now.
     (function(){
-        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
         var doc1patched = docProfile.loadInputDocument(logo1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-2'));
 
         var hash1 = doc1.treevalueindex.get(doc1.tree);
         var hash1patched = doc1patched.treevalueindex.get(doc1patched.tree);
@@ -80,7 +69,7 @@ exports['SVG roundtrip (XCC)'] = function(test) {
     (function(){
         // load tree1 and tree2
         var doc1patched = docProfile.loadOriginalDocument(logo1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-2'));
 
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
@@ -94,8 +83,8 @@ exports['SVG roundtrip (XCC)'] = function(test) {
 
 exports['SVG identity (XCC)'] = function(test) {
     // load tree1 and tree2
-    var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
-    var doc2 = docProfile.loadInputDocument(fixtures['logo-1.svg']);
+    var doc1 = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
+    var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-1'));
 
     var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);
@@ -113,8 +102,8 @@ exports['SVG roundtrip (Skel-Match)'] = function(test) {
     // will be assigned to the variable patch.
     var patch = (function() {
         // load tree1 and tree2
-        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
-        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-2'));
 
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
@@ -131,7 +120,7 @@ exports['SVG roundtrip (Skel-Match)'] = function(test) {
     // Apply the generated patch to logo-1 fixture.
     var logo1patched = (function(){
         // Load tree1 and delta
-        var doc = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
         var fragadapter = docProfile.createFragmentAdapter('xml');
         var deltadoc = deltaProfile.loadDocument(patch, fragadapter);
 
@@ -149,9 +138,9 @@ exports['SVG roundtrip (Skel-Match)'] = function(test) {
     // Compare tree hash values of logo-2 and logo-1-patched. They should be
     // equal now.
     (function(){
-        var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
         var doc1patched = docProfile.loadInputDocument(logo1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-2'));
 
         var hash1 = doc1.treevalueindex.get(doc1.tree);
         var hash1patched = doc1patched.treevalueindex.get(doc1patched.tree);
@@ -167,7 +156,7 @@ exports['SVG roundtrip (Skel-Match)'] = function(test) {
     (function(){
         // load tree1 and tree2
         var doc1patched = docProfile.loadOriginalDocument(logo1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['logo-2.svg']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-2'));
 
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
@@ -181,8 +170,8 @@ exports['SVG roundtrip (Skel-Match)'] = function(test) {
 
 exports['SVG identity (Skel-Match)'] = function(test) {
     // load tree1 and tree2
-    var doc1 = docProfile.loadOriginalDocument(fixtures['logo-1.svg']);
-    var doc2 = docProfile.loadInputDocument(fixtures['logo-1.svg']);
+    var doc1 = docProfile.loadOriginalDocument(require('./fixtures/logo-1'));
+    var doc2 = docProfile.loadInputDocument(require('./fixtures/logo-1'));
 
     var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);
@@ -202,8 +191,8 @@ exports['HTML roundtrip (XCC)'] = function(test) {
     // will be assigned to the variable patch.
     var patch = (function() {
         // load tree1 and tree2
-        var doc1 = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
-        var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-2.html']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-2'));
 
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
@@ -220,7 +209,7 @@ exports['HTML roundtrip (XCC)'] = function(test) {
     // Apply the generated patch to zappa-1 fixture.
     var zappa1patched = (function(){
         // Load tree1 and delta
-        var doc = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
+        var doc = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
         var fragadapter = docProfile.createFragmentAdapter('xml');
         var deltadoc = deltaProfile.loadDocument(patch, fragadapter);
 
@@ -238,9 +227,9 @@ exports['HTML roundtrip (XCC)'] = function(test) {
     // Compare tree hash values of zappa-2 and zappa-1-patched. They should be
     // equal now.
     (function(){
-        var doc1 = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
         var doc1patched = docProfile.loadInputDocument(zappa1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-2.html']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-2'));
 
         var hash1 = doc1.treevalueindex.get(doc1.tree);
         var hash1patched = doc1patched.treevalueindex.get(doc1patched.tree);
@@ -256,7 +245,7 @@ exports['HTML roundtrip (XCC)'] = function(test) {
     (function(){
         // load tree1 and tree2
         var doc1patched = docProfile.loadOriginalDocument(zappa1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-2.html']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-2'));
 
         var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
@@ -270,8 +259,8 @@ exports['HTML roundtrip (XCC)'] = function(test) {
 
 exports['HTML identity (XCC)'] = function(test) {
     // load tree1 and tree2
-    var doc1 = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
-    var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-1.html']);
+    var doc1 = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
+    var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-1'));
 
     var d = new diffcmd.Diff(xccDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);
@@ -289,8 +278,8 @@ exports['HTML roundtrip (Skel-Match)'] = function(test) {
     // will be assigned to the variable patch.
     var patch = (function() {
         // load tree1 and tree2
-        var doc1 = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
-        var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-2.html']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-2'));
 
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1, doc2);
@@ -307,7 +296,7 @@ exports['HTML roundtrip (Skel-Match)'] = function(test) {
     // Apply the generated patch to zappa-1 fixture.
     var zappa1patched = (function(){
         // Load tree1 and delta
-        var doc = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
+        var doc = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
         var fragadapter = docProfile.createFragmentAdapter('xml');
         var deltadoc = deltaProfile.loadDocument(patch, fragadapter);
 
@@ -325,9 +314,9 @@ exports['HTML roundtrip (Skel-Match)'] = function(test) {
     // Compare tree hash values of zappa-2 and zappa-1-patched. They should be
     // equal now.
     (function(){
-        var doc1 = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
+        var doc1 = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
         var doc1patched = docProfile.loadInputDocument(zappa1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-2.html']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-2'));
 
         var hash1 = doc1.treevalueindex.get(doc1.tree);
         var hash1patched = doc1patched.treevalueindex.get(doc1patched.tree);
@@ -343,7 +332,7 @@ exports['HTML roundtrip (Skel-Match)'] = function(test) {
     (function(){
         // load tree1 and tree2
         var doc1patched = docProfile.loadOriginalDocument(zappa1patched);
-        var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-2.html']);
+        var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-2'));
 
         var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
         var deltadoc = d.diff(doc1patched, doc2);
@@ -357,8 +346,8 @@ exports['HTML roundtrip (Skel-Match)'] = function(test) {
 
 exports['HTML identity (Skel-Match)'] = function(test) {
     // load tree1 and tree2
-    var doc1 = docProfile.loadOriginalDocument(fixtures['zappa-quote-1.html']);
-    var doc2 = docProfile.loadInputDocument(fixtures['zappa-quote-1.html']);
+    var doc1 = docProfile.loadOriginalDocument(require('./fixtures/zappa-quote-1'));
+    var doc2 = docProfile.loadInputDocument(require('./fixtures/zappa-quote-1'));
 
     var d = new diffcmd.Diff(skelmatchDiffProfile, docProfile, deltaProfile);
     var deltadoc = d.diff(doc1, doc2);

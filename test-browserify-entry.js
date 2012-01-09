@@ -10,9 +10,10 @@ DELTAJS_ALLTESTS = {
     "Generation Index Test"             : require("./test/generationIndexTest.js"),
     "LCS Test"                          : require("./test/lcsTest.js"),
     "Resolver Test"                     : require("./test/resolverTest.js"),
+    "Skel-match Test"                   : require("./test/skelmatchTest.js"),
     "Top-Down Path Resolver Test"       : require("./test/TopDownPathResolverTest.js"),
+    "Tree test"                         : require("./test/treeTest.js"),
     "Weighted Context Matcher Test"     : require("./test/WeightedContextMatcherTest.js"),
     "XCC Test"                          : require("./test/xccTest.js"),
-    "Skel-match Test"                   : require("./test/skelmatchTest.js"),
     "XML Diff/Patch Roundtrip Test"     : require("./test/xmlRoundtripTest.js"),
 };
