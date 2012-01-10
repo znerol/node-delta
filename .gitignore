@@ -9,3 +9,4 @@ examples/vizmerge/src/delta
 examples/vizmerge/src/profiles
 node_modules/*
 !node_modules/xmlshim
+node_modules
