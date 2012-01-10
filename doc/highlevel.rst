@@ -21,6 +21,8 @@ Contents:
    highlevel-example.rst
    jsdoc/diff.Diff.rst
    jsdoc/patch.Patch.rst
+   jsdoc/Document.rst
+   jsdoc/DeltaDocument.rst
    jsdoc/DiffSkelmatchFactory.rst
    jsdoc/DiffXCCFactory.rst
    jsdoc/ResolveXCCFactory.rst
