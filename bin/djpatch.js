@@ -36,8 +36,8 @@ function main() {
     var options = {
         'origfile': undefined,
         'origenc': 'UTF-8',
-        'changedfile': undefined,
-        'changedenc': 'UTF-8',
+//        'changedfile': undefined,
+//        'changedenc': 'UTF-8',
         'filetype': undefined,
         'patchfile': undefined,
         'patchenc': 'UTF-8',
@@ -50,7 +50,7 @@ function main() {
         ['-p', '--payload STRING', 'Specify payload type (xml or json, default: detect)'],
         ['-r', '--radius NUMBER',   'Search radius for fuzzy matching (default: 6)'],
         ['-t', '--threshold NUMBER','Threshold value for fuzzy matching (default: 0.7)'],
-        ['-o', '--output FILE',     'Write output to file path'],
+//        ['-o', '--output FILE',     'Write output to file path'],
         ['-d', '--debug',           'Log actions to console'],
         ];
 
@@ -73,9 +73,9 @@ function main() {
         options.threshold=value;
     });
 
-    parser.on('output', function(name, value) {
-        options.changedfile=value
-    });
+//    parser.on('output', function(name, value) {
+//        options.changedfile=value
+//    });
 
     parser.on(2, function(value) {
         options.origfile=value

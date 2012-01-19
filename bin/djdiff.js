@@ -55,7 +55,7 @@ function main() {
         ['-g', '--algo STRING', 'Specify algorithm (skelmatch or xcc, default: skelmatch)'],
         ['-x', '--xml',     'Use XML patch format (default)'],
         ['-j', '--json',    'Use JSON patch format'],
-        ['--xmldocopt',     'Enable optimization for XML documents. Treat elements containing exactly one text node as a single unit.'],
+//        ['--xmldocopt',     'Enable optimization for XML documents. Treat elements containing exactly one text node as a single unit.'],
         ['-d', '--debug',   'Log actions to console']
         ];
 
@@ -87,9 +87,9 @@ function main() {
         options.debug=true;
     });
 
-    parser.on('xmldocopt', function(name, value) {
-        options.xmldocopt = true;
-    });
+//    parser.on('xmldocopt', function(name, value) {
+//        options.xmldocopt = true;
+//    });
 
     parser.on(2, function(value) {
         options.origfile=value
