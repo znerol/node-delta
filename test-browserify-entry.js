@@ -4,7 +4,7 @@ DELTAJS_ALLTESTS = {
     "Context Window Test"               : require("./test/contextWindowTest.js"),
     "Delta Test"                        : require("./test/deltaTest.js"),
     "Document Order Index Test"         : require("./test/DocumentOrderIndexTest.js"),
-    "DOM Delta Test"                    : require("./test/domdeltaTest.js"),
+    "DOM Handler Test"                  : require("./test/domhandlerTest.js"),
     "DOM Node Hash Test"                : require("./test/DOMNodeHashTest.js"),
     "FNV-1 32 Test"                     : require("./test/fnv132Test.js"),
     "Generation Index Test"             : require("./test/generationIndexTest.js"),

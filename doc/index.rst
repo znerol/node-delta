@@ -24,6 +24,7 @@ Contents:
    xmlpayload.rst
    domtree.rst
    domdelta.rst
+   domhandler.rst
    jsonpayload.rst
    jsobjecttree.rst
    jsondelta.rst
