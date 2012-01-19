@@ -1,6 +1,5 @@
 BROWSER=firefox
 JSCOV=jscoverage
-JSDOC=/home/lo/sw/jsdoc-3/jsdoc
 JSDOCTK=/home/lo/sw/jsdoc-toolkit
 BROWSERIFY=node_modules/.bin/browserify
 RJS=node_modules/.bin/r.js
@@ -15,10 +14,10 @@ browser:
 	$(BROWSERIFY) test-browserify-entry.js > dist/browser-test/deltajs-test.js
 	$(BROWSERIFY) deltajs-browserify-entry.js > dist/browser/delta.js
 
-awm:
-	mkdir -p dist/awm
-	$(RJS) -convert lib/delta dist/awm/delta
-	$(RJS) -convert lib/profiles dist/awm/profiles
+amd:
+	mkdir -p dist/amd
+	$(RJS) -convert lib/delta dist/amd/delta
+	$(RJS) -convert lib/profiles dist/amd/profiles
 
 examples: browser
 	cp dist/browser/delta.js examples/xcc/delta.js

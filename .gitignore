@@ -3,7 +3,7 @@
 dist/browser-test/deltajs-test.js
 dist/browser-test-cov
 dist/browser/delta.js
-dist/awm
+dist/amd
 examples/*/delta.js
 examples/srcdiff/srcdiff.js
 examples/vizmerge/src/delta
