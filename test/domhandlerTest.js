@@ -1,4 +1,4 @@
-var domdelta = require('../lib/delta/domdelta');
+var domhandler = require('../lib/delta/domhandler');
 var domtree = require('../lib/delta/domtree');
 var tree = require('../lib/delta/tree');
 var xmlshim = require('xmlshim');
@@ -24,7 +24,7 @@ function attributesArray(node) {
 
 exports.setUp = function(callback) {
     dp = new xmlshim.DOMParser;
-    dm = new domdelta.DOMOperationNodeDataMap();
+    dm = new domhandler.DOMOperationNodeDataMap();
     callback();
 }
 
@@ -45,7 +45,7 @@ exports['Simple subtree operation'] = function(test) {
     var c2xo = original_doc.importNode(c2xr, true);
     var replacement_nodes = [c2xo];
 
-    var op = new domdelta.DOMTreeSequenceOperationHandler(rnode, before, dm,
+    var op = new domhandler.DOMTreeSequenceOperationHandler(rnode, before, dm,
             original_nodes, replacement_nodes);
 
     var expect_siblings;
@@ -89,7 +89,7 @@ exports['Simple node replace operation'] = function(test) {
         replacement_node.getAttributeNode('value'),
         ];
 
-    var op = new domdelta.DOMNodeReplaceOperationHandler(rnode, dm,
+    var op = new domhandler.DOMNodeReplaceOperationHandler(rnode, dm,
             original_node, replacement_node);
 
     var expect_attributes;
@@ -128,7 +128,7 @@ exports['Insert operation using operation factory'] = function(test) {
     var replacement_doc = dp.parseFromString('<insert><c2x/></insert>', 'text/xml');
     var replacement_tree = treeAdapter.adaptDocument(replacement_doc);
 
-    var factory = new domdelta.DOMOperationHandlerFactory();
+    var factory = new domhandler.DOMOperationHandlerFactory();
     var anchor = new tree.Anchor(original_tree, original_tree, 3);
     var insert_op = factory.createForestUpdateOperationHandler(
             anchor, 0, replacement_tree.children);
@@ -159,7 +159,7 @@ exports['Remove operation using operation factory'] = function(test) {
     var treeAdapter = new domtree.DOMTreeAdapter();
     var original_tree = treeAdapter.adaptDocument(original_doc);
 
-    var factory = new domdelta.DOMOperationHandlerFactory();
+    var factory = new domhandler.DOMOperationHandlerFactory();
     var anchor = new tree.Anchor(original_tree, original_tree, 1);
     var remove_op = factory.createForestUpdateOperationHandler(
             anchor, 2, []);
