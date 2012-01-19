@@ -15,6 +15,11 @@ browser:
 	$(BROWSERIFY) test-browserify-entry.js > dist/browser-test/deltajs-test.js
 	$(BROWSERIFY) deltajs-browserify-entry.js > dist/browser/delta.js
 
+awm:
+	mkdir -p dist/awm
+	$(RJS) -convert lib/delta dist/awm/delta
+	$(RJS) -convert lib/profiles dist/awm/profiles
+
 examples: browser
 	cp dist/browser/delta.js examples/xcc/delta.js
 	cp dist/browser/delta.js examples/lcs/delta.js
