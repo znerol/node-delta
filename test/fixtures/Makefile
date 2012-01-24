@@ -12,3 +12,6 @@ all: $(SVGDST) $(HTMDST)
 
 %.js: %.html
 	$(NODE) wrap.js $< > $@
+
+clean:
+	rm -f $(SVGDST) $(HTMDST)

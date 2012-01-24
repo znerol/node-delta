@@ -45,7 +45,7 @@ jsdoc:
 	java -jar $(JSDOCTK)/jsrun.jar $(JSDOCTK)/app/run.js --verbose --recursive --template=./doc/_themes/jsdoc-for-sphinx/ --directory=./doc/jsdoc/ ./lib/delta/
 
 doc: jsdoc
-	(cd doc && make html)
+	make -C doc html
 
 dist/apiref: doc
 	mkdir -p dist/apiref
@@ -53,6 +53,7 @@ dist/apiref: doc
 
 clean:
 	rm -rf dist
-	(cd doc && make clean)
+	make -C doc clean
+	make -C test/fixtures clean
 
 .PHONY: test test/fixtures browser-test clean
