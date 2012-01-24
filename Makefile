@@ -51,4 +51,8 @@ dist/apiref: doc
 	mkdir -p dist/apiref
 	cp -r doc/_build/html/* dist/apiref
 
-.PHONY: test test/fixtures browser-test
+clean:
+	rm -rf dist
+	(cd doc && make clean)
+
+.PHONY: test test/fixtures browser-test clean
