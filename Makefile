@@ -47,4 +47,8 @@ jsdoc:
 doc: jsdoc
 	(cd doc && make html)
 
+dist/apiref: doc
+	mkdir -p dist/apiref
+	cp -r doc/_build/html/* dist/apiref
+
 .PHONY: test test/fixtures browser-test
