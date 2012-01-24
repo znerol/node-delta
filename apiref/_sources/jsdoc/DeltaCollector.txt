@@ -1,0 +1,139 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DeltaCollector
+================================================================================
+
+..
+   class-title
+
+
+Utility class to construct a sequence of attached operations from a
+matching.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DeltaCollector(matching, root_a, root_b)
+
+
+    
+    :param  matching: 
+         
+    
+    :param  root_a: 
+         
+    
+    :param  root_b: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+equals
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaCollector#equals(a, b)
+
+
+    
+    :param  a: 
+         
+    
+    :param  b: 
+         
+    
+
+
+
+
+Default equality test. Override this method if you need to test other
+node properties instead/beside node value.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+forEachChange
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaCollector#forEachChange(callback, T, root_a, root_b, path)
+
+
+    
+    :param  callback: 
+        A function(type, path, removes, inserts) called
+                 for each detected set of changes. 
+    
+    :param  T: 
+        Context object bound to "this" when the callback is 
+    
+    :param  root_a: 
+        (internal use) Root node in tree a 
+    
+    :param  root_b: 
+        (internal use) Root node in tree b
+                 invoked. 
+    
+    :param  path: 
+        (internal use) current path relative to base node. Used
+                 from recursive calls. 
+    
+
+
+
+
+Invoke a callback for each changeset detected between tree a and tree b
+according to the given matching.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

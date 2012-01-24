@@ -1,0 +1,84 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class Detacher
+================================================================================
+
+..
+   class-title
+
+
+Create new operation detacher instance.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: Detacher(contextgen)
+
+
+    
+    :param  contextgen: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+detach
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Detacher#detach(op)
+
+
+    
+    :param  op: 
+         
+    
+
+
+
+
+Create new detached context operation from an attached operation.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

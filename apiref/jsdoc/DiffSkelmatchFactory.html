@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DiffSkelmatchFactory &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="High Level Diff and Patch Interface" href="../highlevel.html" />
+    <link rel="next" title="Class DiffXCCFactory" href="DiffXCCFactory.html" />
+    <link rel="prev" title="Class DeltaDocument" href="DeltaDocument.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DiffXCCFactory.html" title="Class DiffXCCFactory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DeltaDocument.html" title="Class DeltaDocument"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" accesskey="U">High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-diffskelmatchfactory">
+<h1>Class DiffSkelmatchFactory<a class="headerlink" href="#class-diffskelmatchfactory" title="Permalink to this headline">¶</a></h1>
+<p>Create a new instance of the skelmatch diff factory.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DiffSkelmatchFactory">
+<em class="property">class </em><tt class="descname">DiffSkelmatchFactory</tt><big>(</big><big>)</big><a class="headerlink" href="#DiffSkelmatchFactory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="creatediffalgorithm">
+<h3>createDiffAlgorithm<a class="headerlink" href="#creatediffalgorithm" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DiffSkelmatchFactory#createDiffAlgorithm">
+<tt class="descname">DiffSkelmatchFactory#createDiffAlgorithm</tt><big>(</big><em>doc1</em>, <em>doc2</em><span class="optional">[</span>, <em>equals</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#DiffSkelmatchFactory#createDiffAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>doc1</strong> (<em>Object</em>) &#8211; The original document. Use
+<tt class="docutils literal"><span class="pre">loadOriginalDocument</span></tt> of the document factory to load a suitable
+document.</li>
+<li><strong>doc2</strong> (<em>Object</em>) &#8211; The changed document. Use <tt class="docutils literal"><span class="pre">loadInputDocument</span></tt>
+of the document factory to load a suitable document.</li>
+<li><strong>equals</strong> (<em>function</em>) &#8211; The equality test-function used during diffing.
+Use the method <tt class="docutils literal"><span class="pre">createNodeEqualityTest</span></tt> of the document factory to
+create a suitable equality test function.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns skelmatch.Diff:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">An initialized skelmatch.Diff instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return new initialized instance of Skel-Match diff algorithm.</p>
+</div>
+<div class="section" id="creatematching">
+<h3>createMatching<a class="headerlink" href="#creatematching" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DiffSkelmatchFactory#createMatching">
+<tt class="descname">DiffSkelmatchFactory#createMatching</tt><big>(</big><big>)</big><a class="headerlink" href="#DiffSkelmatchFactory#createMatching" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Returns tree.Matching:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">Empty matching object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return new tree matching object</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DiffSkelmatchFactory</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#creatediffalgorithm">createDiffAlgorithm</a></li>
+<li><a class="reference internal" href="#creatematching">createMatching</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DeltaDocument.html"
+                        title="previous chapter">Class DeltaDocument</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DiffXCCFactory.html"
+                        title="next chapter">Class DiffXCCFactory</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DiffXCCFactory.html" title="Class DiffXCCFactory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DeltaDocument.html" title="Class DeltaDocument"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" >High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

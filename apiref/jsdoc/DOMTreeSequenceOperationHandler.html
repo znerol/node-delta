@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DOMTreeSequenceOperationHandler &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="DOM Operation Handler" href="../domhandler.html" />
+    <link rel="next" title="JSON Payload" href="../jsonpayload.html" />
+    <link rel="prev" title="Class DOMNodeReplaceOperationHandler" href="DOMNodeReplaceOperationHandler.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../jsonpayload.html" title="JSON Payload"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DOMNodeReplaceOperationHandler.html" title="Class DOMNodeReplaceOperationHandler"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../domhandler.html" accesskey="U">DOM Operation Handler</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-domtreesequenceoperationhandler">
+<h1>Class DOMTreeSequenceOperationHandler<a class="headerlink" href="#class-domtreesequenceoperationhandler" title="Permalink to this headline">¶</a></h1>
+<p>Construct a new DOM operation element capable of replacing the specified
+subtrees.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DOMTreeSequenceOperationHandler">
+<em class="property">class </em><tt class="descname">DOMTreeSequenceOperationHandler</tt><big>(</big><em>par</em>, <em>before</em>, <em>oldnodes</em>, <em>newnodes</em>, <em>newnodes</em><big>)</big><a class="headerlink" href="#DOMTreeSequenceOperationHandler" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>par</strong> &#8211; The tree.Node whose children should be replaced</li>
+<li><strong>before</strong> &#8211; <dl class="docutils">
+<dt>The tree.Node where new nodes should be attached</dt>
+<dd>before</dd>
+</dl>
+</li>
+<li><strong>oldnodes</strong> &#8211; <dl class="docutils">
+<dt>An array of the root DOM elements of the original</dt>
+<dd>subtrees</dd>
+</dl>
+</li>
+<li><strong>newnodes</strong> &#8211; <dl class="docutils">
+<dt>An array of the root DOM elements of the changed</dt>
+<dd>subtrees</dd>
+</dl>
+</li>
+<li><strong>newnodes</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="activate">
+<h3>activate<a class="headerlink" href="#activate" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMTreeSequenceOperationHandler#activate">
+<tt class="descname">DOMTreeSequenceOperationHandler#activate</tt><big>(</big><big>)</big><a class="headerlink" href="#DOMTreeSequenceOperationHandler#activate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Activate this hunk, inserting new subtrees and removing old subtrees if
+necessary.</p>
+</div>
+<div class="section" id="deactivate">
+<h3>deactivate<a class="headerlink" href="#deactivate" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMTreeSequenceOperationHandler#deactivate">
+<tt class="descname">DOMTreeSequenceOperationHandler#deactivate</tt><big>(</big><big>)</big><a class="headerlink" href="#DOMTreeSequenceOperationHandler#deactivate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Deactivate this hunk, removing inserted nodes and inserting removed
+nodes into if necessary.</p>
+</div>
+<div class="section" id="isactive">
+<h3>isActive<a class="headerlink" href="#isactive" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMTreeSequenceOperationHandler#isActive">
+<tt class="descname">DOMTreeSequenceOperationHandler#isActive</tt><big>(</big><big>)</big><a class="headerlink" href="#DOMTreeSequenceOperationHandler#isActive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return true if the hunk is active</p>
+</div>
+<div class="section" id="toggle">
+<h3>toggle<a class="headerlink" href="#toggle" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMTreeSequenceOperationHandler#toggle">
+<tt class="descname">DOMTreeSequenceOperationHandler#toggle</tt><big>(</big><big>)</big><a class="headerlink" href="#DOMTreeSequenceOperationHandler#toggle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Toggle active state</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DOMTreeSequenceOperationHandler</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#activate">activate</a></li>
+<li><a class="reference internal" href="#deactivate">deactivate</a></li>
+<li><a class="reference internal" href="#isactive">isActive</a></li>
+<li><a class="reference internal" href="#toggle">toggle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DOMNodeReplaceOperationHandler.html"
+                        title="previous chapter">Class DOMNodeReplaceOperationHandler</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../jsonpayload.html"
+                        title="next chapter">JSON Payload</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../jsonpayload.html" title="JSON Payload"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DOMNodeReplaceOperationHandler.html" title="Class DOMNodeReplaceOperationHandler"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../domhandler.html" >DOM Operation Handler</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

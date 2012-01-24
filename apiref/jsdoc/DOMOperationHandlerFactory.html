@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DOMOperationHandlerFactory &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="DOM Operation Handler" href="../domhandler.html" />
+    <link rel="next" title="Class DOMNodeReplaceOperationHandler" href="DOMNodeReplaceOperationHandler.html" />
+    <link rel="prev" title="DOM Operation Handler" href="../domhandler.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DOMNodeReplaceOperationHandler.html" title="Class DOMNodeReplaceOperationHandler"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../domhandler.html" title="DOM Operation Handler"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../domhandler.html" accesskey="U">DOM Operation Handler</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-domoperationhandlerfactory">
+<h1>Class DOMOperationHandlerFactory<a class="headerlink" href="#class-domoperationhandlerfactory" title="Permalink to this headline">¶</a></h1>
+<p>Construct a DOM operation factory.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DOMOperationHandlerFactory">
+<em class="property">class </em><tt class="descname">DOMOperationHandlerFactory</tt><big>(</big><big>)</big><a class="headerlink" href="#DOMOperationHandlerFactory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="createforestupdateoperationhandler">
+<h3>createForestUpdateOperationHandler<a class="headerlink" href="#createforestupdateoperationhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMOperationHandlerFactory#createForestUpdateOperationHandler">
+<tt class="descname">DOMOperationHandlerFactory#createForestUpdateOperationHandler</tt><big>(</big><em>anchor</em>, <em>length</em>, <em>replacement</em>, <em>parenthandler</em><big>)</big><a class="headerlink" href="#DOMOperationHandlerFactory#createForestUpdateOperationHandler" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>anchor</strong> &#8211; <dl class="docutils">
+<dt>A DeltaJS.tree.Anchor pointing to the first node which</dt>
+<dd>should be removed. Should point to the location before
+which elements should be inserted if no nodes are to be
+removed.</dd>
+</dl>
+</li>
+<li><strong>length</strong> &#8211; Number of tree nodes to be removed</li>
+<li><strong>replacement</strong> &#8211; Array of replacement tree nodes</li>
+<li><strong>parenthandler</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return a new forest update operation for a sequence of children of the given
+node. Remove all children from start through length and replace them with
+the subtrees given in the replacement array.</p>
+</div>
+<div class="section" id="createnodeupdateoperationhandler">
+<h3>createNodeUpdateOperationHandler<a class="headerlink" href="#createnodeupdateoperationhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMOperationHandlerFactory#createNodeUpdateOperationHandler">
+<tt class="descname">DOMOperationHandlerFactory#createNodeUpdateOperationHandler</tt><big>(</big><em>anchor</em>, <em>newnode</em><big>)</big><a class="headerlink" href="#DOMOperationHandlerFactory#createNodeUpdateOperationHandler" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>anchor</strong> &#8211; A DeltaJS.tree.Anchor pointing to the node with old values</li>
+<li><strong>newnode</strong> &#8211; A DeltaJS.tree.node pointing to the node with the new values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return a new node update operation on the given node.</p>
+</div>
+<div class="section" id="createoperationhandler">
+<h3>createOperationHandler<a class="headerlink" href="#createoperationhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMOperationHandlerFactory#createOperationHandler">
+<tt class="descname">DOMOperationHandlerFactory#createOperationHandler</tt><big>(</big><em>anchor</em>, <em>op</em>, <em>path</em>, <em>remove</em>, <em>insert</em><big>)</big><a class="headerlink" href="#DOMOperationHandlerFactory#createOperationHandler" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>anchor</strong> &#8211; A DeltaJS.tree.Anchor</li>
+<li><strong>op</strong> &#8211; The operation to create a handler for</li>
+<li><strong>path</strong> &#8211; </li>
+<li><strong>remove</strong> &#8211; </li>
+<li><strong>insert</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return a new operation handler for the given operation at the anchor.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DOMOperationHandlerFactory</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#createforestupdateoperationhandler">createForestUpdateOperationHandler</a></li>
+<li><a class="reference internal" href="#createnodeupdateoperationhandler">createNodeUpdateOperationHandler</a></li>
+<li><a class="reference internal" href="#createoperationhandler">createOperationHandler</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../domhandler.html"
+                        title="previous chapter">DOM Operation Handler</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DOMNodeReplaceOperationHandler.html"
+                        title="next chapter">Class DOMNodeReplaceOperationHandler</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DOMNodeReplaceOperationHandler.html" title="Class DOMNodeReplaceOperationHandler"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../domhandler.html" title="DOM Operation Handler"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../domhandler.html" >DOM Operation Handler</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

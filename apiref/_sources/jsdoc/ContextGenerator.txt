@@ -1,0 +1,128 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class ContextGenerator
+================================================================================
+
+..
+   class-title
+
+
+Constructor for a simple context generator with the given radius. Node
+locations are resolved using nodeindex (typically an instance of
+tree.DocumentOrderIndex) and values are mapped using the valindex.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: ContextGenerator(radius, nodeindex, valindex)
+
+
+    
+    :param  radius: 
+         
+    
+    :param  nodeindex: 
+         
+    
+    :param  valindex: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+head
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ContextGenerator#head(anchor)
+
+
+    
+    :param  anchor: 
+        The tree.Anchor specifying the first node after head. 
+    
+
+
+
+
+Return n values representing the head-context where n is the size of the
+radius.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+tail
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ContextGenerator#tail(anchor, length, depth)
+
+
+    
+    :param  anchor: 
+        The tree.Anchor specifying the first node after head. 
+    
+    :param  length: 
+        The number of siblings affected by the operation. 
+    
+    :param  depth: 
+        Wether the operation affects subtrees (true) or only
+                 one node (false). 
+    
+
+
+
+
+Return the values for the tail context starting with the given node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

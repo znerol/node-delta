@@ -1,0 +1,164 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DOMOperationHandlerFactory
+================================================================================
+
+..
+   class-title
+
+
+Construct a DOM operation factory.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DOMOperationHandlerFactory()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+createForestUpdateOperationHandler
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMOperationHandlerFactory#createForestUpdateOperationHandler(anchor, length, replacement, parenthandler)
+
+
+    
+    :param  anchor: 
+        A DeltaJS.tree.Anchor pointing to the first node which
+                 should be removed. Should point to the location before
+                 which elements should be inserted if no nodes are to be
+                 removed. 
+    
+    :param  length: 
+        Number of tree nodes to be removed 
+    
+    :param  replacement: 
+        Array of replacement tree nodes 
+    
+    :param  parenthandler: 
+         
+    
+
+
+
+
+Return a new forest update operation for a sequence of children of the given
+node. Remove all children from start through length and replace them with
+the subtrees given in the replacement array.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createNodeUpdateOperationHandler
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMOperationHandlerFactory#createNodeUpdateOperationHandler(anchor, newnode)
+
+
+    
+    :param  anchor: 
+        A DeltaJS.tree.Anchor pointing to the node with old values 
+    
+    :param  newnode: 
+        A DeltaJS.tree.node pointing to the node with the new values 
+    
+
+
+
+
+Return a new node update operation on the given node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createOperationHandler
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMOperationHandlerFactory#createOperationHandler(anchor, op, path, remove, insert)
+
+
+    
+    :param  anchor: 
+        A DeltaJS.tree.Anchor 
+    
+    :param  op: 
+        The operation to create a handler for 
+    
+    :param  path: 
+         
+    
+    :param  remove: 
+         
+    
+    :param  insert: 
+         
+    
+
+
+
+
+Return a new operation handler for the given operation at the anchor.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

@@ -1,0 +1,199 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class diff.Diff
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of a patch command based on the given factory objects.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: diff.Diff(diffFactory, docFactory, deltaFactory)
+
+
+    
+    :param Object diffFactory: 
+        A reference to a diff algorithm profile. 
+    
+    :param Object docFactory: 
+        A reference to a document profile. 
+    
+    :param Object deltaFactory: 
+        A reference to a delta profile.
+
+Usage example:
+
+.. code-block:: javascript
+
+     var diffProfile = require('./lib/profiles/algo-diff-skelmatch');
+     var docProfile = require('./lib/profiles/doc-tree-xml');
+     var deltaProfile = require('./lib/profiles/delta-tree-xml');
+     var diff = require('./lib/delta/diff');
+     
+     var d = new diff.Diff(diffProfile, docProfile, deltaProfile);
+
+     var orig = docProfile.loadOriginalDocument(original_content);
+     var changed = docProfile.loadInputDocument(changed_content);
+
+     var delta = d.diff(orig, changed);
+
+     var result = deltaProfile.serializeDocument(delta); 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+Diff#collect
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: diff.Diff.Diff#collect(doc1, doc2, matching)
+
+
+    
+    :param Object doc1: 
+        Original document. An instance returned by document
+                         profile loadOriginalDocument method. 
+    
+    :param Object doc2: 
+        Changed document. An instance returned by document
+                         profile loadInputDocument method. 
+    
+    :param Object matching: 
+        The matching produced by the choosen diff
+                         algorithm. 
+    
+
+
+
+    
+    :returns Object:
+        Delta document. 
+    
+
+
+Construct delta document.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#diff
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: diff.Diff.Diff#diff(doc1, doc2)
+
+
+    
+    :param Object doc1: 
+        Original document. An instance returned by document
+                         profile loadOriginalDocument method. 
+    
+    :param Object doc2: 
+        Changed document. An instance returned by document
+                         profile loadInputDocument method. 
+    
+
+
+
+    
+    :returns Object:
+        Delta document. 
+    
+
+
+Return the delta object after computing and collecting the diff between
+doc1 and doc2.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#populate
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: diff.Diff.Diff#populate(deltadoc, doc)
+
+
+    
+    :param Object deltadoc: 
+        The delta document produced by diff.Diff.collect. 
+    
+    :param Object doc: 
+        Original document. An instance returned by document
+                         profile loadInputDocument method. 
+    
+
+
+
+    
+    :returns Object:
+        The file-format specific representation of the delta
+                 document (e.g. the DOM document). 
+    
+
+
+Populate delta document with detached operations
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

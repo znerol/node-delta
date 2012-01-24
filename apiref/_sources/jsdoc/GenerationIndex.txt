@@ -1,0 +1,342 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class GenerationIndex
+================================================================================
+
+..
+   class-title
+
+
+Create a new secondary tree structure providing quick access to all
+nodes of a generation.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: GenerationIndex(root, [propname])
+
+
+    
+    :param object root: 
+        A tree.Node representing the root of the tree 
+    
+    :param string propname: 
+        The name of the property which will be used to
+        cache index values on tree.Node objects. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+buildAll
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: GenerationIndex#buildAll()
+
+
+
+
+
+Build up complete generation index upfront if necessary.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+buildSubtree
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: GenerationIndex#buildSubtree(node)
+
+
+    
+    :param  node: 
+         
+    
+
+
+
+
+Build up index of a subtree rooting at the specified node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+extendGeneration
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: GenerationIndex.extendGeneration(depth, offset)
+
+
+    
+    :param  depth: 
+         
+    
+    :param  offset: 
+         
+    
+
+
+
+
+Extend generation index dynamically (not implemented yet)
+
+
+
+
+
+
+
+
+
+    
+
+
+
+first
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: GenerationIndex#first(depth)
+
+
+    
+    :param  depth: 
+         
+    
+
+
+
+
+Return first node of the generation at depth.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+get
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: GenerationIndex#get(refnode, offset)
+
+
+    
+    :param object refnode: 
+        The reference tree.Node 
+    
+    :param number offset: 
+        An integer value 
+    
+
+
+
+    
+    :returns object:
+        tree.Node or undefined 
+    
+
+
+Return a tree.Node with the same depth at the given offset relative to
+the given reference node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+last
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: GenerationIndex#last(depth)
+
+
+    
+    :param  depth: 
+         
+    
+
+
+
+
+Return last node of the generation at depth.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+Attributes
+----------
+
+..
+   class-attributes
+
+
+gencomplete
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: gencomplete   
+
+
+An array of booleans indexed by tree depth indicating whether all
+nodes of a generation have been indexed.
+
+
+
+
+
+
+
+
+    
+
+
+
+generations
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: generations   
+
+
+An array of arrays of tree.Nodes. Each containing tree.Nodes at the
+same depth.
+
+
+
+
+
+
+
+
+    
+
+
+
+idxcomplete
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: idxcomplete   
+
+
+Return true if the whole generation index is complete.
+
+
+
+
+
+
+
+
+    
+
+
+
+propname
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: propname   
+
+
+A property set at every indexed tree.Node indicating the position
+of the node in the generation.
+
+
+
+
+
+
+
+
+    
+
+
+
+root
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: root   
+
+
+The root of the tree.
+
+
+
+
+
+
+
+
+    
+
+
+
+
+

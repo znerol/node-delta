@@ -1,0 +1,43 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class JSONFragmentAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: JSONFragmentAdapter()
+
+
+
+
+
+
+
+
+    
+
+

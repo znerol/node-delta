@@ -1,0 +1,43 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class XMLPayloadHandler
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: XMLPayloadHandler()
+
+
+
+
+
+
+
+
+    
+
+

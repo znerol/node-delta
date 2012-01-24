@@ -1,0 +1,264 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DocumentOrderIndex
+================================================================================
+
+..
+   class-title
+
+
+Create a new secondary tree structure providing quick access to all
+nodes in document order.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DocumentOrderIndex(root, [propname])
+
+
+    
+    :param object root: 
+        A tree.Node representing the root of the tree 
+    
+    :param string propname: 
+        The name of the property which will be used to
+        cache index values on tree.Node objects. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+buildAll
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentOrderIndex#buildAll()
+
+
+
+
+
+Build up complete document order index upfront if necessary.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+flatten
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentOrderIndex#flatten(refnode)
+
+
+    
+    :param  refnode: 
+         
+    
+
+
+
+
+Return an array of all nodes contained in the subtree under refnode in
+document order index.
+Static function: must work also with nodes which are not part of the index.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+get
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentOrderIndex#get(refnode, offset)
+
+
+    
+    :param object refnode: 
+        The reference tree.Node 
+    
+    :param number offset: 
+        An integer value 
+    
+
+
+
+    
+    :returns object:
+        tree.Node or undefined 
+    
+
+
+Return a tree.Node at the offset relative to the given reference node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+size
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentOrderIndex#size(refnode)
+
+
+    
+    :param  refnode: 
+         
+    
+
+
+
+
+Return the size of a subtree when traversed using this index
+Static function: must work also with nodes which are not part of the index.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+Attributes
+----------
+
+..
+   class-attributes
+
+
+idxcomplete
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: idxcomplete   
+
+
+Return true if the whole generation index is complete.
+
+
+
+
+
+
+
+
+    
+
+
+
+nodes
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: nodes   
+
+
+Array of nodes in document order.
+
+
+
+
+
+
+
+
+    
+
+
+
+propname
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: propname   
+
+
+A property set at every indexed tree.Node indicating the position
+of the node in the generation.
+
+
+
+
+
+
+
+
+    
+
+
+
+root
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: root   
+
+
+The root of the tree.
+
+
+
+
+
+
+
+
+    
+
+
+
+
+

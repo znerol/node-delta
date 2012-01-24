@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DeltaJSONFactory &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="High Level Diff and Patch Interface" href="../highlevel.html" />
+    <link rel="next" title="LCS Algorithm" href="../lcs.html" />
+    <link rel="prev" title="Class DocumentXMLFactory" href="DocumentXMLFactory.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../lcs.html" title="LCS Algorithm"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DocumentXMLFactory.html" title="Class DocumentXMLFactory"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" accesskey="U">High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-deltajsonfactory">
+<h1>Class DeltaJSONFactory<a class="headerlink" href="#class-deltajsonfactory" title="Permalink to this headline">¶</a></h1>
+<p>Create a new instance of the factory class supporting the JSON patch file
+format.</p>
+<p><strong>FIXME: This class is just a copy-paste + search-replace from
+DeltaXMLFactory and will most likely not work out of the box.</strong></p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DeltaJSONFactory">
+<em class="property">class </em><tt class="descname">DeltaJSONFactory</tt><big>(</big><big>)</big><a class="headerlink" href="#DeltaJSONFactory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="createattacher">
+<h3>createAttacher<a class="headerlink" href="#createattacher" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaJSONFactory#createAttacher">
+<tt class="descname">DeltaJSONFactory#createAttacher</tt><big>(</big><em>resolver</em><big>)</big><a class="headerlink" href="#DeltaJSONFactory#createAttacher" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>resolver</strong> (<em>Object</em>) &#8211; An instance of ContextResolver. Use the output of
+createResolver method from the resolver factory.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns delta.Attacher:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">Initialized attacher instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return an initialized context delta attacher instance</p>
+</div>
+<div class="section" id="createcollector">
+<h3>createCollector<a class="headerlink" href="#createcollector" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaJSONFactory#createCollector">
+<tt class="descname">DeltaJSONFactory#createCollector</tt><big>(</big><em>deltadoc</em>, <em>doc</em><span class="optional">[</span>, <em>equals</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#DeltaJSONFactory#createCollector" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>deltadoc</strong> (<em>Object</em>) &#8211; The delta document produced by createEmptyDocument
+or loadDocument.</li>
+<li><strong>doc</strong> (<em>Object</em>) &#8211; The document as created by the
+loadOriginalDocument method of the document factory class.</li>
+<li><strong>equals</strong> (<em>functio</em>) &#8211; The equality test-function used during diffing.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns delta.DeltaCollector:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">An initialized collector instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return an initialized collector instance.</p>
+</div>
+<div class="section" id="createdeltaadapter">
+<h3>createDeltaAdapter<a class="headerlink" href="#createdeltaadapter" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaJSONFactory#createDeltaAdapter">
+<tt class="descname">DeltaJSONFactory#createDeltaAdapter</tt><big>(</big><em>fragAdapter</em><big>)</big><a class="headerlink" href="#DeltaJSONFactory#createDeltaAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>fragAdapter</strong> (<em>Object</em>) &#8211; A document fragemnt adapter. Use the object
+produced by createFragmentAdapter method from a document factory.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns jsondelta.JSONDeltaAdapter:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">Initialized instance of the proper delta
+adapter.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return an initialized delta adapter instance.</p>
+</div>
+<div class="section" id="createdetacher">
+<h3>createDetacher<a class="headerlink" href="#createdetacher" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaJSONFactory#createDetacher">
+<tt class="descname">DeltaJSONFactory#createDetacher</tt><big>(</big><em>doc</em><big>)</big><a class="headerlink" href="#DeltaJSONFactory#createDetacher" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>doc</strong> (<em>Object</em>) &#8211; The document as created by the
+loadOriginalDocument method of the document factory class.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns contextdelta.Detacher:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">Initialized detacher instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return an initialized context delta detacher instance.</p>
+</div>
+<div class="section" id="createemptydocument">
+<h3>createEmptyDocument<a class="headerlink" href="#createemptydocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaJSONFactory#createEmptyDocument">
+<tt class="descname">DeltaJSONFactory#createEmptyDocument</tt><big>(</big><span class="optional">[</span><em>matching</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#DeltaJSONFactory#createEmptyDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>matching</strong> (<em>tree.Matching</em>) &#8211; A matching produced by some tree diff algorithm.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns Object:</th><td class="field-body"><p class="first last">A delta document initialized with default values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return a new empty delta document.</p>
+</div>
+<div class="section" id="loaddocument">
+<h3>loadDocument<a class="headerlink" href="#loaddocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaJSONFactory#loadDocument">
+<tt class="descname">DeltaJSONFactory#loadDocument</tt><big>(</big><em>jsondoc</em>, <em>fragAdapter</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#DeltaJSONFactory#loadDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>jsondoc</strong> (<em>String|Document</em>) &#8211; A document containing delta operations.</li>
+<li><strong>fragAdapter</strong> (<em>Object</em>) &#8211; A document fragemnt adapter. Use the object
+produced by createFragmentAdapter method from a document factory.</li>
+<li><strong>name</strong> (<em>String</em>) &#8211; The file name of the document.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns Object:</th><td class="field-body"><p class="first last">A delta document initialized with default values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return a delta document loaded from the given string or JavaScript object.</p>
+</div>
+<div class="section" id="serializedocument">
+<h3>serializeDocument<a class="headerlink" href="#serializedocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaJSONFactory#serializeDocument">
+<tt class="descname">DeltaJSONFactory#serializeDocument</tt><big>(</big><em>deltadoc</em><big>)</big><a class="headerlink" href="#DeltaJSONFactory#serializeDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>deltadoc</strong> (<em>Object</em>) &#8211; A populated delta document.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns String:</th><td class="field-body"><p class="first last">The JSON representation of the delta document as a string.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Serialize the data property into the src string and return it. Also store
+the source into the <tt class="docutils literal"><span class="pre">src</span></tt> property of <tt class="docutils literal"><span class="pre">deltadoc</span></tt>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DeltaJSONFactory</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#createattacher">createAttacher</a></li>
+<li><a class="reference internal" href="#createcollector">createCollector</a></li>
+<li><a class="reference internal" href="#createdeltaadapter">createDeltaAdapter</a></li>
+<li><a class="reference internal" href="#createdetacher">createDetacher</a></li>
+<li><a class="reference internal" href="#createemptydocument">createEmptyDocument</a></li>
+<li><a class="reference internal" href="#loaddocument">loadDocument</a></li>
+<li><a class="reference internal" href="#serializedocument">serializeDocument</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DocumentXMLFactory.html"
+                        title="previous chapter">Class DocumentXMLFactory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../lcs.html"
+                        title="next chapter">LCS Algorithm</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../lcs.html" title="LCS Algorithm"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DocumentXMLFactory.html" title="Class DocumentXMLFactory"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" >High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

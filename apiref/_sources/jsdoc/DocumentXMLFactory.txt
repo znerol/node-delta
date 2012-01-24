@@ -1,0 +1,355 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DocumentXMLFactory
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of the XML document factory class.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DocumentXMLFactory()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+createEmptyDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#createEmptyDocument()
+
+
+
+
+    
+    :returns Object:
+        A document initialized with default values. 
+    
+
+
+Return a new empty document.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createFragmentAdapter
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#createFragmentAdapter(type)
+
+
+    
+    :param String type: 
+        The document type of the delta document this adapter
+        should be used for. 
+    
+
+
+
+    
+    :returns FragmentAdapter:
+        A suitable fragment adapter for the given type. 
+    
+
+
+Return the proper document fragment adapter for the given deltadoc type.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createHandlerFactory
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#createHandlerFactory()
+
+
+
+
+    
+    :returns object:
+        Instance of the handler factory class suitable for XML
+        documents. 
+    
+
+
+Returns delta operation handler factory.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createNodeEqualityTest
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#createNodeEqualityTest(doc1, doc2)
+
+
+    
+    :param object doc1: 
+        The original document 
+    
+    :param object doc2: 
+        The changed document 
+    
+
+
+
+    
+    :returns function:
+        node equality test function. 
+    
+
+
+Return the proper node equality test function.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createTreeEqualityTest
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#createTreeEqualityTest(doc1, doc2)
+
+
+    
+    :param object doc1: 
+        The original document 
+    
+    :param object doc2: 
+        The changed document 
+    
+
+
+
+    
+    :returns function:
+        node equality test function. 
+    
+
+
+Return the proper subtree equality test.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createValueTest
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#createValueTest(doc)
+
+
+    
+    :param object doc: 
+        The original document 
+    
+
+
+
+    
+    :returns function:
+        value comparison function. 
+    
+
+
+Return proper value checker.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+loadInputDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#loadInputDocument(domdoc, [name])
+
+
+    
+    :param String|Document domdoc: 
+        The underlying DOMDocument. 
+    
+    :param String name: 
+        The file name of the document. 
+    
+
+
+
+    
+    :returns Object:
+        A document initialized from the given DOMDocument. 
+    
+
+
+Return new document loaded from a DOMDocument.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+loadOriginalDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#loadOriginalDocument(domdoc, [name])
+
+
+    
+    :param String|Document domdoc: 
+        The underlying DOMDocument. 
+    
+    :param String name: 
+        The file name of the document. 
+    
+
+
+
+    
+    :returns Object:
+        A document initialized from the given DOMDocument. 
+    
+
+
+Return new document loaded from a DOMDocument. Use this method for loading
+the original (unchanged) document and supply it as doc1 to diff.Diff or
+patch.Patch.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+serializeDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DocumentXMLFactory#serializeDocument(deltadoc)
+
+
+    
+    :param Object deltadoc: 
+        A populated delta document. 
+    
+
+
+
+    
+    :returns String:
+        The XML representation of the delta document as a string. 
+    
+
+
+Serialize the data property into the src string and return it. Also store
+the source into the ``src`` property of ``deltadoc``.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

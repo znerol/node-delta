@@ -1,0 +1,129 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DiffXCCFactory
+================================================================================
+
+..
+   class-title
+
+
+Return new instance of XCC diff factory class.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DiffXCCFactory([options])
+
+
+    
+    :param Object options: 
+        Options which will be passed to the xcc algorithm
+        upon instantiation. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+createDiffAlgorithm
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DiffXCCFactory#createDiffAlgorithm(doc1, doc2, [equals])
+
+
+    
+    :param Object doc1: 
+        The original document. Use
+        ``loadOriginalDocument`` of the document factory to load a suitable
+        document. 
+    
+    :param Object doc2: 
+        The changed document. Use ``loadInputDocument``
+        of the document factory to load a suitable document. 
+    
+    :param function equals: 
+        The equality test-function used during diffing.
+        Use the method ``createNodeEqualityTest`` of the document factory to
+        create a suitable equality test function. 
+    
+
+
+
+    
+    :returns xcc.Diff:
+        An initialized xcc.Diff instance. 
+    
+
+
+Return new initialized instance of XCC diff algorithm.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createMatching
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DiffXCCFactory#createMatching()
+
+
+
+
+    
+    :returns tree.Matching:
+        Empty matching object. 
+    
+
+
+Return new tree matching object
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

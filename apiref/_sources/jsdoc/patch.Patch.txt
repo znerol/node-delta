@@ -1,0 +1,158 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class patch.Patch
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of a patch command based on the given factory objects.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: patch.Patch(resolverFactory, docFactory, deltaFactory)
+
+
+    
+    :param Object resolverFactory: 
+        A reference to a resolver profile. 
+    
+    :param Object docFactory: 
+        A reference to a document profile. 
+    
+    :param Object deltaFactory: 
+        A reference to a delta profile.
+
+Usage example:
+
+.. code-block:: javascript
+
+     var resolverProfile = require('./lib/profiles/algo-resolver-xcc');
+     var docProfile = require('./lib/profiles/doc-tree-xml');
+     var deltaProfile = require('./lib/profiles/delta-tree-xml');
+     var patch = require('./lib/delta/patch');
+     
+     var p = new patch.Patch(resolverProfile, docProfile, deltaProfile);
+
+     var doc = docProfile.loadOriginalDocument(document_content);
+     var fragadapter = docProfile.createFragmentAdapter(doc.type);
+     var delta = deltaProfile.loadDocument(patch_content, fragadapter);
+
+     p.patch(doc, delta);
+
+     var result = docProfile.serializeDocument(doc); 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+Patch#patch
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: patch.Patch.Patch#patch(doc, deltadoc)
+
+
+    
+    :param Object doc: 
+        An instance returned by the document factory
+                             loadInputDocument method. 
+    
+    :param Object deltadoc: 
+        An instance returned from the delta factory
+                             loadDocument method. 
+    
+
+
+
+    
+    :returns Number:
+        The number of changes which were not resolved properly. 
+    
+
+
+Patch the doc using the operations found in deltadoc. Resolve all
+operations, install change handlers and activate all of them in one step.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Patch#resolve
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: patch.Patch.Patch#resolve(deltadoc, deltadoc)
+
+
+    
+    :param Object deltadoc: 
+        An instance returned from the delta factory
+                             loadDocument method. 
+    
+    :param  deltadoc: 
+         
+    
+
+
+
+    
+    :returns Number:
+        The number of changes which were not resolved properly. 
+    
+
+
+Resolve all operations in the given delta document and create an attached
+operation for each of them.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

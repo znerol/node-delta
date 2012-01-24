@@ -1,0 +1,206 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DetachedContextOperation
+================================================================================
+
+..
+   class-title
+
+
+Construct a new detached context delta operation instance. This is a pure
+data object without any methods.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DetachedContextOperation(type, path, remove, insert, head, tail)
+
+
+    
+    :param  type: 
+         
+    
+    :param  path: 
+         
+    
+    :param  remove: 
+         
+    
+    :param  insert: 
+         
+    
+    :param  head: 
+         
+    
+    :param  tail: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+toString
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DetachedContextOperation#toString()
+
+
+
+
+
+Return a string representation of the operation
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+Attributes
+----------
+
+..
+   class-attributes
+
+
+head
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: head   
+
+
+Fingerprint values for the content. For insert operations, this
+array should be empty. For remove-operations, the array should
+contain the fingerprint values of the nodes which should be removed,
+for update operations, the only element should be the fingerprint
+value of the original node.
+
+
+
+
+
+
+
+
+    
+
+
+
+insert
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: insert   
+
+
+Null (remove), one tree.Node (update) or sequence of nodes (insert)
+
+
+
+
+
+
+
+
+    
+
+
+
+path
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: path   
+
+
+An array of integers representing the top-down path from the root
+node to the anchor of this operation. The anchor point always is
+the first position after the leading context values. For insert
+operations it will must point to the first element of the tail
+context.
+
+
+
+
+
+
+
+
+    
+
+
+
+remove
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: remove   
+
+
+Null (insert), one tree.Node (update) or sequence of nodes (delete)
+
+
+
+
+
+
+
+
+    
+
+
+
+type
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: type   
+
+
+The operation type, one of deltamod.UPDATE_NODE_TYPE, deltamod.UPDATE_FOREST_TYPE
+
+
+
+
+
+
+
+
+    
+
+
+
+
+

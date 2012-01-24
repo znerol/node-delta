@@ -1,0 +1,103 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class FNV132Hash
+================================================================================
+
+..
+   class-title
+
+
+Create and initialize a new 32bit FNV-1 hash object.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: FNV132Hash()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+get
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: FNV132Hash#get()
+
+
+
+
+
+Return current hash value;
+
+
+
+
+
+
+
+
+
+    
+
+
+
+update
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: FNV132Hash#update(bytes)
+
+
+    
+    :param  bytes: 
+         
+    
+
+
+
+
+Update the hash with the given string and return the new hash value. No
+calculation is performed when the bytes-parameter is left out.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

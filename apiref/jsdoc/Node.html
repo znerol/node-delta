@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class Node &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="Tree Utilities" href="../tree.html" />
+    <link rel="next" title="Class Anchor" href="Anchor.html" />
+    <link rel="prev" title="Tree Utilities" href="../tree.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Anchor.html" title="Class Anchor"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../tree.html" title="Tree Utilities"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../tree.html" accesskey="U">Tree Utilities</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-node">
+<h1>Class Node<a class="headerlink" href="#class-node" title="Permalink to this headline">¶</a></h1>
+<p>Create a new tree node and set its value and optionally user data.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Node">
+<em class="property">class </em><tt class="descname">Node</tt><big>(</big><span class="optional">[</span><em>value</em><span class="optional">]</span><span class="optional">[</span>, <em>data</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Node" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> (<em>String</em>) &#8211; The node value.</li>
+<li><strong>data</strong> (<em>object</em>) &#8211; User data for this tree node. You may store a
+reference to the corresponding object in the underlying document
+structure. E.g. a reference to a DOM element.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="append">
+<h3>append<a class="headerlink" href="#append" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Node#append">
+<tt class="descname">Node#append</tt><big>(</big><em>child</em><big>)</big><a class="headerlink" href="#Node#append" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>child</strong> (<em>object</em>) &#8211; The new child node.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Append the given node as a child node.</p>
+</div>
+<div class="section" id="foreach">
+<h3>forEach<a class="headerlink" href="#foreach" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Node#forEach">
+<tt class="descname">Node#forEach</tt><big>(</big><em>callback</em><span class="optional">[</span>, <em>T</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Node#forEach" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>callback</strong> (<em>function</em>) &#8211; The function which will be invoked for each
+node.</li>
+<li><strong>T</strong> (<em>object</em>) &#8211; Context object bound to &#8220;this&#8221; when the
+callback is invoked.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Invokes a callback for the node and all its child nodes in preorder
+(document order).</p>
+</div>
+<div class="section" id="foreachdescendant">
+<h3>forEachDescendant<a class="headerlink" href="#foreachdescendant" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Node#forEachDescendant">
+<tt class="descname">Node#forEachDescendant</tt><big>(</big><em>callback</em><span class="optional">[</span>, <em>T</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Node#forEachDescendant" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>callback</strong> (<em>function</em>) &#8211; The function which will be invoked for each
+node.</li>
+<li><strong>T</strong> (<em>object</em>) &#8211; Context object bound to &#8220;this&#8221; when the
+callback is invoked.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Equal to forEach except that the callback is not invoked for the context
+node.</p>
+</div>
+<div class="section" id="foreachpostorder">
+<h3>forEachPostorder<a class="headerlink" href="#foreachpostorder" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Node#forEachPostorder">
+<tt class="descname">Node#forEachPostorder</tt><big>(</big><em>callback</em><span class="optional">[</span>, <em>T</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Node#forEachPostorder" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>callback</strong> (<em>function</em>) &#8211; The function which will be invoked for each
+node.</li>
+<li><strong>T</strong> (<em>object</em>) &#8211; Context object bound to &#8220;this&#8221; when the
+callback is invoked.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Invokes a callback for the node and all its child nodes in postorder.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class Node</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#append">append</a></li>
+<li><a class="reference internal" href="#foreach">forEach</a></li>
+<li><a class="reference internal" href="#foreachdescendant">forEachDescendant</a></li>
+<li><a class="reference internal" href="#foreachpostorder">forEachPostorder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../tree.html"
+                        title="previous chapter">Tree Utilities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Anchor.html"
+                        title="next chapter">Class Anchor</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Anchor.html" title="Class Anchor"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../tree.html" title="Tree Utilities"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../tree.html" >Tree Utilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

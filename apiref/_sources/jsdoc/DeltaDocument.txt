@@ -1,0 +1,272 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DeltaDocument
+================================================================================
+
+..
+   class-title
+
+
+Create new delta document instance.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DeltaDocument(type, [name], data, [attached], [detached], [src], [matching])
+
+
+    
+    :param string type: 
+        The document type. E.g. 'xml' or 'json' 
+    
+    :param string name: 
+        The file name. 
+    
+    :param object data: 
+        A reference to the underlying document, the DOM. 
+    
+    :param array attached: 
+        An array of attached operations (
+        :js:class:AttachedOperation). 
+    
+    :param array detached: 
+        An array of detached operations (e.g.
+        :js:class:DetachedContextOperation) when loading from a file. 
+    
+    :param string src: 
+        The serialized version of this document, e.g. the
+        XML markup code. 
+    
+    :param object matching: 
+        A matching which should be used to build up the
+        document later on. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+installHandlers
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaDocument#installHandlers(handlerfactory)
+
+
+    
+    :param Object handlerfactory: 
+        An instance returned from the document
+        factory ``createHandlerFactory`` method. 
+    
+
+
+
+
+Install handlers for a resolved delta.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+toggleHandlers
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaDocument#toggleHandlers()
+
+
+
+
+
+Toggle all handlers of a delta document.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+Attributes
+----------
+
+..
+   class-attributes
+
+
+attached
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: attached   
+
+
+An array of attached operations.
+
+
+
+
+
+
+
+
+    
+
+
+
+data
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: data   
+
+
+A reference to the underlying document, e.g. the DOMDocument object.
+
+
+
+
+
+
+
+
+    
+
+
+
+detached
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: detached   
+
+
+An array of dettached operations.
+
+
+
+
+
+
+
+
+    
+
+
+
+matching
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: matching   
+
+
+A matching which is used to collect attached operations when building
+the delta document.
+
+
+
+
+
+
+
+
+    
+
+
+
+name
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: name   
+
+
+The file name
+
+
+
+
+
+
+
+
+    
+
+
+
+src
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: src   
+
+
+The serialized version of this document.
+
+
+
+
+
+
+
+
+    
+
+
+
+type
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: type   
+
+
+The document type. E.g. 'xml' or 'json'
+
+
+
+
+
+
+
+
+    
+
+
+
+
+

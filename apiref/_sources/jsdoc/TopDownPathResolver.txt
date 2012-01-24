@@ -1,0 +1,96 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class TopDownPathResolver
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of top-down path resolver
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: TopDownPathResolver(refnode)
+
+
+    
+    :param  refnode: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+resolve
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: TopDownPathResolver#resolve(path, base)
+
+
+    
+    :param  path: 
+        Array of integers 
+    
+    :param  base: 
+         
+    
+
+
+
+    
+    :returns :
+        A result object with two properties: node holds the resolved
+tree.Node and tail the unresolved part of path. 
+    
+
+
+Try to resolve the given path top-down. Return an object containing the last
+internal node which was resolved properly as well as the unresolved tail of
+the path. Note that leaf nodes are represented by their parent and a tail
+containing their child-index.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

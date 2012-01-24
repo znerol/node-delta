@@ -1,0 +1,87 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DOMDeltaAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DOMDeltaAdapter(fragmentadapter)
+
+
+    
+    :param  fragmentadapter: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+populateDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMDeltaAdapter#populateDocument(doc, operations)
+
+
+    
+    :param  doc: 
+         
+    
+    :param  operations: 
+         
+    
+
+
+
+
+Populate the document with settings and operations from delta.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

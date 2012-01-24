@@ -1,0 +1,299 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Built-In Namespace _global_
+================================================================================
+
+..
+   class-title
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+mapdom
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: mapdom(node, callback, T, presult)
+
+
+    
+    :param  node: 
+        The DOM node representing the starting point for the
+                 mapping operation 
+    
+    :param  callback: 
+        function(node, parents_result) 
+    
+    :param  T: 
+        context parameter bound to "this" when invoking the
+                 callback 
+    
+    :param  presult: 
+        Internal use. 
+    
+
+
+
+
+A function that visits every node of a DOM tree in document order. Calls
+a callback with the visited node and the result of the callback from
+visitting the parent node.
+
+This function is a modified version of Douglas Crockfords walk_the_DOM
+function from his book "Javascript: The Good Parts".
+
+
+
+
+
+
+
+
+
+    
+
+
+
+mapvalue
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: mapvalue(value, callback, T, presult, presult)
+
+
+    
+    :param  value: 
+        A JSON value representing the starting point for the
+                 mapping operation 
+    
+    :param  callback: 
+        function(value, parents_result) 
+    
+    :param  T: 
+        context parameter bound to "this" when invoking the
+                 callback 
+    
+    :param  presult: 
+        Internal use. 
+    
+    :param  presult: 
+         
+    
+
+
+
+
+A function that visits every value of a JSON object tree in preorder.
+Calls a callback with the visited value and the result of the callback
+from visitting the parent.
+
+This function is a modified version of Douglas Crockfords walk_the_DOM
+function from his book "Javascript: The Good Parts".
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+Attributes
+----------
+
+..
+   class-attributes
+
+
+FNV132_INIT
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: FNV132_INIT (constant)  
+
+
+Constant FNV-1 32bit offset basis
+
+
+
+
+
+
+
+
+    
+
+
+
+FNV132_PRIME
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: FNV132_PRIME (constant)  
+
+
+Constant FNV-1 32bit prime number
+
+
+
+
+
+
+
+
+    
+
+
+
+FNV132_PRIME_H
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: FNV132_PRIME_H (constant)  
+
+
+High 16 bits of FNV-1 32bit prime number
+
+
+
+
+
+
+
+
+    
+
+
+
+FNV132_PRIME_L
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: FNV132_PRIME_L (constant)  
+
+
+Low 16 bits of FNV-1 32bit prime number
+
+
+
+
+
+
+
+
+    
+
+
+
+payloadHandler
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: payloadHandler   
+
+
+Return shared payload handler.
+
+
+
+
+
+
+
+
+    
+
+
+
+treeAdapter
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: treeAdapter   
+
+
+shared tree adapter instance
+
+
+
+
+
+
+
+
+    
+
+
+
+TYPE_STRINGS
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: TYPE_STRINGS (constant)  
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+UPDATE_FOREST_TYPE
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: UPDATE_FOREST_TYPE (constant)  
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+UPDATE_NODE_TYPE
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: UPDATE_NODE_TYPE (constant)  
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+

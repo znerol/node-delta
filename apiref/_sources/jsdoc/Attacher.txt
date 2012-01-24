@@ -1,0 +1,85 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class Attacher
+================================================================================
+
+..
+   class-title
+
+
+Create a new operation attacher instance. Use this class to convert detached
+operations read from a patch-file.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: Attacher(resolver)
+
+
+    
+    :param  resolver: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+attach
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Attacher#attach(op)
+
+
+    
+    :param  op: 
+         
+    
+
+
+
+
+Resolve anchor of one operation and return new attached operation instance.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

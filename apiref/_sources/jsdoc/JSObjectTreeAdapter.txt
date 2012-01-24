@@ -1,0 +1,112 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class JSObjectTreeAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: JSObjectTreeAdapter()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+adaptDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: JSObjectTreeAdapter#adaptDocument(doc)
+
+
+    
+    :param  doc: 
+         
+    
+
+
+
+
+Create value wrappers for all element and text values in the specified
+document and return the root wrapper.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+adaptElement
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: JSObjectTreeAdapter#adaptElement(element, key)
+
+
+    
+    :param  element: 
+         
+    
+    :param  key: 
+         
+    
+
+
+
+
+Create value wrappers for the specified element or text value and all its
+descentants and return toplevel wrapper.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

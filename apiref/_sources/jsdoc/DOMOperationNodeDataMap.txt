@@ -1,0 +1,119 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DOMOperationNodeDataMap
+================================================================================
+
+..
+   class-title
+
+
+Helper class for a memoizing the currently active DOM node during a patching
+session. This mapping is necessary because DOMNodeReplaceOperationHandler
+swaps dom nodes when toggled. Thus, any operation attached to a child node
+needs to be capable of detecting the currently active parent in order to
+prevent operations on inactive nodes which may lead to loss of data.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DOMOperationNodeDataMap(propname)
+
+
+    
+    :param  propname: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+getCurrentDOMNode
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMOperationNodeDataMap#getCurrentDOMNode(node)
+
+
+    
+    :param  node: 
+         
+    
+
+
+
+
+Return active DOM node for this tree.Node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+setCurrentDOMNode
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMOperationNodeDataMap#setCurrentDOMNode(node, domnode)
+
+
+    
+    :param  node: 
+         
+    
+    :param  domnode: 
+         
+    
+
+
+
+
+Set active DOM node for this tree.Node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

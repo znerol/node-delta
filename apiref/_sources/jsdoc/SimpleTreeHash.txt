@@ -1,0 +1,91 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class SimpleTreeHash
+================================================================================
+
+..
+   class-title
+
+
+Simple subtree hashing algorithm.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: SimpleTreeHash(HashAlgorithm, nodehashindex)
+
+
+    
+    :param function HashAlgorithm: 
+        Constructor function for the hash 
+    
+    :param object nodehashindex: 
+        An instance of :js:class:`NodeHashIndex` 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+process
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: SimpleTreeHash#process(node, [hash])
+
+
+    
+    :param object node: 
+        A tree.Node specifying the root of the subtree. 
+    
+    :param object hash: 
+        If provided, use this hash instance. Otherwise
+        create a new one. 
+    
+
+
+
+
+Calculate hash value of subtree
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

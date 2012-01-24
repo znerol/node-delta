@@ -1,0 +1,123 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DiffSkelmatchFactory
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of the skelmatch diff factory.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DiffSkelmatchFactory()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+createDiffAlgorithm
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DiffSkelmatchFactory#createDiffAlgorithm(doc1, doc2, [equals])
+
+
+    
+    :param Object doc1: 
+        The original document. Use
+        ``loadOriginalDocument`` of the document factory to load a suitable
+        document. 
+    
+    :param Object doc2: 
+        The changed document. Use ``loadInputDocument``
+        of the document factory to load a suitable document. 
+    
+    :param function equals: 
+        The equality test-function used during diffing.
+        Use the method ``createNodeEqualityTest`` of the document factory to
+        create a suitable equality test function. 
+    
+
+
+
+    
+    :returns skelmatch.Diff:
+        An initialized skelmatch.Diff instance. 
+    
+
+
+Return new initialized instance of Skel-Match diff algorithm.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createMatching
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DiffSkelmatchFactory#createMatching()
+
+
+
+
+    
+    :returns tree.Matching:
+        Empty matching object. 
+    
+
+
+Return new tree matching object
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

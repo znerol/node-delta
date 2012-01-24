@@ -1,0 +1,84 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DOMNodeHash
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DOMNodeHash(HashAlgorithm)
+
+
+    
+    :param  HashAlgorithm: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+qualifiedName
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMNodeHash#qualifiedName(domnode)
+
+
+    
+    :param  domnode: 
+         
+    
+
+
+
+
+Helper method: Return qualified name of a DOM element or attribute node
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

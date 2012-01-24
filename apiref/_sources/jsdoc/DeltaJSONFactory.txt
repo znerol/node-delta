@@ -1,0 +1,306 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DeltaJSONFactory
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of the factory class supporting the JSON patch file
+format.
+
+**FIXME: This class is just a copy-paste + search-replace from
+DeltaXMLFactory and will most likely not work out of the box.**
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DeltaJSONFactory()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+createAttacher
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaJSONFactory#createAttacher(resolver)
+
+
+    
+    :param Object resolver: 
+        An instance of ContextResolver. Use the output of
+        createResolver method from the resolver factory. 
+    
+
+
+
+    
+    :returns delta.Attacher:
+        Initialized attacher instance. 
+    
+
+
+Return an initialized context delta attacher instance
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createCollector
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaJSONFactory#createCollector(deltadoc, doc, [equals])
+
+
+    
+    :param Object deltadoc: 
+        The delta document produced by createEmptyDocument
+        or loadDocument. 
+    
+    :param Object doc: 
+        The document as created by the
+        loadOriginalDocument method of the document factory class. 
+    
+    :param functio equals: 
+        The equality test-function used during diffing. 
+    
+
+
+
+    
+    :returns delta.DeltaCollector:
+        An initialized collector instance. 
+    
+
+
+Return an initialized collector instance.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createDeltaAdapter
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaJSONFactory#createDeltaAdapter(fragAdapter)
+
+
+    
+    :param Object fragAdapter: 
+        A document fragemnt adapter. Use the object
+        produced by createFragmentAdapter method from a document factory. 
+    
+
+
+
+    
+    :returns jsondelta.JSONDeltaAdapter:
+        Initialized instance of the proper delta
+        adapter. 
+    
+
+
+Return an initialized delta adapter instance.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createDetacher
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaJSONFactory#createDetacher(doc)
+
+
+    
+    :param Object doc: 
+        The document as created by the
+        loadOriginalDocument method of the document factory class. 
+    
+
+
+
+    
+    :returns contextdelta.Detacher:
+        Initialized detacher instance. 
+    
+
+
+Return an initialized context delta detacher instance.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createEmptyDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaJSONFactory#createEmptyDocument([matching])
+
+
+    
+    :param tree.Matching matching: 
+        A matching produced by some tree diff algorithm. 
+    
+
+
+
+    
+    :returns Object:
+        A delta document initialized with default values. 
+    
+
+
+Return a new empty delta document.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+loadDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaJSONFactory#loadDocument(jsondoc, fragAdapter, [name])
+
+
+    
+    :param String|Document jsondoc: 
+        A document containing delta operations. 
+    
+    :param Object fragAdapter: 
+        A document fragemnt adapter. Use the object
+        produced by createFragmentAdapter method from a document factory. 
+    
+    :param String name: 
+        The file name of the document. 
+    
+
+
+
+    
+    :returns Object:
+        A delta document initialized with default values. 
+    
+
+
+Return a delta document loaded from the given string or JavaScript object.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+serializeDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaJSONFactory#serializeDocument(deltadoc)
+
+
+    
+    :param Object deltadoc: 
+        A populated delta document. 
+    
+
+
+
+    
+    :returns String:
+        The JSON representation of the delta document as a string. 
+    
+
+
+Serialize the data property into the src string and return it. Also store
+the source into the ``src`` property of ``deltadoc``.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

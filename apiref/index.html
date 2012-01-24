@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Delta.js Reference &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="#" />
+    <link rel="next" title="High Level Diff and Patch Interface" href="highlevel.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="highlevel.html" title="High Level Diff and Patch Interface"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="delta-js-reference">
+<h1>Delta.js Reference<a class="headerlink" href="#delta-js-reference" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="highlevel.html">High Level Diff and Patch Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="highlevel-example.html">Example code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/diff.Diff.html">Class diff.Diff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/patch.Patch.html">Class patch.Patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Document.html">Class Document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaDocument.html">Class DeltaDocument</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DiffSkelmatchFactory.html">Class DiffSkelmatchFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DiffXCCFactory.html">Class DiffXCCFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/ResolveXCCFactory.html">Class ResolveXCCFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaXMLFactory.html">Class DeltaXMLFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DocumentXMLFactory.html">Class DocumentXMLFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaJSONFactory.html">Class DeltaJSONFactory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lcs.html">LCS Algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/LCS.html">Class LCS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/KPoint.html">Class KPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Limit.html">Class Limit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tree.html">Tree Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Node.html">Class Node</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Anchor.html">Class Anchor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Matching.html">Class Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DocumentOrderIndex.html">Class DocumentOrderIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/GenerationIndex.html">Class GenerationIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/NodeHashIndex.html">Class NodeHashIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/TreeHashIndex.html">Class TreeHashIndex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/SimpleTreeHash.html">Class SimpleTreeHash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xcc.html">XCC Diff Algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/xcc.Diff.html">Class xcc.Diff</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="skelmatch.html">Skel-Match Diff Algorithm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/skelmatch.Diff.html">Class skelmatch.Diff</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="delta.html">Delta Operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaCollector.html">Class DeltaCollector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/AttachedOperation.html">Class AttachedOperation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Attacher.html">Class Attacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/ParameterBuffer.html">Class ParameterBuffer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contextdelta.html">Detached Context Delta Operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DetachedContextOperation.html">Class DetachedContextOperation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Detacher.html">Class Detacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/ContextGenerator.html">Class ContextGenerator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contextmatcher.html">Context Matcher</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/WeightedContextMatcher.html">Class WeightedContextMatcher</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resolver.html">Resolver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/ContextResolver.html">Class ContextResolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/TopDownPathResolver.html">Class TopDownPathResolver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/ResolverResult.html">Class ResolverResult</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hash.html">Hash</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/FNV132Hash.html">Class FNV132Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="xmlpayload.html">XML Payload</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/XMLPayloadHandler.html">Class XMLPayloadHandler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/XMLFragmentAdapter.html">Class XMLFragmentAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/SerializedXMLFragmentAdapter.html">Class SerializedXMLFragmentAdapter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="domtree.html">DOM Tree Adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DOMTreeAdapter.html">Class DOMTreeAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DOMNodeHash.html">Class DOMNodeHash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="domdelta.html">DOM Delta File Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DOMDeltaAdapter.html">Class DOMDeltaAdapter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="domhandler.html">DOM Operation Handler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DOMOperationHandlerFactory.html">Class DOMOperationHandlerFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DOMNodeReplaceOperationHandler.html">Class DOMNodeReplaceOperationHandler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DOMTreeSequenceOperationHandler.html">Class DOMTreeSequenceOperationHandler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsonpayload.html">JSON Payload</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/JSONPayloadHandler.html">Class JSONPayloadHandler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/JSONFragmentAdapter.html">Class JSONFragmentAdapter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/SerializedJSONFragmentAdapter.html">Class SerializedJSONFragmentAdapter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsobjecttree.html">JavaScript Object Tree Adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/JSObjectTreeAdapter.html">Class JSObjectTreeAdapter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsondelta.html">JSON Delta File Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/JSONDeltaAdapter.html">Class JSONDeltaAdapter</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Delta.js Reference</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="highlevel.html"
+                        title="next chapter">High Level Diff and Patch Interface</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="highlevel.html" title="High Level Diff and Patch Interface"
+             >next</a> |</li>
+        <li><a href="#">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

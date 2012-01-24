@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class GenerationIndex &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="Tree Utilities" href="../tree.html" />
+    <link rel="next" title="Class NodeHashIndex" href="NodeHashIndex.html" />
+    <link rel="prev" title="Class DocumentOrderIndex" href="DocumentOrderIndex.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="NodeHashIndex.html" title="Class NodeHashIndex"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DocumentOrderIndex.html" title="Class DocumentOrderIndex"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../tree.html" accesskey="U">Tree Utilities</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-generationindex">
+<h1>Class GenerationIndex<a class="headerlink" href="#class-generationindex" title="Permalink to this headline">¶</a></h1>
+<p>Create a new secondary tree structure providing quick access to all
+nodes of a generation.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="GenerationIndex">
+<em class="property">class </em><tt class="descname">GenerationIndex</tt><big>(</big><em>root</em><span class="optional">[</span>, <em>propname</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#GenerationIndex" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>root</strong> (<em>object</em>) &#8211; A tree.Node representing the root of the tree</li>
+<li><strong>propname</strong> (<em>string</em>) &#8211; The name of the property which will be used to
+cache index values on tree.Node objects.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="buildall">
+<h3>buildAll<a class="headerlink" href="#buildall" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="GenerationIndex#buildAll">
+<tt class="descname">GenerationIndex#buildAll</tt><big>(</big><big>)</big><a class="headerlink" href="#GenerationIndex#buildAll" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Build up complete generation index upfront if necessary.</p>
+</div>
+<div class="section" id="buildsubtree">
+<h3>buildSubtree<a class="headerlink" href="#buildsubtree" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="GenerationIndex#buildSubtree">
+<tt class="descname">GenerationIndex#buildSubtree</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#GenerationIndex#buildSubtree" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Build up index of a subtree rooting at the specified node.</p>
+</div>
+<div class="section" id="extendgeneration">
+<h3>extendGeneration<a class="headerlink" href="#extendgeneration" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="GenerationIndex.extendGeneration">
+<tt class="descclassname">GenerationIndex.</tt><tt class="descname">extendGeneration</tt><big>(</big><em>depth</em>, <em>offset</em><big>)</big><a class="headerlink" href="#GenerationIndex.extendGeneration" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>depth</strong> &#8211; </li>
+<li><strong>offset</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Extend generation index dynamically (not implemented yet)</p>
+</div>
+<div class="section" id="first">
+<h3>first<a class="headerlink" href="#first" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="GenerationIndex#first">
+<tt class="descname">GenerationIndex#first</tt><big>(</big><em>depth</em><big>)</big><a class="headerlink" href="#GenerationIndex#first" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>depth</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return first node of the generation at depth.</p>
+</div>
+<div class="section" id="get">
+<h3>get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="GenerationIndex#get">
+<tt class="descname">GenerationIndex#get</tt><big>(</big><em>refnode</em>, <em>offset</em><big>)</big><a class="headerlink" href="#GenerationIndex#get" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>refnode</strong> (<em>object</em>) &#8211; The reference tree.Node</li>
+<li><strong>offset</strong> (<em>number</em>) &#8211; An integer value</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns object:</th><td class="field-body"><p class="first last">tree.Node or undefined</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return a tree.Node with the same depth at the given offset relative to
+the given reference node.</p>
+</div>
+<div class="section" id="last">
+<h3>last<a class="headerlink" href="#last" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="GenerationIndex#last">
+<tt class="descname">GenerationIndex#last</tt><big>(</big><em>depth</em><big>)</big><a class="headerlink" href="#GenerationIndex#last" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>depth</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return last node of the generation at depth.</p>
+</div>
+</div>
+<div class="section" id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gencomplete">
+<h3>gencomplete<a class="headerlink" href="#gencomplete" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">gencomplete</tt></dt>
+<dd></dd></dl>
+
+<p>An array of booleans indexed by tree depth indicating whether all
+nodes of a generation have been indexed.</p>
+</div>
+<div class="section" id="generations">
+<h3>generations<a class="headerlink" href="#generations" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">generations</tt></dt>
+<dd></dd></dl>
+
+<p>An array of arrays of tree.Nodes. Each containing tree.Nodes at the
+same depth.</p>
+</div>
+<div class="section" id="idxcomplete">
+<h3>idxcomplete<a class="headerlink" href="#idxcomplete" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">idxcomplete</tt></dt>
+<dd></dd></dl>
+
+<p>Return true if the whole generation index is complete.</p>
+</div>
+<div class="section" id="propname">
+<h3>propname<a class="headerlink" href="#propname" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">propname</tt></dt>
+<dd></dd></dl>
+
+<p>A property set at every indexed tree.Node indicating the position
+of the node in the generation.</p>
+</div>
+<div class="section" id="root">
+<h3>root<a class="headerlink" href="#root" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">root</tt></dt>
+<dd></dd></dl>
+
+<p>The root of the tree.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class GenerationIndex</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#buildall">buildAll</a></li>
+<li><a class="reference internal" href="#buildsubtree">buildSubtree</a></li>
+<li><a class="reference internal" href="#extendgeneration">extendGeneration</a></li>
+<li><a class="reference internal" href="#first">first</a></li>
+<li><a class="reference internal" href="#get">get</a></li>
+<li><a class="reference internal" href="#last">last</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#gencomplete">gencomplete</a></li>
+<li><a class="reference internal" href="#generations">generations</a></li>
+<li><a class="reference internal" href="#idxcomplete">idxcomplete</a></li>
+<li><a class="reference internal" href="#propname">propname</a></li>
+<li><a class="reference internal" href="#root">root</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DocumentOrderIndex.html"
+                        title="previous chapter">Class DocumentOrderIndex</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="NodeHashIndex.html"
+                        title="next chapter">Class NodeHashIndex</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="NodeHashIndex.html" title="Class NodeHashIndex"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DocumentOrderIndex.html" title="Class DocumentOrderIndex"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../tree.html" >Tree Utilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

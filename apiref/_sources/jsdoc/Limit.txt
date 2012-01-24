@@ -1,0 +1,52 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class Limit
+================================================================================
+
+..
+   class-title
+
+
+Create a new LCS Limit instance. This is a pure data object which holds
+precalculated parameters for the lcs algorithm.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: Limit(left, right)
+
+
+    
+    :param  left: 
+         
+    
+    :param  right: 
+         
+    
+
+
+
+
+
+
+
+    
+
+

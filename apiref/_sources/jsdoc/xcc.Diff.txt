@@ -1,0 +1,227 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class xcc.Diff
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of the XCC diff implementation.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: xcc.Diff(a, b, options)
+
+
+    
+    :param tree.Node a: 
+        Root node of original tree 
+    
+    :param tree.Node b: 
+        Root node of changed tree 
+    
+    :param Object options: 
+        Options 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+Diff#equals
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: xcc.Diff.Diff#equals(a, b)
+
+
+    
+    :param tree.Node a: 
+        Candidate node from tree a 
+    
+    :param tree.Node b: 
+        Candidate node from tree b 
+    
+
+
+
+    
+    :returns boolean:
+        Return true if the value of the two nodes is equal. 
+    
+
+
+Default equality test. Override this method if you need to test other
+node properties instead/beside node value.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchLeafLCS
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: xcc.Diff.Diff#matchLeafLCS(matching)
+
+
+    
+    :param tree.Matching matching: 
+        A tree matching which will be populated by
+        diffing tree a and b. 
+    
+
+
+
+
+Identify unchanged leaves by comparing them using myers longest common
+subsequence algorithm.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchLeafUpdates
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: xcc.Diff.Diff#matchLeafUpdates(matching)
+
+
+    
+    :param tree.Matching matching: 
+        A tree matching which will be populated by
+        diffing tree a and b. 
+    
+
+
+
+
+Detect updated leaf nodes by analyzing their neighborhood top-down.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchLeafUpdatesOnDescendants
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: xcc.Diff.Diff#matchLeafUpdatesOnDescendants(matching, a_node, [reject])
+
+
+    
+    :param tree.Matching matching: 
+        A tree matching which will be populated by
+        diffing tree a and b. 
+    
+    :param tree.Node a_node: 
+        A node from tree a which already takes part in the
+        matching. 
+    
+    :param function reject: 
+        A user supplied function which may indicate
+        a given node should not be considered when detecting node updates.
+        The function should take one argument (tree.Node) and return true
+        (reject) or false (do not reject). 
+    
+
+
+
+
+Identify leaf-node updates by traversing descendants of b_node top-down.
+b_node must already be part of the matching.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchTrees
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: xcc.Diff.Diff#matchTrees(matching)
+
+
+    
+    :param tree.Matching matching: 
+        A tree matching which will be populated by
+        diffing tree a and b. 
+    
+
+
+
+
+Create a matching between the two nodes using the xcc diff algorithm
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

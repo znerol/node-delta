@@ -1,0 +1,303 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DeltaXMLFactory
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of the factory class supporting the XML patch file
+format.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DeltaXMLFactory()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+createAttacher
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaXMLFactory#createAttacher(resolver)
+
+
+    
+    :param Object resolver: 
+        An instance of ContextResolver. Use the output of
+        createResolver method from the resolver factory. 
+    
+
+
+
+    
+    :returns delta.Attacher:
+        Initialized attacher instance. 
+    
+
+
+Return an initialized context delta attacher instance
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createCollector
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaXMLFactory#createCollector(deltadoc, doc, [equals])
+
+
+    
+    :param Object deltadoc: 
+        The delta document produced by createEmptyDocument
+        or loadDocument. 
+    
+    :param Object doc: 
+        The document as created by the
+        loadOriginalDocument method of the document factory class. 
+    
+    :param function equals: 
+        The equality test-function used during diffing. 
+    
+
+
+
+    
+    :returns delta.DeltaCollector:
+        An initialized collector instance. 
+    
+
+
+Return an initialized collector instance.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createDeltaAdapter
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaXMLFactory#createDeltaAdapter(fragAdapter)
+
+
+    
+    :param Object fragAdapter: 
+        A document fragemnt adapter. Use the object
+        produced by createFragmentAdapter method from a document factory. 
+    
+
+
+
+    
+    :returns domdelta.DOMDeltaAdapter:
+        Initialized instance of the proper delta
+        adapter. 
+    
+
+
+Return an initialized delta adapter instance.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createDetacher
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaXMLFactory#createDetacher(doc)
+
+
+    
+    :param Object doc: 
+        The document as created by the
+        loadOriginalDocument method of the document factory class. 
+    
+
+
+
+    
+    :returns contextdelta.Detacher:
+        Initialized detacher instance. 
+    
+
+
+Return an initialized context delta detacher instance.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createEmptyDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaXMLFactory#createEmptyDocument([matching])
+
+
+    
+    :param tree.Matching matching: 
+        A matching produced by some tree diff algorithm. 
+    
+
+
+
+    
+    :returns Object:
+        A delta document initialized with default values. 
+    
+
+
+Return a new empty delta document.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+loadDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaXMLFactory#loadDocument(domdoc, fragAdapter, [name])
+
+
+    
+    :param String|Document domdoc: 
+        A document containing delta operations. 
+    
+    :param Object fragAdapter: 
+        A document fragemnt adapter. Use the object
+        produced by createFragmentAdapter method from a document factory. 
+    
+    :param String name: 
+        The file name of the document. 
+    
+
+
+
+    
+    :returns Object:
+        A delta document initialized from the given DOMDocument. 
+    
+
+
+Return a delta document loaded from the given string or DOMDocument.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+serializeDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DeltaXMLFactory#serializeDocument(deltadoc)
+
+
+    
+    :param Object deltadoc: 
+        A populated delta document. 
+    
+
+
+
+    
+    :returns String:
+        The XML representation of the delta document as a string. 
+    
+
+
+Serialize the data property into the src string and return it. Also store
+the source into the ``src`` property of ``deltadoc``.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

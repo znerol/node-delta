@@ -1,0 +1,232 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class ContextResolver
+================================================================================
+
+..
+   class-title
+
+
+Constructor for ContextResolver instances.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: ContextResolver(refnode, nodeindex, radius, threshold, matcher)
+
+
+    
+    :param  refnode: 
+        A tree.Node, typically the root node 
+    
+    :param  nodeindex: 
+        An index class capable of accessing nodes by offset to
+                 other nodes. Typically an instance of
+                 DocumentOrderIndex should be used for this purpose. 
+    
+    :param  radius: 
+        The search radius for the fuzzy matching algorithm 
+    
+    :param  threshold: 
+        The threshold of the fuzzy matching algorithm. A value
+                 between 0.5 and 1. The authors of the xcc patching
+                 algorithm recommend 0.7. 
+    
+    :param  matcher: 
+        (optional) A matcher instance. Defaults to a
+                 WeightedContextMatcher with radius=4. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+equalContent
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ContextResolver#equalContent(docnode, patnode)
+
+
+    
+    :param  docnode: 
+        A candidate node from the document 
+    
+    :param  patnode: 
+        A body-node from the pattern 
+    
+
+
+
+
+Compare a document node against a content node from the patch. Return
+true if the docnode matches the patnode.
+
+Override this method if you use something different than the value
+property of tree.Node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+equalContext
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ContextResolver#equalContext(docnode, patnode)
+
+
+    
+    :param  docnode: 
+        A candidate node from the document 
+    
+    :param  patnode: 
+        The value from a context node 
+    
+
+
+
+
+Compare a document node against a context node value. Return true if
+the value of docnode matches the pattern value.
+
+Override this method if you use something different than the value
+property of tree.Node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+find
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ContextResolver#find(path, body, head, tail, type)
+
+
+    
+    :param  path: 
+        An array of numbers. Each value represents an index
+                     into the childrens of a node in top-down order. 
+    
+    :param  body: 
+        An array containing the node sequence in question.
+                     When resolving the location of insert operations,
+                     the array is empty.  For updates, the array will
+                     consist of exactly one node. Remove operations may
+                     consist of one or more nodes. 
+    
+    :param  head: 
+        Leading context: An array containing the values of
+                     leading nodes in the same generation. 
+    
+    :param  tail: 
+        Trailing context: An array containing the values of
+                     trailing nodes in the same generation. 
+    
+    :param  type: 
+        Operation type. This parameter is passed to the
+                     equalContent callback. 
+    
+
+
+
+    
+    :returns :
+        A result object with two properties: node holds the resolved
+tree.Node and tail the unresolved part of path. Returns undefined on
+failure. 
+    
+
+
+Locate a node at the given path starting at refnode. Try to locate the
+target within a given radius using the fingerprint values if direct
+lookup failed.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+getClosestNode
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ContextResolver#getClosestNode(anchor, nodeindex)
+
+
+    
+    :param  anchor: 
+         
+    
+    :param  nodeindex: 
+         
+    
+
+
+
+
+Given an anchor and a nodeindex, this method identifies the node which
+matches the anchor as close as possible.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

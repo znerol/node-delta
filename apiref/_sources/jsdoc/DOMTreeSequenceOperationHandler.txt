@@ -1,0 +1,166 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DOMTreeSequenceOperationHandler
+================================================================================
+
+..
+   class-title
+
+
+Construct a new DOM operation element capable of replacing the specified
+subtrees.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DOMTreeSequenceOperationHandler(par, before, oldnodes, newnodes, newnodes)
+
+
+    
+    :param  par: 
+        The tree.Node whose children should be replaced 
+    
+    :param  before: 
+        The tree.Node where new nodes should be attached
+                     before 
+    
+    :param  oldnodes: 
+        An array of the root DOM elements of the original
+                     subtrees 
+    
+    :param  newnodes: 
+        An array of the root DOM elements of the changed
+                     subtrees 
+    
+    :param  newnodes: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+activate
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMTreeSequenceOperationHandler#activate()
+
+
+
+
+
+Activate this hunk, inserting new subtrees and removing old subtrees if
+necessary.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+deactivate
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMTreeSequenceOperationHandler#deactivate()
+
+
+
+
+
+Deactivate this hunk, removing inserted nodes and inserting removed
+nodes into if necessary.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+isActive
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMTreeSequenceOperationHandler#isActive()
+
+
+
+
+
+Return true if the hunk is active
+
+
+
+
+
+
+
+
+
+    
+
+
+
+toggle
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMTreeSequenceOperationHandler#toggle()
+
+
+
+
+
+Toggle active state
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

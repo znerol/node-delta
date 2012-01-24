@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class LCS &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="LCS Algorithm" href="../lcs.html" />
+    <link rel="next" title="Class KPoint" href="KPoint.html" />
+    <link rel="prev" title="LCS Algorithm" href="../lcs.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="KPoint.html" title="Class KPoint"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../lcs.html" title="LCS Algorithm"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../lcs.html" accesskey="U">LCS Algorithm</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-lcs">
+<h1>Class LCS<a class="headerlink" href="#class-lcs" title="Permalink to this headline">¶</a></h1>
+<p>Create a new instance of the LCS implementation.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="LCS">
+<em class="property">class </em><tt class="descname">LCS</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#LCS" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> &#8211; The first sequence</li>
+<li><strong>b</strong> &#8211; The second sequence</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compute">
+<h3>compute<a class="headerlink" href="#compute" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#compute">
+<tt class="descname">LCS#compute</tt><big>(</big><em>callback</em>, <em>T</em>, <em>limit</em><big>)</big><a class="headerlink" href="#LCS#compute" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>callback</strong> &#8211; <dl class="docutils">
+<dt>A function(x, y) called for A[x] and B[y] for symbols</dt>
+<dd>taking part in the LCS.</dd>
+</dl>
+</li>
+<li><strong>T</strong> &#8211; <dl class="docutils">
+<dt>Context object bound to &#8220;this&#8221; when the callback is</dt>
+<dd>invoked.</dd>
+</dl>
+</li>
+<li><strong>limit</strong> &#8211; <dl class="docutils">
+<dt>A Limit instance constraining the window of operation to</dt>
+<dd>the given limit. If undefined the algorithm will iterate
+over the whole sequences a and b.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Compute longest common subsequence using myers divide &amp; conquer linear
+space algorithm.</p>
+<p>Call a callback for each snake which is part of the longest common
+subsequence.</p>
+<p>This algorithm works with strings and arrays. In order to modify the
+equality-test, just override the equals(a, b) method on the LCS
+object.</p>
+</div>
+<div class="section" id="defaultlimit">
+<h3>defaultLimit<a class="headerlink" href="#defaultlimit" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#defaultLimit">
+<tt class="descname">LCS#defaultLimit</tt><big>(</big><big>)</big><a class="headerlink" href="#LCS#defaultLimit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return the default limit spanning the whole input</p>
+</div>
+<div class="section" id="equals">
+<h3>equals<a class="headerlink" href="#equals" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#equals">
+<tt class="descname">LCS#equals</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#LCS#equals" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> &#8211; </li>
+<li><strong>b</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Returns true if the sequence members a and b are equal. Override this
+method if your sequences contain special things.</p>
+</div>
+<div class="section" id="foreachcommonsymbol">
+<h3>forEachCommonSymbol<a class="headerlink" href="#foreachcommonsymbol" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#forEachCommonSymbol">
+<tt class="descname">LCS#forEachCommonSymbol</tt><big>(</big><em>callback</em>, <em>T</em><big>)</big><a class="headerlink" href="#LCS#forEachCommonSymbol" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>callback</strong> &#8211; <dl class="docutils">
+<dt>A function(x, y) called for A[x] and B[y] for symbols</dt>
+<dd>taking part in the LCS.</dd>
+</dl>
+</li>
+<li><strong>T</strong> &#8211; <dl class="docutils">
+<dt>Context object bound to &#8220;this&#8221; when the callback is</dt>
+<dd>invoked.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Call a callback for each symbol which is part of the longest common
+subsequence between A and B.</p>
+<p>Given that the two sequences A and B were supplied to the LCS
+constructor, invoke the callback for each pair A[x], B[y] which is part
+of the longest common subsequence of A and B.</p>
+<p>This algorithm works with strings and arrays. In order to modify the
+equality-test, just override the equals(a, b) method on the LCS
+object.</p>
+<p>Usage:
+&lt;code&gt;
+var lcs = [];
+var A = &#8216;abcabba&#8217;;
+var B = &#8216;cbabac&#8217;;
+var l = new LCS(A, B);
+l.forEachCommonSymbol(function(x, y) {</p>
+<blockquote>
+lcs.push(A[x]);</blockquote>
+<p>});
+console.log(lcs);
+// -&gt; [ &#8216;c&#8217;, &#8216;a&#8217;, &#8216;b&#8217;, &#8216;a&#8217; ]
+&lt;/code&gt;</p>
+</div>
+<div class="section" id="foreachpositioninsnake">
+<h3>forEachPositionInSnake<a class="headerlink" href="#foreachpositioninsnake" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#forEachPositionInSnake">
+<tt class="descname">LCS#forEachPositionInSnake</tt><big>(</big><em>left</em>, <em>right</em>, <em>callback</em>, <em>T</em><big>)</big><a class="headerlink" href="#LCS#forEachPositionInSnake" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>left</strong> &#8211; Left KPoint</li>
+<li><strong>right</strong> &#8211; Right KPoint</li>
+<li><strong>callback</strong> &#8211; Callback of the form function(x, y)</li>
+<li><strong>T</strong> &#8211; <dl class="docutils">
+<dt>Context object bound to &#8220;this&#8221; when the callback is</dt>
+<dd>invoked.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Invokes a function for each position in the snake between the left and
+the right snake head.</p>
+</div>
+<div class="section" id="middlesnake">
+<h3>middleSnake<a class="headerlink" href="#middlesnake" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#middleSnake">
+<tt class="descname">LCS#middleSnake</tt><big>(</big><em>lefthead</em>, <em>righthead</em>, <em>limit</em><big>)</big><a class="headerlink" href="#LCS#middleSnake" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lefthead</strong> &#8211; <dl class="docutils">
+<dt>(Output) A reference to a KPoint which will be</dt>
+<dd>populated with the values corresponding to the left end
+of the middle snake.</dd>
+</dl>
+</li>
+<li><strong>righthead</strong> &#8211; <dl class="docutils">
+<dt>(Output) A reference to a KPoint which will be</dt>
+<dd>populated with the values corresponding to the right
+end of the middle snake.</dd>
+</dl>
+</li>
+<li><strong>limit</strong> &#8211; (In) Current lcs search limits (left, right, N, M, delta, dmax)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>:returns :</dt>
+<dd><dl class="first last docutils">
+<dt>d, number of edit script operations encountered within</dt>
+<dd>the given limit</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Internal use. Find the middle snake and set lefthead to the left end and
+righthead to the right end.</p>
+</div>
+<div class="section" id="nextsnakeheadbackward">
+<h3>nextSnakeHeadBackward<a class="headerlink" href="#nextsnakeheadbackward" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#nextSnakeHeadBackward">
+<tt class="descname">LCS#nextSnakeHeadBackward</tt><big>(</big><em>head</em>, <em>k</em>, <em>kmin</em>, <em>kmax</em>, <em>limit</em>, <em>V</em><big>)</big><a class="headerlink" href="#LCS#nextSnakeHeadBackward" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>head</strong> &#8211; <dl class="docutils">
+<dt>(Output) Reference to a KPoint which will be populated</dt>
+<dd>with the new values</dd>
+</dl>
+</li>
+<li><strong>k</strong> &#8211; (In) Current k-line</li>
+<li><strong>kmin</strong> &#8211; (In) Lowest k-line in current d-round</li>
+<li><strong>kmax</strong> &#8211; (In) Highest k-line in current d-round</li>
+<li><strong>limit</strong> &#8211; (In) Current lcs search limits (left, right, N, M, delta, dmax)</li>
+<li><strong>V</strong> &#8211; <dl class="docutils">
+<dt>(In-/Out) Vector containing the results of previous</dt>
+<dd>calculations. This vector gets updated automatically by
+nextSnakeHeadForward method.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Internal use. Compute new values for the next head on the given k-line
+in reverse direction by examining the results of previous calculations
+in V in the neighborhood of the k-line k.</p>
+</div>
+<div class="section" id="nextsnakeheadforward">
+<h3>nextSnakeHeadForward<a class="headerlink" href="#nextsnakeheadforward" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="LCS#nextSnakeHeadForward">
+<tt class="descname">LCS#nextSnakeHeadForward</tt><big>(</big><em>head</em>, <em>k</em>, <em>kmin</em>, <em>kmax</em>, <em>limit</em>, <em>V</em><big>)</big><a class="headerlink" href="#LCS#nextSnakeHeadForward" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>head</strong> &#8211; <dl class="docutils">
+<dt>(Output) Reference to a KPoint which will be populated</dt>
+<dd>with the new values</dd>
+</dl>
+</li>
+<li><strong>k</strong> &#8211; (In) Current k-line</li>
+<li><strong>kmin</strong> &#8211; (In) Lowest k-line in current d-round</li>
+<li><strong>kmax</strong> &#8211; (In) Highest k-line in current d-round</li>
+<li><strong>limit</strong> &#8211; (In) Current lcs search limits (left, right, N, M, delta, dmax)</li>
+<li><strong>V</strong> &#8211; <dl class="docutils">
+<dt>(In-/Out) Vector containing the results of previous</dt>
+<dd>calculations. This vector gets updated automatically by
+nextSnakeHeadForward method.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Internal use. Compute new values for the next head on the given k-line
+in forward direction by examining the results of previous calculations
+in V in the neighborhood of the k-line k.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class LCS</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#compute">compute</a></li>
+<li><a class="reference internal" href="#defaultlimit">defaultLimit</a></li>
+<li><a class="reference internal" href="#equals">equals</a></li>
+<li><a class="reference internal" href="#foreachcommonsymbol">forEachCommonSymbol</a></li>
+<li><a class="reference internal" href="#foreachpositioninsnake">forEachPositionInSnake</a></li>
+<li><a class="reference internal" href="#middlesnake">middleSnake</a></li>
+<li><a class="reference internal" href="#nextsnakeheadbackward">nextSnakeHeadBackward</a></li>
+<li><a class="reference internal" href="#nextsnakeheadforward">nextSnakeHeadForward</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../lcs.html"
+                        title="previous chapter">LCS Algorithm</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="KPoint.html"
+                        title="next chapter">Class KPoint</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="KPoint.html" title="Class KPoint"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../lcs.html" title="LCS Algorithm"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../lcs.html" >LCS Algorithm</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

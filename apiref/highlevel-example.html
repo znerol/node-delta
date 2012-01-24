@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Example code &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="index.html" />
+    <link rel="up" title="High Level Diff and Patch Interface" href="highlevel.html" />
+    <link rel="next" title="Class diff.Diff" href="jsdoc/diff.Diff.html" />
+    <link rel="prev" title="High Level Diff and Patch Interface" href="highlevel.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="jsdoc/diff.Diff.html" title="Class diff.Diff"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="highlevel.html" title="High Level Diff and Patch Interface"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="highlevel.html" accesskey="U">High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="example-code">
+<h1>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="example-in-commonjs-module-format">
+<h2>Example in CommonJS module format<a class="headerlink" href="#example-in-commonjs-module-format" title="Permalink to this headline">¶</a></h2>
+<p>In this example module a diff-function is exported as the only member of a
+CommonJS module. The function operates on XML documents, uses the skelmatch
+algorithm and produces patch files in XML format.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// CommonJS imports</span>
+<span class="kd">var</span> <span class="nx">diffcmd</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./delta/diff&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">diffmod</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./delta/diff-skelmatch-factory&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">docmod</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./delta/doc-xml-factory&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">deltamod</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./delta/delta-xml-factory&#39;</span><span class="p">);</span>
+
+<span class="c1">// Instantiate factory methods</span>
+<span class="kd">var</span> <span class="nx">difffact</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">diffmod</span><span class="p">.</span><span class="nx">DiffSkelmatchFactory</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">docfact</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">docmod</span><span class="p">.</span><span class="nx">DocumentXMLFactory</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">deltafact</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">deltamod</span><span class="p">.</span><span class="nx">DeltaXMLFactory</span><span class="p">();</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">origcontent</span><span class="p">,</span> <span class="nx">changedcontent</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Load documents</span>
+    <span class="kd">var</span> <span class="nx">doc1</span> <span class="o">=</span> <span class="nx">docfact</span><span class="p">.</span><span class="nx">loadOriginalDocument</span><span class="p">(</span><span class="nx">origcontent</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">doc2</span> <span class="o">=</span> <span class="nx">docfact</span><span class="p">.</span><span class="nx">loadInputDocument</span><span class="p">(</span><span class="nx">changedcontent</span><span class="p">);</span>
+
+    <span class="c1">// Construct patch</span>
+    <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">diffcmd</span><span class="p">.</span><span class="nx">Diff</span><span class="p">(</span><span class="nx">difffact</span><span class="p">,</span> <span class="nx">docfact</span><span class="p">,</span> <span class="nx">deltafact</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">deltadoc</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">diff</span><span class="p">(</span><span class="nx">doc1</span><span class="p">,</span> <span class="nx">doc2</span><span class="p">);</span>
+
+    <span class="c1">// Serialize patch</span>
+    <span class="k">return</span> <span class="nx">deltafact</span><span class="p">.</span><span class="nx">serializeDocument</span><span class="p">(</span><span class="nx">deltadoc</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-in-awm-module-format">
+<h2>Example in AWM module format<a class="headerlink" href="#example-in-awm-module-format" title="Permalink to this headline">¶</a></h2>
+<p>In this example module a diff-function is exported as the only member of a
+CommonJS module. The function operates on XML documents, uses the XCC diff
+algorithm and produces patch files in XML format.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">define</span><span class="p">([</span>
+    <span class="s1">&#39;./delta/diff&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;./delta/diff-xcc-factory&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;./delta/doc-xml-factory&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;./delta/delta-xml-factory&#39;</span><span class="p">],</span>
+<span class="kd">function</span><span class="p">(</span><span class="nx">diffcmd</span><span class="p">,</span> <span class="nx">diffmod</span><span class="p">,</span> <span class="nx">docmod</span><span class="p">,</span> <span class="nx">deltamod</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Instantiate factory methods</span>
+    <span class="kd">var</span> <span class="nx">difffact</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">diffmod</span><span class="p">.</span><span class="nx">DiffXCCFactory</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">docfact</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">docmod</span><span class="p">.</span><span class="nx">DocumentXMLFactory</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">deltafact</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">deltamod</span><span class="p">.</span><span class="nx">DeltaXMLFactory</span><span class="p">();</span>
+
+    <span class="c1">// This module simply exports one XML diff function</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">origcontent</span><span class="p">,</span> <span class="nx">changedcontent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Load documents</span>
+        <span class="kd">var</span> <span class="nx">doc1</span> <span class="o">=</span> <span class="nx">docfact</span><span class="p">.</span><span class="nx">loadOriginalDocument</span><span class="p">(</span><span class="nx">origcontent</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">doc2</span> <span class="o">=</span> <span class="nx">docfact</span><span class="p">.</span><span class="nx">loadInputDocument</span><span class="p">(</span><span class="nx">chanchedcontent</span><span class="p">);</span>
+
+        <span class="c1">// Construct patch</span>
+        <span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">diffcmd</span><span class="p">.</span><span class="nx">Diff</span><span class="p">(</span><span class="nx">difffact</span><span class="p">,</span> <span class="nx">docfact</span><span class="p">,</span> <span class="nx">deltafact</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">deltadoc</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">diff</span><span class="p">(</span><span class="nx">doc1</span><span class="p">,</span> <span class="nx">doc2</span><span class="p">);</span>
+
+        <span class="c1">// Serialize patch</span>
+        <span class="k">return</span> <span class="nx">deltafact</span><span class="p">.</span><span class="nx">serializeDocument</span><span class="p">(</span><span class="nx">deltadoc</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Example code</a><ul>
+<li><a class="reference internal" href="#example-in-commonjs-module-format">Example in CommonJS module format</a></li>
+<li><a class="reference internal" href="#example-in-awm-module-format">Example in AWM module format</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="highlevel.html"
+                        title="previous chapter">High Level Diff and Patch Interface</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="jsdoc/diff.Diff.html"
+                        title="next chapter">Class diff.Diff</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="jsdoc/diff.Diff.html" title="Class diff.Diff"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="highlevel.html" title="High Level Diff and Patch Interface"
+             >previous</a> |</li>
+        <li><a href="index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="highlevel.html" >High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

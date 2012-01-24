@@ -1,0 +1,71 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class Anchor
+================================================================================
+
+..
+   class-title
+
+
+Construct a new tree anchor object. The tree anchor is a pure data object
+used to point to a position in the tree. The object has the following
+properties:
+
+base
+     The base node of the anchor. If the anchor points at the root node,
+     base is undefined.
+
+target
+     The target node this anchor points at. This node is a child node of
+     base. This property may be undefined if the anchor points before or
+     after the children list.
+
+index
+     The index into the children list of the base node. This property is
+     undefined when the anchor points at the root of the tree.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: Anchor(root, [base], [index])
+
+
+    
+    :param tree.Node root: 
+        The root node of the tree. 
+    
+    :param tree.Node base: 
+        The base node for this anchor. If index is left
+        out, this parameter specifies the target node.  Otherwise it
+        specifies the parent node of the target pointed at by index. 
+    
+    :param Number index: 
+        The child index of the target node. 
+    
+
+
+
+
+
+
+
+    
+
+

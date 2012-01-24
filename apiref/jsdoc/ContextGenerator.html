@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class ContextGenerator &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="Detached Context Delta Operations" href="../contextdelta.html" />
+    <link rel="next" title="Context Matcher" href="../contextmatcher.html" />
+    <link rel="prev" title="Class Detacher" href="Detacher.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../contextmatcher.html" title="Context Matcher"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Detacher.html" title="Class Detacher"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../contextdelta.html" accesskey="U">Detached Context Delta Operations</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-contextgenerator">
+<h1>Class ContextGenerator<a class="headerlink" href="#class-contextgenerator" title="Permalink to this headline">¶</a></h1>
+<p>Constructor for a simple context generator with the given radius. Node
+locations are resolved using nodeindex (typically an instance of
+tree.DocumentOrderIndex) and values are mapped using the valindex.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ContextGenerator">
+<em class="property">class </em><tt class="descname">ContextGenerator</tt><big>(</big><em>radius</em>, <em>nodeindex</em>, <em>valindex</em><big>)</big><a class="headerlink" href="#ContextGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>radius</strong> &#8211; </li>
+<li><strong>nodeindex</strong> &#8211; </li>
+<li><strong>valindex</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="head">
+<h3>head<a class="headerlink" href="#head" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="ContextGenerator#head">
+<tt class="descname">ContextGenerator#head</tt><big>(</big><em>anchor</em><big>)</big><a class="headerlink" href="#ContextGenerator#head" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>anchor</strong> &#8211; The tree.Anchor specifying the first node after head.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return n values representing the head-context where n is the size of the
+radius.</p>
+</div>
+<div class="section" id="tail">
+<h3>tail<a class="headerlink" href="#tail" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="ContextGenerator#tail">
+<tt class="descname">ContextGenerator#tail</tt><big>(</big><em>anchor</em>, <em>length</em>, <em>depth</em><big>)</big><a class="headerlink" href="#ContextGenerator#tail" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>anchor</strong> &#8211; The tree.Anchor specifying the first node after head.</li>
+<li><strong>length</strong> &#8211; The number of siblings affected by the operation.</li>
+<li><strong>depth</strong> &#8211; <dl class="docutils">
+<dt>Wether the operation affects subtrees (true) or only</dt>
+<dd>one node (false).</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return the values for the tail context starting with the given node.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class ContextGenerator</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#head">head</a></li>
+<li><a class="reference internal" href="#tail">tail</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Detacher.html"
+                        title="previous chapter">Class Detacher</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../contextmatcher.html"
+                        title="next chapter">Context Matcher</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../contextmatcher.html" title="Context Matcher"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Detacher.html" title="Class Detacher"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../contextdelta.html" >Detached Context Delta Operations</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

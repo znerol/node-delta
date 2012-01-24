@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DOMTreeAdapter &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="DOM Tree Adapter" href="../domtree.html" />
+    <link rel="next" title="Class DOMNodeHash" href="DOMNodeHash.html" />
+    <link rel="prev" title="DOM Tree Adapter" href="../domtree.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DOMNodeHash.html" title="Class DOMNodeHash"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../domtree.html" title="DOM Tree Adapter"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../domtree.html" accesskey="U">DOM Tree Adapter</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-domtreeadapter">
+<h1>Class DOMTreeAdapter<a class="headerlink" href="#class-domtreeadapter" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DOMTreeAdapter">
+<em class="property">class </em><tt class="descname">DOMTreeAdapter</tt><big>(</big><big>)</big><a class="headerlink" href="#DOMTreeAdapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adaptdocument">
+<h3>adaptDocument<a class="headerlink" href="#adaptdocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMTreeAdapter#adaptDocument">
+<tt class="descname">DOMTreeAdapter#adaptDocument</tt><big>(</big><em>doc</em><big>)</big><a class="headerlink" href="#DOMTreeAdapter#adaptDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>doc</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Create node wrappers for all element and text nodes in the specified
+document and return the root wrapper.</p>
+</div>
+<div class="section" id="adaptelement">
+<h3>adaptElement<a class="headerlink" href="#adaptelement" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMTreeAdapter#adaptElement">
+<tt class="descname">DOMTreeAdapter#adaptElement</tt><big>(</big><em>element</em><big>)</big><a class="headerlink" href="#DOMTreeAdapter#adaptElement" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>element</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Create node wrappers for the specified element or text node and all its
+descentants and return toplevel wrapper.</p>
+</div>
+<div class="section" id="createdocument">
+<h3>createDocument<a class="headerlink" href="#createdocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DOMTreeAdapter#createDocument">
+<tt class="descname">DOMTreeAdapter#createDocument</tt><big>(</big><em>doc</em>, <em>tree</em><big>)</big><a class="headerlink" href="#DOMTreeAdapter#createDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>doc</strong> &#8211; </li>
+<li><strong>tree</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Populate the document with the given dom tree.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DOMTreeAdapter</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#adaptdocument">adaptDocument</a></li>
+<li><a class="reference internal" href="#adaptelement">adaptElement</a></li>
+<li><a class="reference internal" href="#createdocument">createDocument</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../domtree.html"
+                        title="previous chapter">DOM Tree Adapter</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DOMNodeHash.html"
+                        title="next chapter">Class DOMNodeHash</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DOMNodeHash.html" title="Class DOMNodeHash"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../domtree.html" title="DOM Tree Adapter"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../domtree.html" >DOM Tree Adapter</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

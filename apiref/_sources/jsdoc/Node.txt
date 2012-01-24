@@ -1,0 +1,190 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class Node
+================================================================================
+
+..
+   class-title
+
+
+Create a new tree node and set its value and optionally user data.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: Node([value], [data])
+
+
+    
+    :param String value: 
+        The node value. 
+    
+    :param object data: 
+        User data for this tree node. You may store a
+        reference to the corresponding object in the underlying document
+        structure. E.g. a reference to a DOM element. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+append
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Node#append(child)
+
+
+    
+    :param object child: 
+        The new child node. 
+    
+
+
+
+
+Append the given node as a child node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+forEach
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Node#forEach(callback, [T])
+
+
+    
+    :param function callback: 
+        The function which will be invoked for each
+        node. 
+    
+    :param object T: 
+        Context object bound to "this" when the
+        callback is invoked. 
+    
+
+
+
+
+Invokes a callback for the node and all its child nodes in preorder
+(document order).
+
+
+
+
+
+
+
+
+
+    
+
+
+
+forEachDescendant
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Node#forEachDescendant(callback, [T])
+
+
+    
+    :param function callback: 
+        The function which will be invoked for each
+        node. 
+    
+    :param object T: 
+        Context object bound to "this" when the
+        callback is invoked. 
+    
+
+
+
+
+Equal to forEach except that the callback is not invoked for the context
+node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+forEachPostorder
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Node#forEachPostorder(callback, [T])
+
+
+    
+    :param function callback: 
+        The function which will be invoked for each
+        node. 
+    
+    :param object T: 
+        Context object bound to "this" when the
+        callback is invoked. 
+    
+
+
+
+
+Invokes a callback for the node and all its child nodes in postorder.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

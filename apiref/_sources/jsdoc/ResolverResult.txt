@@ -1,0 +1,57 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class ResolverResult
+================================================================================
+
+..
+   class-title
+
+
+Construct new resolver result instance.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: ResolverResult(anchor, tail, offset, quality)
+
+
+    
+    :param  anchor: 
+         
+    
+    :param  tail: 
+         
+    
+    :param  offset: 
+         
+    
+    :param  quality: 
+         
+    
+
+
+
+
+
+
+
+    
+
+

@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DocumentXMLFactory &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="High Level Diff and Patch Interface" href="../highlevel.html" />
+    <link rel="next" title="Class DeltaJSONFactory" href="DeltaJSONFactory.html" />
+    <link rel="prev" title="Class DeltaXMLFactory" href="DeltaXMLFactory.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DeltaJSONFactory.html" title="Class DeltaJSONFactory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DeltaXMLFactory.html" title="Class DeltaXMLFactory"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" accesskey="U">High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-documentxmlfactory">
+<h1>Class DocumentXMLFactory<a class="headerlink" href="#class-documentxmlfactory" title="Permalink to this headline">¶</a></h1>
+<p>Create a new instance of the XML document factory class.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DocumentXMLFactory">
+<em class="property">class </em><tt class="descname">DocumentXMLFactory</tt><big>(</big><big>)</big><a class="headerlink" href="#DocumentXMLFactory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="createemptydocument">
+<h3>createEmptyDocument<a class="headerlink" href="#createemptydocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#createEmptyDocument">
+<tt class="descname">DocumentXMLFactory#createEmptyDocument</tt><big>(</big><big>)</big><a class="headerlink" href="#DocumentXMLFactory#createEmptyDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns Object:</th><td class="field-body">A document initialized with default values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return a new empty document.</p>
+</div>
+<div class="section" id="createfragmentadapter">
+<h3>createFragmentAdapter<a class="headerlink" href="#createfragmentadapter" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#createFragmentAdapter">
+<tt class="descname">DocumentXMLFactory#createFragmentAdapter</tt><big>(</big><em>type</em><big>)</big><a class="headerlink" href="#DocumentXMLFactory#createFragmentAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>type</strong> (<em>String</em>) &#8211; The document type of the delta document this adapter
+should be used for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns FragmentAdapter:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">A suitable fragment adapter for the given type.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return the proper document fragment adapter for the given deltadoc type.</p>
+</div>
+<div class="section" id="createhandlerfactory">
+<h3>createHandlerFactory<a class="headerlink" href="#createhandlerfactory" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#createHandlerFactory">
+<tt class="descname">DocumentXMLFactory#createHandlerFactory</tt><big>(</big><big>)</big><a class="headerlink" href="#DocumentXMLFactory#createHandlerFactory" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns object:</th><td class="field-body">Instance of the handler factory class suitable for XML
+documents.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Returns delta operation handler factory.</p>
+</div>
+<div class="section" id="createnodeequalitytest">
+<h3>createNodeEqualityTest<a class="headerlink" href="#createnodeequalitytest" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#createNodeEqualityTest">
+<tt class="descname">DocumentXMLFactory#createNodeEqualityTest</tt><big>(</big><em>doc1</em>, <em>doc2</em><big>)</big><a class="headerlink" href="#DocumentXMLFactory#createNodeEqualityTest" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>doc1</strong> (<em>object</em>) &#8211; The original document</li>
+<li><strong>doc2</strong> (<em>object</em>) &#8211; The changed document</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns function:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">node equality test function.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return the proper node equality test function.</p>
+</div>
+<div class="section" id="createtreeequalitytest">
+<h3>createTreeEqualityTest<a class="headerlink" href="#createtreeequalitytest" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#createTreeEqualityTest">
+<tt class="descname">DocumentXMLFactory#createTreeEqualityTest</tt><big>(</big><em>doc1</em>, <em>doc2</em><big>)</big><a class="headerlink" href="#DocumentXMLFactory#createTreeEqualityTest" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>doc1</strong> (<em>object</em>) &#8211; The original document</li>
+<li><strong>doc2</strong> (<em>object</em>) &#8211; The changed document</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns function:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">node equality test function.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return the proper subtree equality test.</p>
+</div>
+<div class="section" id="createvaluetest">
+<h3>createValueTest<a class="headerlink" href="#createvaluetest" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#createValueTest">
+<tt class="descname">DocumentXMLFactory#createValueTest</tt><big>(</big><em>doc</em><big>)</big><a class="headerlink" href="#DocumentXMLFactory#createValueTest" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>doc</strong> (<em>object</em>) &#8211; The original document</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns function:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">value comparison function.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return proper value checker.</p>
+</div>
+<div class="section" id="loadinputdocument">
+<h3>loadInputDocument<a class="headerlink" href="#loadinputdocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#loadInputDocument">
+<tt class="descname">DocumentXMLFactory#loadInputDocument</tt><big>(</big><em>domdoc</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#DocumentXMLFactory#loadInputDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>domdoc</strong> (<em>String|Document</em>) &#8211; The underlying DOMDocument.</li>
+<li><strong>name</strong> (<em>String</em>) &#8211; The file name of the document.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns Object:</th><td class="field-body"><p class="first last">A document initialized from the given DOMDocument.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return new document loaded from a DOMDocument.</p>
+</div>
+<div class="section" id="loadoriginaldocument">
+<h3>loadOriginalDocument<a class="headerlink" href="#loadoriginaldocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#loadOriginalDocument">
+<tt class="descname">DocumentXMLFactory#loadOriginalDocument</tt><big>(</big><em>domdoc</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#DocumentXMLFactory#loadOriginalDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>domdoc</strong> (<em>String|Document</em>) &#8211; The underlying DOMDocument.</li>
+<li><strong>name</strong> (<em>String</em>) &#8211; The file name of the document.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns Object:</th><td class="field-body"><p class="first last">A document initialized from the given DOMDocument.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return new document loaded from a DOMDocument. Use this method for loading
+the original (unchanged) document and supply it as doc1 to diff.Diff or
+patch.Patch.</p>
+</div>
+<div class="section" id="serializedocument">
+<h3>serializeDocument<a class="headerlink" href="#serializedocument" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DocumentXMLFactory#serializeDocument">
+<tt class="descname">DocumentXMLFactory#serializeDocument</tt><big>(</big><em>deltadoc</em><big>)</big><a class="headerlink" href="#DocumentXMLFactory#serializeDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>deltadoc</strong> (<em>Object</em>) &#8211; A populated delta document.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns String:</th><td class="field-body"><p class="first last">The XML representation of the delta document as a string.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Serialize the data property into the src string and return it. Also store
+the source into the <tt class="docutils literal"><span class="pre">src</span></tt> property of <tt class="docutils literal"><span class="pre">deltadoc</span></tt>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DocumentXMLFactory</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#createemptydocument">createEmptyDocument</a></li>
+<li><a class="reference internal" href="#createfragmentadapter">createFragmentAdapter</a></li>
+<li><a class="reference internal" href="#createhandlerfactory">createHandlerFactory</a></li>
+<li><a class="reference internal" href="#createnodeequalitytest">createNodeEqualityTest</a></li>
+<li><a class="reference internal" href="#createtreeequalitytest">createTreeEqualityTest</a></li>
+<li><a class="reference internal" href="#createvaluetest">createValueTest</a></li>
+<li><a class="reference internal" href="#loadinputdocument">loadInputDocument</a></li>
+<li><a class="reference internal" href="#loadoriginaldocument">loadOriginalDocument</a></li>
+<li><a class="reference internal" href="#serializedocument">serializeDocument</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DeltaXMLFactory.html"
+                        title="previous chapter">Class DeltaXMLFactory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DeltaJSONFactory.html"
+                        title="next chapter">Class DeltaJSONFactory</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DeltaJSONFactory.html" title="Class DeltaJSONFactory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DeltaXMLFactory.html" title="Class DeltaXMLFactory"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" >High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

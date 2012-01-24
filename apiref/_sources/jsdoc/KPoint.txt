@@ -1,0 +1,330 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class KPoint
+================================================================================
+
+..
+   class-title
+
+
+Create a new KPoint instance.
+
+A KPoint represents a point identified by an x-coordinate and the
+number of the k-line it is located at.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: KPoint(x, k)
+
+
+    
+    :param  x: 
+         
+    
+    :param  k: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+copy
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#copy()
+
+
+
+
+
+Return a new copy of this k-point.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+equal
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#equal(other)
+
+
+    
+    :param  other: 
+         
+    
+
+
+
+
+Returns true if the given k-point has equal values
+
+
+
+
+
+
+
+
+
+    
+
+
+
+movedown
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#movedown(d)
+
+
+    
+    :param  d: 
+         
+    
+
+
+
+
+Move the point down by d units
+
+
+
+
+
+
+
+
+
+    
+
+
+
+moveleft
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#moveleft(d)
+
+
+    
+    :param  d: 
+         
+    
+
+
+
+
+Move the point left by d units
+
+
+
+
+
+
+
+
+
+    
+
+
+
+moveright
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#moveright(d)
+
+
+    
+    :param  d: 
+         
+    
+
+
+
+
+Move the point right by d units
+
+
+
+
+
+
+
+
+
+    
+
+
+
+moveup
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#moveup(d)
+
+
+    
+    :param  d: 
+         
+    
+
+
+
+
+Move the point up by d units
+
+
+
+
+
+
+
+
+
+    
+
+
+
+set
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#set(x, k)
+
+
+    
+    :param  x: 
+         
+    
+    :param  k: 
+         
+    
+
+
+
+
+Set the values of a k-point.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+translate
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: KPoint#translate(other)
+
+
+    
+    :param  other: 
+         
+    
+
+
+
+
+Translate this k-point by adding the values of the given k-point.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+Attributes
+----------
+
+..
+   class-attributes
+
+
+k
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: k   
+
+
+The k-line on which the k-point is located at.
+
+
+
+
+
+
+
+
+    
+
+
+
+x
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:attribute:: x   
+
+
+The x-coordinate of the k-point.
+
+
+
+
+
+
+
+
+    
+
+
+
+
+

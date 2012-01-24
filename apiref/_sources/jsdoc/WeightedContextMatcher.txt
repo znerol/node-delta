@@ -1,0 +1,239 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class WeightedContextMatcher
+================================================================================
+
+..
+   class-title
+
+
+Create a new WeightedContextMatcher instance implementing the fuzzy
+matching mechanism.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: WeightedContextMatcher(radius)
+
+
+    
+    :param  radius: 
+        Maximum radius of the fingerprint. Values greater than
+                 four are not recommended. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+equal
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: WeightedContextMatcher#equal(subject, offset, value, flag)
+
+
+    
+    :param  subject: 
+         
+    
+    :param  offset: 
+         
+    
+    :param  value: 
+         
+    
+    :param  flag: 
+         
+    
+
+
+
+
+Return true if subject at offset is equal to the candidate value. Override
+this method if your values need special handling.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+matchContent
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: WeightedContextMatcher#matchContent(subject, offset, flag)
+
+
+    
+    :param  subject: 
+         
+    
+    :param  offset: 
+         
+    
+    :param  flag: 
+         
+    
+
+
+
+
+Return 1 if every body-item of the pattern matches the candidates
+exactly. Otherwise return 0.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+matchContext
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: WeightedContextMatcher#matchContext(subject, offset, flag)
+
+
+    
+    :param  subject: 
+         
+    
+    :param  offset: 
+         
+    
+    :param  flag: 
+         
+    
+
+
+
+
+Return a number between 0 and 1 representing the match quality of the
+pattern context with the candidate.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+matchQuality
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: WeightedContextMatcher#matchQuality(offset, offset, contentflag, contextflag)
+
+
+    
+    :param  offset: 
+        An integer representing the offset to the subject. 
+    
+    :param  offset: 
+         
+    
+    :param  contentflag: 
+         
+    
+    :param  contextflag: 
+         
+    
+
+
+
+
+Return a number between zero and one representing the match quality of
+the pattern.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+setPattern
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: WeightedContextMatcher#setPattern(body, head, tail)
+
+
+    
+    :param  body: 
+        Array of context elements between head and tail 
+    
+    :param  head: 
+        Array of leading context elements 
+    
+    :param  tail: 
+        Array of trailing context elements 
+    
+
+
+
+
+Set the pattern consisting of the body and the context which should be
+matched against candidates using matchQuality method subsequently.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

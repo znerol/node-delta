@@ -1,0 +1,189 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class Matching &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="Tree Utilities" href="../tree.html" />
+    <link rel="next" title="Class DocumentOrderIndex" href="DocumentOrderIndex.html" />
+    <link rel="prev" title="Class Anchor" href="Anchor.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DocumentOrderIndex.html" title="Class DocumentOrderIndex"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Anchor.html" title="Class Anchor"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../tree.html" accesskey="U">Tree Utilities</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-matching">
+<h1>Class Matching<a class="headerlink" href="#class-matching" title="Permalink to this headline">¶</a></h1>
+<p>Create a new Matching instance. Optionally specify the property used to
+store partner links in target objects.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Matching">
+<em class="property">class </em><tt class="descname">Matching</tt><big>(</big><span class="optional">[</span><em>propname</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Matching" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>propname</strong> (<em>String</em>) &#8211; The name of the property which should be used
+on a tree.Node to store a reference to its partner.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get">
+<h3>get<a class="headerlink" href="#get" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Matching#get">
+<tt class="descname">Matching#get</tt><big>(</big><em>obj</em><big>)</big><a class="headerlink" href="#Matching#get" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>obj</strong> (<em>object</em>) &#8211; The tree node whose partner should be returned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns object:</th><td class="field-body"><p class="first last">The object associated with the given tree node.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return the partner of given object.</p>
+</div>
+<div class="section" id="put">
+<h3>put<a class="headerlink" href="#put" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Matching#put">
+<tt class="descname">Matching#put</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#Matching#put" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<em>object</em>) &#8211; The first candidate for the new pair.</li>
+<li><strong>b</strong> (<em>object</em>) &#8211; The second candidate for the new pair.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Associate the given objects.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class Matching</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#get">get</a></li>
+<li><a class="reference internal" href="#put">put</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Anchor.html"
+                        title="previous chapter">Class Anchor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DocumentOrderIndex.html"
+                        title="next chapter">Class DocumentOrderIndex</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DocumentOrderIndex.html" title="Class DocumentOrderIndex"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Anchor.html" title="Class Anchor"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../tree.html" >Tree Utilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

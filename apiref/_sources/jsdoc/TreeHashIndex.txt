@@ -1,0 +1,95 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class TreeHashIndex
+================================================================================
+
+..
+   class-title
+
+
+Create new instance of a tree hash index.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: TreeHashIndex(treehash, [propname])
+
+
+    
+    :param object treehash: 
+        An object implementing the tree-hashing method.
+        E.g. an instance of
+        :js:class`SimpleTreeHash`. 
+    
+    :param string propname: 
+        The name of the property which will be used to
+        cache the hash values on tree.Node objects. Defaults to 'treehash'. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+get
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: TreeHashIndex#get(node)
+
+
+    
+    :param object node: 
+        A tree.Node. 
+    
+
+
+
+    
+    :returns number:
+        Hash value of the subtree rooted at the given node. 
+    
+
+
+Return the hash value for the subtree rooted at the given node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

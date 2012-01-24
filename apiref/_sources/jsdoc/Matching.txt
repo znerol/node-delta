@@ -1,0 +1,122 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class Matching
+================================================================================
+
+..
+   class-title
+
+
+Create a new Matching instance. Optionally specify the property used to
+store partner links in target objects.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: Matching([propname])
+
+
+    
+    :param String propname: 
+        The name of the property which should be used
+        on a tree.Node to store a reference to its partner. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+get
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Matching#get(obj)
+
+
+    
+    :param object obj: 
+        The tree node whose partner should be returned. 
+    
+
+
+
+    
+    :returns object:
+        The object associated with the given tree node. 
+    
+
+
+Return the partner of given object.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+put
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: Matching#put(a, b)
+
+
+    
+    :param object a: 
+        The first candidate for the new pair. 
+    
+    :param object b: 
+        The second candidate for the new pair. 
+    
+
+
+
+
+Associate the given objects.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

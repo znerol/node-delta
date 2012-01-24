@@ -1,0 +1,415 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class skelmatch.Diff
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of the XCC diff implementation.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: skelmatch.Diff(a, b)
+
+
+    
+    :param tree.Node a: 
+        Root node of original tree 
+    
+    :param tree.Node b: 
+        Root node of changed tree 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+Diff#collectBones
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#collectBones(node)
+
+
+    
+    :param tree.Node node: 
+        The internal node from where the search should
+        start. 
+    
+
+
+
+
+Return an array of the bottom-most structure-type nodes beneath the given
+node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#equalContent
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#equalContent(a, b)
+
+
+    
+    :param tree.Node a: 
+        Candidate node from tree a 
+    
+    :param tree.Node b: 
+        Candidate node from tree b 
+    
+
+
+
+    
+    :returns boolean:
+        Return true if the value of the two nodes is equal. 
+    
+
+
+Default equality test for content nodes. Also test all descendants of a and
+b for equality. Override this method if you want to use tree hashing for
+this purpose.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#equalStructure
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#equalStructure(a, b, b)
+
+
+    
+    :param tree.Node a: 
+        Candidate node from tree a 
+    
+    :param tree.Node b: 
+        Candidate node from tree b 
+    
+    :param  b: 
+         
+    
+
+
+
+    
+    :returns boolean:
+        Return true if the value of the two nodes is equal. 
+    
+
+
+Default equality test for structure nodes. Return true if ancestors either
+have the same node value or if they form a pair. Override this method if you
+want to use tree hashing for this purpose.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#forEachUnmatchedSequenceOfSiblings
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#forEachUnmatchedSequenceOfSiblings(matching, a_sibs, b_sibs, callback, T)
+
+
+    
+    :param tree.Matching matching: 
+        A partial matching 
+    
+    :param Array a_sibs: 
+        A sequence of siblings from tree a 
+    
+    :param Array b_sibs: 
+        A sequence of siblings from tree b 
+    
+    :param function callback: 
+        A function (a_nodes, b_nodes, a_parent, b_parent)
+        called for every consecutive sequence of nodes from a_sibs and
+        b_sibs seperated by one or more node pairs. 
+    
+    :param Object T: 
+        Context object bound to "this" when the
+        callback is invoked. 
+    
+
+
+
+
+Invoke the given callback with each sequence of unmatched nodes.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#isContent
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#isContent(The)
+
+
+    
+    :param tree.Node The: 
+        node which should be examined. 
+    
+
+
+
+    
+    :returns boolean:
+        True if the node is a content-node, false otherwise. 
+    
+
+
+Return true if the given node should be treated as a content node. Override
+this method in order to implement custom logic to decide whether a node
+should be examined during the initial LCS (content) or during the second
+pass. Default: Return true for leaf-nodes.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#isStructure
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#isStructure(The)
+
+
+    
+    :param tree.Node The: 
+        node which should be examined. 
+    
+
+
+
+    
+    :returns boolean:
+        True if the node is a content-node, false otherwise. 
+    
+
+
+Return true if the given node should be treated as a structure node.
+Default: Return true for internal nodes.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchContent
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#matchContent(matching)
+
+
+    
+    :param tree.Matching matching: 
+        A tree matching which will be populated by
+        diffing tree a and b. 
+    
+
+
+
+
+Identify unchanged leaves by comparing them using myers longest common
+subsequence algorithm.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchingCheckAncestors
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#matchingCheckAncestors(matching, a, b)
+
+
+    
+    :param tree.Matching matching: 
+        A tree matching which will be populated by
+        diffing tree a and b. 
+    
+    :param tree.Node a: 
+        Candidate node from tree a 
+    
+    :param tree.Node b: 
+        Candidate node from tree b 
+    
+
+
+
+    
+    :returns boolean:
+        Return true if a pair is found in the ancestor chain. 
+    
+
+
+Return true if a pair is found in the ancestor chain of a and b.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchingPutAncestors
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#matchingPutAncestors(matching, a, b)
+
+
+    
+    :param tree.Matching matching: 
+        A tree matching which will be populated by
+        diffing tree a and b. 
+    
+    :param tree.Node a: 
+        Candidate node from tree a 
+    
+    :param tree.Node b: 
+        Candidate node from tree b 
+    
+
+
+
+
+Put a and b and all their unmatched ancestors into the matching.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+Diff#matchStructure
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: skelmatch.Diff.Diff#matchStructure(matching)
+
+
+    
+    :param tree.Matching matching: 
+        A partial matching 
+    
+
+
+
+
+Traverse a partial matching and detect equal structure-type nodes between
+matched content nodes.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

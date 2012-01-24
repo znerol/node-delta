@@ -1,0 +1,174 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>High Level Diff and Patch Interface &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="index.html" />
+    <link rel="next" title="Example code" href="highlevel-example.html" />
+    <link rel="prev" title="Delta.js Reference" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="highlevel-example.html" title="Example code"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Delta.js Reference"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="high-level-diff-and-patch-interface">
+<h1>High Level Diff and Patch Interface<a class="headerlink" href="#high-level-diff-and-patch-interface" title="Permalink to this headline">¶</a></h1>
+<p>The high level diff and patch interface of delta.js simplifies the usage of the
+underlying algorithms. Using the factory classes and the high-level
+implementaion of diff and patch it is easy to combine and configure the
+required delta.js classes for many different use cases.</p>
+<p>The delta.js module files are written in a way such that they are easily
+convertible between the CommonJS and the AWM module formats. The following
+examples provide a skeletton for your own diff and patch implementations.</p>
+<p>Refer to the examples section to get an idea on how to implement your own diff
+and patch commands using the delta.js framework.</p>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="highlevel-example.html">Example code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="highlevel-example.html#example-in-commonjs-module-format">Example in CommonJS module format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="highlevel-example.html#example-in-awm-module-format">Example in AWM module format</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/diff.Diff.html">Class diff.Diff</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/diff.Diff.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/diff.Diff.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/patch.Patch.html">Class patch.Patch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/patch.Patch.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/patch.Patch.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/Document.html">Class Document</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Document.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Document.html#attributes">Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/DeltaDocument.html">Class DeltaDocument</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaDocument.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaDocument.html#methods">Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaDocument.html#attributes">Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/DiffSkelmatchFactory.html">Class DiffSkelmatchFactory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DiffSkelmatchFactory.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DiffSkelmatchFactory.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/DiffXCCFactory.html">Class DiffXCCFactory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DiffXCCFactory.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DiffXCCFactory.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/ResolveXCCFactory.html">Class ResolveXCCFactory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/ResolveXCCFactory.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/ResolveXCCFactory.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/DeltaXMLFactory.html">Class DeltaXMLFactory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaXMLFactory.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaXMLFactory.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/DocumentXMLFactory.html">Class DocumentXMLFactory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DocumentXMLFactory.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DocumentXMLFactory.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/DeltaJSONFactory.html">Class DeltaJSONFactory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaJSONFactory.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/DeltaJSONFactory.html#methods">Methods</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Delta.js Reference</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="highlevel-example.html"
+                        title="next chapter">Example code</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="highlevel-example.html" title="Example code"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Delta.js Reference"
+             >previous</a> |</li>
+        <li><a href="index.html">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

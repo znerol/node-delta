@@ -1,0 +1,140 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DOMTreeAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DOMTreeAdapter()
+
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+adaptDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMTreeAdapter#adaptDocument(doc)
+
+
+    
+    :param  doc: 
+         
+    
+
+
+
+
+Create node wrappers for all element and text nodes in the specified
+document and return the root wrapper.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+adaptElement
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMTreeAdapter#adaptElement(element)
+
+
+    
+    :param  element: 
+         
+    
+
+
+
+
+Create node wrappers for the specified element or text node and all its
+descentants and return toplevel wrapper.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+createDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMTreeAdapter#createDocument(doc, tree)
+
+
+    
+    :param  doc: 
+         
+    
+    :param  tree: 
+         
+    
+
+
+
+
+Populate the document with the given dom tree.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

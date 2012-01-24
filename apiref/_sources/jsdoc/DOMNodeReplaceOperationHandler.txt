@@ -1,0 +1,182 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class DOMNodeReplaceOperationHandler
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: DOMNodeReplaceOperationHandler(anchor, datamap, orignode, changednode)
+
+
+    
+    :param  anchor: 
+         
+    
+    :param  datamap: 
+         
+    
+    :param  orignode: 
+         
+    
+    :param  changednode: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+activate
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMNodeReplaceOperationHandler#activate()
+
+
+
+
+
+Activate this hunk, remove old attributes and insert new attributes if
+necessary.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+deactivate
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMNodeReplaceOperationHandler#deactivate()
+
+
+
+
+
+Deactivate this hunk, remove inserted attributes and reinsert removed
+attributes if necessary.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+getNode
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMNodeReplaceOperationHandler#getNode()
+
+
+
+
+
+Return the currently activated node
+
+
+
+
+
+
+
+
+
+    
+
+
+
+isActive
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMNodeReplaceOperationHandler#isActive()
+
+
+
+
+
+Return true if this hunk is active.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+toggle
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: DOMNodeReplaceOperationHandler#toggle()
+
+
+
+
+
+Toggle active state of this hunk.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

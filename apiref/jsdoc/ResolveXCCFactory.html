@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class ResolveXCCFactory &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="High Level Diff and Patch Interface" href="../highlevel.html" />
+    <link rel="next" title="Class DeltaXMLFactory" href="DeltaXMLFactory.html" />
+    <link rel="prev" title="Class DiffXCCFactory" href="DiffXCCFactory.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DeltaXMLFactory.html" title="Class DeltaXMLFactory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DiffXCCFactory.html" title="Class DiffXCCFactory"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" accesskey="U">High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-resolvexccfactory">
+<h1>Class ResolveXCCFactory<a class="headerlink" href="#class-resolvexccfactory" title="Permalink to this headline">¶</a></h1>
+<p>Create a new instance of the XCC resolver factory.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ResolveXCCFactory">
+<em class="property">class </em><tt class="descname">ResolveXCCFactory</tt><big>(</big><span class="optional">[</span><em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#ResolveXCCFactory" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>options</strong> (<em>object</em>) &#8211; A set of options which is used during
+instantiation of the resolver class. Specify the properties
+<tt class="docutils literal"><span class="pre">radius</span></tt> for the maximal search radius used during fuzzy matching
+(Default: 6) and <tt class="docutils literal"><span class="pre">threshold</span></tt> for the match quality threshold
+(Default: 0.7).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="createresolver">
+<h3>createResolver<a class="headerlink" href="#createresolver" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="ResolveXCCFactory#createResolver">
+<tt class="descname">ResolveXCCFactory#createResolver</tt><big>(</big><em>doc</em><span class="optional">[</span>, <em>equalValue</em><span class="optional">]</span><span class="optional">[</span>, <em>equalNode</em><span class="optional">]</span><span class="optional">[</span>, <em>equalTree</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#ResolveXCCFactory#createResolver" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>doc</strong> (<em>Object</em>) &#8211; The original document. Use
+<tt class="docutils literal"><span class="pre">loadOriginalDocument</span></tt> of the document factory to load a suitable
+document.</li>
+<li><strong>equalValue</strong> (<em>function</em>) &#8211; The equality test-function used when
+comparing node values against context values of a patch. Use the
+method <tt class="docutils literal"><span class="pre">createValueTest</span></tt> of the document factory to create a
+suitable function.</li>
+<li><strong>equalNode</strong> (<em>function</em>) &#8211; The equality test-function used when
+comparing two nodes. Use the method <tt class="docutils literal"><span class="pre">createNodeEqualityTest</span></tt> of
+the document factory to create a suitable function.</li>
+<li><strong>equalTree</strong> (<em>function</em>) &#8211; The equality test-function used when
+comparing two subtrees. Use the method <tt class="docutils literal"><span class="pre">createNodeEqualityTest</span></tt> of
+the document factory to create a suitable function.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns ContextResolver:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">An initialized context aware resolver instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return new initialized instance of the XCC resolver algorithm for the given
+document.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class ResolveXCCFactory</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#createresolver">createResolver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DiffXCCFactory.html"
+                        title="previous chapter">Class DiffXCCFactory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DeltaXMLFactory.html"
+                        title="next chapter">Class DeltaXMLFactory</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DeltaXMLFactory.html" title="Class DeltaXMLFactory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="DiffXCCFactory.html" title="Class DiffXCCFactory"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" >High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

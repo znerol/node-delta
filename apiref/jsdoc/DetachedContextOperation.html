@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DetachedContextOperation &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="Detached Context Delta Operations" href="../contextdelta.html" />
+    <link rel="next" title="Class Detacher" href="Detacher.html" />
+    <link rel="prev" title="Detached Context Delta Operations" href="../contextdelta.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Detacher.html" title="Class Detacher"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../contextdelta.html" title="Detached Context Delta Operations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../contextdelta.html" accesskey="U">Detached Context Delta Operations</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-detachedcontextoperation">
+<h1>Class DetachedContextOperation<a class="headerlink" href="#class-detachedcontextoperation" title="Permalink to this headline">¶</a></h1>
+<p>Construct a new detached context delta operation instance. This is a pure
+data object without any methods.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DetachedContextOperation">
+<em class="property">class </em><tt class="descname">DetachedContextOperation</tt><big>(</big><em>type</em>, <em>path</em>, <em>remove</em>, <em>insert</em>, <em>head</em>, <em>tail</em><big>)</big><a class="headerlink" href="#DetachedContextOperation" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> &#8211; </li>
+<li><strong>path</strong> &#8211; </li>
+<li><strong>remove</strong> &#8211; </li>
+<li><strong>insert</strong> &#8211; </li>
+<li><strong>head</strong> &#8211; </li>
+<li><strong>tail</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DetachedContextOperation#toString">
+<tt class="descname">DetachedContextOperation#toString</tt><big>(</big><big>)</big><a class="headerlink" href="#DetachedContextOperation#toString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return a string representation of the operation</p>
+</div>
+</div>
+<div class="section" id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="head">
+<h3>head<a class="headerlink" href="#head" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">head</tt></dt>
+<dd></dd></dl>
+
+<p>Fingerprint values for the content. For insert operations, this
+array should be empty. For remove-operations, the array should
+contain the fingerprint values of the nodes which should be removed,
+for update operations, the only element should be the fingerprint
+value of the original node.</p>
+</div>
+<div class="section" id="insert">
+<h3>insert<a class="headerlink" href="#insert" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">insert</tt></dt>
+<dd></dd></dl>
+
+<p>Null (remove), one tree.Node (update) or sequence of nodes (insert)</p>
+</div>
+<div class="section" id="path">
+<h3>path<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">path</tt></dt>
+<dd></dd></dl>
+
+<p>An array of integers representing the top-down path from the root
+node to the anchor of this operation. The anchor point always is
+the first position after the leading context values. For insert
+operations it will must point to the first element of the tail
+context.</p>
+</div>
+<div class="section" id="remove">
+<h3>remove<a class="headerlink" href="#remove" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">remove</tt></dt>
+<dd></dd></dl>
+
+<p>Null (insert), one tree.Node (update) or sequence of nodes (delete)</p>
+</div>
+<div class="section" id="type">
+<h3>type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">type</tt></dt>
+<dd></dd></dl>
+
+<p>The operation type, one of deltamod.UPDATE_NODE_TYPE, deltamod.UPDATE_FOREST_TYPE</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DetachedContextOperation</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#head">head</a></li>
+<li><a class="reference internal" href="#insert">insert</a></li>
+<li><a class="reference internal" href="#path">path</a></li>
+<li><a class="reference internal" href="#remove">remove</a></li>
+<li><a class="reference internal" href="#type">type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../contextdelta.html"
+                        title="previous chapter">Detached Context Delta Operations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Detacher.html"
+                        title="next chapter">Class Detacher</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Detacher.html" title="Class Detacher"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../contextdelta.html" title="Detached Context Delta Operations"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../contextdelta.html" >Detached Context Delta Operations</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class XMLFragmentAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: XMLFragmentAdapter(docadapter)
+
+
+    
+    :param  docadapter: 
+         
+    
+
+
+
+
+
+
+
+    
+
+

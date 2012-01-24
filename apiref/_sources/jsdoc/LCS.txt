@@ -1,0 +1,395 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class LCS
+================================================================================
+
+..
+   class-title
+
+
+Create a new instance of the LCS implementation.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: LCS(a, b)
+
+
+    
+    :param  a: 
+        The first sequence 
+    
+    :param  b: 
+        The second sequence 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+compute
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#compute(callback, T, limit)
+
+
+    
+    :param  callback: 
+        A function(x, y) called for A[x] and B[y] for symbols
+                 taking part in the LCS. 
+    
+    :param  T: 
+        Context object bound to "this" when the callback is
+                 invoked. 
+    
+    :param  limit: 
+        A Limit instance constraining the window of operation to
+                 the given limit. If undefined the algorithm will iterate
+                 over the whole sequences a and b. 
+    
+
+
+
+
+Compute longest common subsequence using myers divide & conquer linear
+space algorithm.
+
+Call a callback for each snake which is part of the longest common
+subsequence.
+
+This algorithm works with strings and arrays. In order to modify the
+equality-test, just override the equals(a, b) method on the LCS
+object.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+defaultLimit
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#defaultLimit()
+
+
+
+
+
+Return the default limit spanning the whole input
+
+
+
+
+
+
+
+
+
+    
+
+
+
+equals
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#equals(a, b)
+
+
+    
+    :param  a: 
+         
+    
+    :param  b: 
+         
+    
+
+
+
+
+Returns true if the sequence members a and b are equal. Override this
+method if your sequences contain special things.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+forEachCommonSymbol
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#forEachCommonSymbol(callback, T)
+
+
+    
+    :param  callback: 
+        A function(x, y) called for A[x] and B[y] for symbols
+                 taking part in the LCS. 
+    
+    :param  T: 
+        Context object bound to "this" when the callback is
+                 invoked. 
+    
+
+
+
+
+Call a callback for each symbol which is part of the longest common
+subsequence between A and B.
+
+Given that the two sequences A and B were supplied to the LCS
+constructor, invoke the callback for each pair A[x], B[y] which is part
+of the longest common subsequence of A and B.
+
+This algorithm works with strings and arrays. In order to modify the
+equality-test, just override the equals(a, b) method on the LCS
+object.
+
+Usage:
+<code>
+var lcs = [];
+var A = 'abcabba';
+var B = 'cbabac';
+var l = new LCS(A, B);
+l.forEachCommonSymbol(function(x, y) {
+    lcs.push(A[x]);
+});
+console.log(lcs);
+// -> [ 'c', 'a', 'b', 'a' ]
+</code>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+forEachPositionInSnake
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#forEachPositionInSnake(left, right, callback, T)
+
+
+    
+    :param  left: 
+        Left KPoint 
+    
+    :param  right: 
+        Right KPoint 
+    
+    :param  callback: 
+        Callback of the form function(x, y) 
+    
+    :param  T: 
+        Context object bound to "this" when the callback is
+                 invoked. 
+    
+
+
+
+
+Invokes a function for each position in the snake between the left and
+the right snake head.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+middleSnake
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#middleSnake(lefthead, righthead, limit)
+
+
+    
+    :param  lefthead: 
+        (Output) A reference to a KPoint which will be
+                 populated with the values corresponding to the left end
+                 of the middle snake. 
+    
+    :param  righthead: 
+        (Output) A reference to a KPoint which will be
+                 populated with the values corresponding to the right
+                 end of the middle snake. 
+    
+    :param  limit: 
+        (In) Current lcs search limits (left, right, N, M, delta, dmax) 
+    
+
+
+
+    
+    :returns :
+        d, number of edit script operations encountered within
+                 the given limit 
+    
+
+
+Internal use. Find the middle snake and set lefthead to the left end and
+righthead to the right end.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+nextSnakeHeadBackward
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#nextSnakeHeadBackward(head, k, kmin, kmax, limit, V)
+
+
+    
+    :param  head: 
+        (Output) Reference to a KPoint which will be populated
+             with the new values 
+    
+    :param  k: 
+        (In) Current k-line 
+    
+    :param  kmin: 
+        (In) Lowest k-line in current d-round 
+    
+    :param  kmax: 
+        (In) Highest k-line in current d-round 
+    
+    :param  limit: 
+        (In) Current lcs search limits (left, right, N, M, delta, dmax) 
+    
+    :param  V: 
+        (In-/Out) Vector containing the results of previous
+             calculations. This vector gets updated automatically by
+             nextSnakeHeadForward method. 
+    
+
+
+
+
+Internal use. Compute new values for the next head on the given k-line
+in reverse direction by examining the results of previous calculations
+in V in the neighborhood of the k-line k.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+nextSnakeHeadForward
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: LCS#nextSnakeHeadForward(head, k, kmin, kmax, limit, V)
+
+
+    
+    :param  head: 
+        (Output) Reference to a KPoint which will be populated
+             with the new values 
+    
+    :param  k: 
+        (In) Current k-line 
+    
+    :param  kmin: 
+        (In) Lowest k-line in current d-round 
+    
+    :param  kmax: 
+        (In) Highest k-line in current d-round 
+    
+    :param  limit: 
+        (In) Current lcs search limits (left, right, N, M, delta, dmax) 
+    
+    :param  V: 
+        (In-/Out) Vector containing the results of previous
+             calculations. This vector gets updated automatically by
+             nextSnakeHeadForward method. 
+    
+
+
+
+
+Internal use. Compute new values for the next head on the given k-line
+in forward direction by examining the results of previous calculations
+in V in the neighborhood of the k-line k.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

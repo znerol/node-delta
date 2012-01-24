@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class DeltaDocument &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="High Level Diff and Patch Interface" href="../highlevel.html" />
+    <link rel="next" title="Class DiffSkelmatchFactory" href="DiffSkelmatchFactory.html" />
+    <link rel="prev" title="Class Document" href="Document.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DiffSkelmatchFactory.html" title="Class DiffSkelmatchFactory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Document.html" title="Class Document"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" accesskey="U">High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-deltadocument">
+<h1>Class DeltaDocument<a class="headerlink" href="#class-deltadocument" title="Permalink to this headline">¶</a></h1>
+<p>Create new delta document instance.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="DeltaDocument">
+<em class="property">class </em><tt class="descname">DeltaDocument</tt><big>(</big><em>type</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span>, <em>data</em><span class="optional">[</span>, <em>attached</em><span class="optional">]</span><span class="optional">[</span>, <em>detached</em><span class="optional">]</span><span class="optional">[</span>, <em>src</em><span class="optional">]</span><span class="optional">[</span>, <em>matching</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#DeltaDocument" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> (<em>string</em>) &#8211; The document type. E.g. &#8216;xml&#8217; or &#8216;json&#8217;</li>
+<li><strong>name</strong> (<em>string</em>) &#8211; The file name.</li>
+<li><strong>data</strong> (<em>object</em>) &#8211; A reference to the underlying document, the DOM.</li>
+<li><strong>attached</strong> (<em>array</em>) &#8211; An array of attached operations (
+:js:class:AttachedOperation).</li>
+<li><strong>detached</strong> (<em>array</em>) &#8211; An array of detached operations (e.g.
+:js:class:DetachedContextOperation) when loading from a file.</li>
+<li><strong>src</strong> (<em>string</em>) &#8211; The serialized version of this document, e.g. the
+XML markup code.</li>
+<li><strong>matching</strong> (<em>object</em>) &#8211; A matching which should be used to build up the
+document later on.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installhandlers">
+<h3>installHandlers<a class="headerlink" href="#installhandlers" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaDocument#installHandlers">
+<tt class="descname">DeltaDocument#installHandlers</tt><big>(</big><em>handlerfactory</em><big>)</big><a class="headerlink" href="#DeltaDocument#installHandlers" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>handlerfactory</strong> (<em>Object</em>) &#8211; An instance returned from the document
+factory <tt class="docutils literal"><span class="pre">createHandlerFactory</span></tt> method.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Install handlers for a resolved delta.</p>
+</div>
+<div class="section" id="togglehandlers">
+<h3>toggleHandlers<a class="headerlink" href="#togglehandlers" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="DeltaDocument#toggleHandlers">
+<tt class="descname">DeltaDocument#toggleHandlers</tt><big>(</big><big>)</big><a class="headerlink" href="#DeltaDocument#toggleHandlers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Toggle all handlers of a delta document.</p>
+</div>
+</div>
+<div class="section" id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="attached">
+<h3>attached<a class="headerlink" href="#attached" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">attached</tt></dt>
+<dd></dd></dl>
+
+<p>An array of attached operations.</p>
+</div>
+<div class="section" id="data">
+<h3>data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">data</tt></dt>
+<dd></dd></dl>
+
+<p>A reference to the underlying document, e.g. the DOMDocument object.</p>
+</div>
+<div class="section" id="detached">
+<h3>detached<a class="headerlink" href="#detached" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">detached</tt></dt>
+<dd></dd></dl>
+
+<p>An array of dettached operations.</p>
+</div>
+<div class="section" id="matching">
+<h3>matching<a class="headerlink" href="#matching" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">matching</tt></dt>
+<dd></dd></dl>
+
+<p>A matching which is used to collect attached operations when building
+the delta document.</p>
+</div>
+<div class="section" id="name">
+<h3>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">name</tt></dt>
+<dd></dd></dl>
+
+<p>The file name</p>
+</div>
+<div class="section" id="src">
+<h3>src<a class="headerlink" href="#src" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">src</tt></dt>
+<dd></dd></dl>
+
+<p>The serialized version of this document.</p>
+</div>
+<div class="section" id="type">
+<h3>type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">type</tt></dt>
+<dd></dd></dl>
+
+<p>The document type. E.g. &#8216;xml&#8217; or &#8216;json&#8217;</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class DeltaDocument</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#installhandlers">installHandlers</a></li>
+<li><a class="reference internal" href="#togglehandlers">toggleHandlers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#attached">attached</a></li>
+<li><a class="reference internal" href="#data">data</a></li>
+<li><a class="reference internal" href="#detached">detached</a></li>
+<li><a class="reference internal" href="#matching">matching</a></li>
+<li><a class="reference internal" href="#name">name</a></li>
+<li><a class="reference internal" href="#src">src</a></li>
+<li><a class="reference internal" href="#type">type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Document.html"
+                        title="previous chapter">Class Document</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DiffSkelmatchFactory.html"
+                        title="next chapter">Class DiffSkelmatchFactory</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DiffSkelmatchFactory.html" title="Class DiffSkelmatchFactory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Document.html" title="Class Document"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" >High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

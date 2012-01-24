@@ -1,0 +1,87 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class JSONDeltaAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: JSONDeltaAdapter(fragmentadapter)
+
+
+    
+    :param  fragmentadapter: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+createDocument
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: JSONDeltaAdapter#createDocument(doc, delta)
+
+
+    
+    :param  doc: 
+         
+    
+    :param  delta: 
+         
+    
+
+
+
+
+Populate the document with settings and operations from delta.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

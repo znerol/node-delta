@@ -1,0 +1,139 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class ParameterBuffer
+================================================================================
+
+..
+   class-title
+
+
+Private utility class: Creates a new ParameterBuffer instance.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: ParameterBuffer(callback, T)
+
+
+    
+    :param  callback: 
+         
+    
+    :param  T: 
+         
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+flush
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ParameterBuffer#flush()
+
+
+
+
+
+Invoke callback with the contents of the buffer array and empty the
+buffer afterwards.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+pushInsert
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ParameterBuffer#pushInsert(item)
+
+
+    
+    :param  item: 
+         
+    
+
+
+
+
+Append an item to the end of the buffer
+
+
+
+
+
+
+
+
+
+    
+
+
+
+pushRemove
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: ParameterBuffer#pushRemove(item)
+
+
+    
+    :param  item: 
+         
+    
+
+
+
+
+Append an item to the end of the buffer
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

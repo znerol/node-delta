@@ -1,0 +1,48 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class SerializedXMLFragmentAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: SerializedXMLFragmentAdapter(docadapter)
+
+
+    
+    :param  docadapter: 
+         
+    
+
+
+
+
+
+
+
+    
+
+

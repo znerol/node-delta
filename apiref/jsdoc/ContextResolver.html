@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class ContextResolver &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="Resolver" href="../resolver.html" />
+    <link rel="next" title="Class TopDownPathResolver" href="TopDownPathResolver.html" />
+    <link rel="prev" title="Resolver" href="../resolver.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="TopDownPathResolver.html" title="Class TopDownPathResolver"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../resolver.html" title="Resolver"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../resolver.html" accesskey="U">Resolver</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-contextresolver">
+<h1>Class ContextResolver<a class="headerlink" href="#class-contextresolver" title="Permalink to this headline">¶</a></h1>
+<p>Constructor for ContextResolver instances.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ContextResolver">
+<em class="property">class </em><tt class="descname">ContextResolver</tt><big>(</big><em>refnode</em>, <em>nodeindex</em>, <em>radius</em>, <em>threshold</em>, <em>matcher</em><big>)</big><a class="headerlink" href="#ContextResolver" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>refnode</strong> &#8211; A tree.Node, typically the root node</li>
+<li><strong>nodeindex</strong> &#8211; <dl class="docutils">
+<dt>An index class capable of accessing nodes by offset to</dt>
+<dd>other nodes. Typically an instance of
+DocumentOrderIndex should be used for this purpose.</dd>
+</dl>
+</li>
+<li><strong>radius</strong> &#8211; The search radius for the fuzzy matching algorithm</li>
+<li><strong>threshold</strong> &#8211; <dl class="docutils">
+<dt>The threshold of the fuzzy matching algorithm. A value</dt>
+<dd>between 0.5 and 1. The authors of the xcc patching
+algorithm recommend 0.7.</dd>
+</dl>
+</li>
+<li><strong>matcher</strong> &#8211; <dl class="docutils">
+<dt>(optional) A matcher instance. Defaults to a</dt>
+<dd>WeightedContextMatcher with radius=4.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="equalcontent">
+<h3>equalContent<a class="headerlink" href="#equalcontent" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="ContextResolver#equalContent">
+<tt class="descname">ContextResolver#equalContent</tt><big>(</big><em>docnode</em>, <em>patnode</em><big>)</big><a class="headerlink" href="#ContextResolver#equalContent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>docnode</strong> &#8211; A candidate node from the document</li>
+<li><strong>patnode</strong> &#8211; A body-node from the pattern</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Compare a document node against a content node from the patch. Return
+true if the docnode matches the patnode.</p>
+<p>Override this method if you use something different than the value
+property of tree.Node.</p>
+</div>
+<div class="section" id="equalcontext">
+<h3>equalContext<a class="headerlink" href="#equalcontext" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="ContextResolver#equalContext">
+<tt class="descname">ContextResolver#equalContext</tt><big>(</big><em>docnode</em>, <em>patnode</em><big>)</big><a class="headerlink" href="#ContextResolver#equalContext" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>docnode</strong> &#8211; A candidate node from the document</li>
+<li><strong>patnode</strong> &#8211; The value from a context node</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Compare a document node against a context node value. Return true if
+the value of docnode matches the pattern value.</p>
+<p>Override this method if you use something different than the value
+property of tree.Node.</p>
+</div>
+<div class="section" id="find">
+<h3>find<a class="headerlink" href="#find" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="ContextResolver#find">
+<tt class="descname">ContextResolver#find</tt><big>(</big><em>path</em>, <em>body</em>, <em>head</em>, <em>tail</em>, <em>type</em><big>)</big><a class="headerlink" href="#ContextResolver#find" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; <dl class="docutils">
+<dt>An array of numbers. Each value represents an index</dt>
+<dd>into the childrens of a node in top-down order.</dd>
+</dl>
+</li>
+<li><strong>body</strong> &#8211; <dl class="docutils">
+<dt>An array containing the node sequence in question.</dt>
+<dd>When resolving the location of insert operations,
+the array is empty.  For updates, the array will
+consist of exactly one node. Remove operations may
+consist of one or more nodes.</dd>
+</dl>
+</li>
+<li><strong>head</strong> &#8211; <dl class="docutils">
+<dt>Leading context: An array containing the values of</dt>
+<dd>leading nodes in the same generation.</dd>
+</dl>
+</li>
+<li><strong>tail</strong> &#8211; <dl class="docutils">
+<dt>Trailing context: An array containing the values of</dt>
+<dd>trailing nodes in the same generation.</dd>
+</dl>
+</li>
+<li><strong>type</strong> &#8211; <dl class="docutils">
+<dt>Operation type. This parameter is passed to the</dt>
+<dd>equalContent callback.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>:returns :</dt>
+<dd>A result object with two properties: node holds the resolved</dd>
+</dl>
+</dd></dl>
+
+<p>tree.Node and tail the unresolved part of path. Returns undefined on
+failure.</p>
+<p>Locate a node at the given path starting at refnode. Try to locate the
+target within a given radius using the fingerprint values if direct
+lookup failed.</p>
+</div>
+<div class="section" id="getclosestnode">
+<h3>getClosestNode<a class="headerlink" href="#getclosestnode" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="ContextResolver#getClosestNode">
+<tt class="descname">ContextResolver#getClosestNode</tt><big>(</big><em>anchor</em>, <em>nodeindex</em><big>)</big><a class="headerlink" href="#ContextResolver#getClosestNode" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>anchor</strong> &#8211; </li>
+<li><strong>nodeindex</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Given an anchor and a nodeindex, this method identifies the node which
+matches the anchor as close as possible.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class ContextResolver</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#equalcontent">equalContent</a></li>
+<li><a class="reference internal" href="#equalcontext">equalContext</a></li>
+<li><a class="reference internal" href="#find">find</a></li>
+<li><a class="reference internal" href="#getclosestnode">getClosestNode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../resolver.html"
+                        title="previous chapter">Resolver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="TopDownPathResolver.html"
+                        title="next chapter">Class TopDownPathResolver</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="TopDownPathResolver.html" title="Class TopDownPathResolver"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../resolver.html" title="Resolver"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../resolver.html" >Resolver</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

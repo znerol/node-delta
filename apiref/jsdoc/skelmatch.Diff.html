@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class skelmatch.Diff &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="Skel-Match Diff Algorithm" href="../skelmatch.html" />
+    <link rel="next" title="Delta Operations" href="../delta.html" />
+    <link rel="prev" title="Skel-Match Diff Algorithm" href="../skelmatch.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../delta.html" title="Delta Operations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../skelmatch.html" title="Skel-Match Diff Algorithm"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../skelmatch.html" accesskey="U">Skel-Match Diff Algorithm</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-skelmatch-diff">
+<h1>Class skelmatch.Diff<a class="headerlink" href="#class-skelmatch-diff" title="Permalink to this headline">¶</a></h1>
+<p>Create a new instance of the XCC diff implementation.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="skelmatch.Diff">
+<em class="property">class </em><tt class="descclassname">skelmatch.</tt><tt class="descname">Diff</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#skelmatch.Diff" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>a</strong> (<em>tree.Node</em>) &#8211; Root node of original tree</li>
+<li><strong>b</strong> (<em>tree.Node</em>) &#8211; Root node of changed tree</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="diff-collectbones">
+<h3>Diff#collectBones<a class="headerlink" href="#diff-collectbones" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#collectBones">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#collectBones</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#collectBones" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> (<em>tree.Node</em>) &#8211; The internal node from where the search should
+start.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return an array of the bottom-most structure-type nodes beneath the given
+node.</p>
+</div>
+<div class="section" id="diff-equalcontent">
+<h3>Diff#equalContent<a class="headerlink" href="#diff-equalcontent" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#equalContent">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#equalContent</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#equalContent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree a</li>
+<li><strong>b</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree b</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns boolean:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">Return true if the value of the two nodes is equal.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Default equality test for content nodes. Also test all descendants of a and
+b for equality. Override this method if you want to use tree hashing for
+this purpose.</p>
+</div>
+<div class="section" id="diff-equalstructure">
+<h3>Diff#equalStructure<a class="headerlink" href="#diff-equalstructure" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#equalStructure">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#equalStructure</tt><big>(</big><em>a</em>, <em>b</em>, <em>b</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#equalStructure" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree a</li>
+<li><strong>b</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree b</li>
+<li><strong>b</strong> (<em>tree.Node</em>) &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns boolean:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">Return true if the value of the two nodes is equal.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Default equality test for structure nodes. Return true if ancestors either
+have the same node value or if they form a pair. Override this method if you
+want to use tree hashing for this purpose.</p>
+</div>
+<div class="section" id="diff-foreachunmatchedsequenceofsiblings">
+<h3>Diff#forEachUnmatchedSequenceOfSiblings<a class="headerlink" href="#diff-foreachunmatchedsequenceofsiblings" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#forEachUnmatchedSequenceOfSiblings">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#forEachUnmatchedSequenceOfSiblings</tt><big>(</big><em>matching</em>, <em>a_sibs</em>, <em>b_sibs</em>, <em>callback</em>, <em>T</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#forEachUnmatchedSequenceOfSiblings" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>matching</strong> (<em>tree.Matching</em>) &#8211; A partial matching</li>
+<li><strong>a_sibs</strong> (<em>Array</em>) &#8211; A sequence of siblings from tree a</li>
+<li><strong>b_sibs</strong> (<em>Array</em>) &#8211; A sequence of siblings from tree b</li>
+<li><strong>callback</strong> (<em>function</em>) &#8211; A function (a_nodes, b_nodes, a_parent, b_parent)
+called for every consecutive sequence of nodes from a_sibs and
+b_sibs seperated by one or more node pairs.</li>
+<li><strong>T</strong> (<em>Object</em>) &#8211; Context object bound to &#8220;this&#8221; when the
+callback is invoked.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Invoke the given callback with each sequence of unmatched nodes.</p>
+</div>
+<div class="section" id="diff-iscontent">
+<h3>Diff#isContent<a class="headerlink" href="#diff-iscontent" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#isContent">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#isContent</tt><big>(</big><em>The</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#isContent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>The</strong> (<em>tree.Node</em>) &#8211; node which should be examined.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns boolean:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">True if the node is a content-node, false otherwise.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return true if the given node should be treated as a content node. Override
+this method in order to implement custom logic to decide whether a node
+should be examined during the initial LCS (content) or during the second
+pass. Default: Return true for leaf-nodes.</p>
+</div>
+<div class="section" id="diff-isstructure">
+<h3>Diff#isStructure<a class="headerlink" href="#diff-isstructure" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#isStructure">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#isStructure</tt><big>(</big><em>The</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#isStructure" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>The</strong> (<em>tree.Node</em>) &#8211; node which should be examined.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns boolean:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">True if the node is a content-node, false otherwise.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return true if the given node should be treated as a structure node.
+Default: Return true for internal nodes.</p>
+</div>
+<div class="section" id="diff-matchcontent">
+<h3>Diff#matchContent<a class="headerlink" href="#diff-matchcontent" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#matchContent">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#matchContent</tt><big>(</big><em>matching</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#matchContent" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>matching</strong> (<em>tree.Matching</em>) &#8211; A tree matching which will be populated by
+diffing tree a and b.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Identify unchanged leaves by comparing them using myers longest common
+subsequence algorithm.</p>
+</div>
+<div class="section" id="diff-matchingcheckancestors">
+<h3>Diff#matchingCheckAncestors<a class="headerlink" href="#diff-matchingcheckancestors" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#matchingCheckAncestors">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#matchingCheckAncestors</tt><big>(</big><em>matching</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#matchingCheckAncestors" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>matching</strong> (<em>tree.Matching</em>) &#8211; A tree matching which will be populated by
+diffing tree a and b.</li>
+<li><strong>a</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree a</li>
+<li><strong>b</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree b</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Returns boolean:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">Return true if a pair is found in the ancestor chain.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Return true if a pair is found in the ancestor chain of a and b.</p>
+</div>
+<div class="section" id="diff-matchingputancestors">
+<h3>Diff#matchingPutAncestors<a class="headerlink" href="#diff-matchingputancestors" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#matchingPutAncestors">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#matchingPutAncestors</tt><big>(</big><em>matching</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#matchingPutAncestors" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>matching</strong> (<em>tree.Matching</em>) &#8211; A tree matching which will be populated by
+diffing tree a and b.</li>
+<li><strong>a</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree a</li>
+<li><strong>b</strong> (<em>tree.Node</em>) &#8211; Candidate node from tree b</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Put a and b and all their unmatched ancestors into the matching.</p>
+</div>
+<div class="section" id="diff-matchstructure">
+<h3>Diff#matchStructure<a class="headerlink" href="#diff-matchstructure" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="skelmatch.Diff.Diff#matchStructure">
+<tt class="descclassname">skelmatch.Diff.</tt><tt class="descname">Diff#matchStructure</tt><big>(</big><em>matching</em><big>)</big><a class="headerlink" href="#skelmatch.Diff.Diff#matchStructure" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>matching</strong> (<em>tree.Matching</em>) &#8211; A partial matching</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Traverse a partial matching and detect equal structure-type nodes between
+matched content nodes.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class skelmatch.Diff</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#diff-collectbones">Diff#collectBones</a></li>
+<li><a class="reference internal" href="#diff-equalcontent">Diff#equalContent</a></li>
+<li><a class="reference internal" href="#diff-equalstructure">Diff#equalStructure</a></li>
+<li><a class="reference internal" href="#diff-foreachunmatchedsequenceofsiblings">Diff#forEachUnmatchedSequenceOfSiblings</a></li>
+<li><a class="reference internal" href="#diff-iscontent">Diff#isContent</a></li>
+<li><a class="reference internal" href="#diff-isstructure">Diff#isStructure</a></li>
+<li><a class="reference internal" href="#diff-matchcontent">Diff#matchContent</a></li>
+<li><a class="reference internal" href="#diff-matchingcheckancestors">Diff#matchingCheckAncestors</a></li>
+<li><a class="reference internal" href="#diff-matchingputancestors">Diff#matchingPutAncestors</a></li>
+<li><a class="reference internal" href="#diff-matchstructure">Diff#matchStructure</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../skelmatch.html"
+                        title="previous chapter">Skel-Match Diff Algorithm</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../delta.html"
+                        title="next chapter">Delta Operations</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../delta.html" title="Delta Operations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../skelmatch.html" title="Skel-Match Diff Algorithm"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../skelmatch.html" >Skel-Match Diff Algorithm</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

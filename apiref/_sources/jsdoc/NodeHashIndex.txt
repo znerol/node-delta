@@ -1,0 +1,95 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class NodeHashIndex
+================================================================================
+
+..
+   class-title
+
+
+Create new instance of a node hash index.
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: NodeHashIndex(nodehash, [propname])
+
+
+    
+    :param object nodehash: 
+        An object implementing the node-hashing method
+        for the underlying document. E.g. an instance of
+        :js:class:`DOMNodeHash`. 
+    
+    :param string propname: 
+        The name of the property which will be used to
+        cache the hash values on tree.Node objects. Defaults to 'nodehash'. 
+    
+
+
+
+
+
+
+
+Methods
+-------
+
+..
+   class-methods
+
+
+get
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+.. js:function:: NodeHashIndex#get(node)
+
+
+    
+    :param object node: 
+        A tree.Node. 
+    
+
+
+
+    
+    :returns number:
+        Hash value of the tree node. 
+    
+
+
+Return the hash value for the given node.
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    
+
+

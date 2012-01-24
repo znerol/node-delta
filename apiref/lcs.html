@@ -1,0 +1,151 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>LCS Algorithm &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="index.html" />
+    <link rel="next" title="Class LCS" href="jsdoc/LCS.html" />
+    <link rel="prev" title="Class DeltaJSONFactory" href="jsdoc/DeltaJSONFactory.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="jsdoc/LCS.html" title="Class LCS"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="jsdoc/DeltaJSONFactory.html" title="Class DeltaJSONFactory"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lcs-algorithm">
+<h1>LCS Algorithm<a class="headerlink" href="#lcs-algorithm" title="Permalink to this headline">¶</a></h1>
+<p>The LCS module provides methods to calculate the Longst Common Subsequence
+between two sequences using Myers O(ND) Difference Algorithm.</p>
+<p>By overriding the <tt class="docutils literal"><span class="pre">equals</span></tt> method of the LCS object one can implement custom
+equality tests such that the implementation can be used for lists of any type,
+not only for strings.</p>
+<p><strong>Example Code</strong></p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// Consider that list_a and list_b are sequences of objects with a name and</span>
+<span class="c1">// a value property.</span>
+<span class="kd">var</span> <span class="nx">lcs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./delta/lcs&#39;</span><span class="p">);</span>
+
+<span class="nx">lcsinst</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">lcs</span><span class="p">.</span><span class="nx">LCS</span><span class="p">(</span><span class="nx">list_a</span><span class="p">,</span> <span class="nx">list_b</span><span class="p">);</span>
+
+<span class="c1">// Override equality test function of lcs instance.</span>
+<span class="nx">lcsinst</span><span class="p">.</span><span class="nx">equals</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="nx">b</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Perform lcs computation</span>
+<span class="nx">lcsinst</span><span class="p">.</span><span class="nx">forEachCommonSymbol</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="nx">b</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39; take part in the lcs&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Eugene W. Myers, <a class="reference external" href="http://dx.doi.org/10.1007/BF01840446">An O(ND) Difference Algorithm and Its Variations</a>, 1986</p>
+</div>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/LCS.html">Class LCS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/LCS.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/LCS.html#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/KPoint.html">Class KPoint</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/KPoint.html#constructor">Constructor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/KPoint.html#methods">Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/KPoint.html#attributes">Attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jsdoc/Limit.html">Class Limit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsdoc/Limit.html#constructor">Constructor</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="jsdoc/DeltaJSONFactory.html"
+                        title="previous chapter">Class DeltaJSONFactory</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="jsdoc/LCS.html"
+                        title="next chapter">Class LCS</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="jsdoc/LCS.html" title="Class LCS"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="jsdoc/DeltaJSONFactory.html" title="Class DeltaJSONFactory"
+             >previous</a> |</li>
+        <li><a href="index.html">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

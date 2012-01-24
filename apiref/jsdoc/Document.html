@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class Document &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" />
+    <link rel="up" title="High Level Diff and Patch Interface" href="../highlevel.html" />
+    <link rel="next" title="Class DeltaDocument" href="DeltaDocument.html" />
+    <link rel="prev" title="Class patch.Patch" href="patch.Patch.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DeltaDocument.html" title="Class DeltaDocument"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="patch.Patch.html" title="Class patch.Patch"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" accesskey="U">High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="class-document">
+<h1>Class Document<a class="headerlink" href="#class-document" title="Permalink to this headline">¶</a></h1>
+<p>Create new document instance.</p>
+<div class="section" id="constructor">
+<h2>Constructor<a class="headerlink" href="#constructor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Document">
+<em class="property">class </em><tt class="descname">Document</tt><big>(</big><em>type</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span>, <em>data</em><span class="optional">[</span>, <em>tree</em><span class="optional">]</span><span class="optional">[</span>, <em>src</em><span class="optional">]</span><span class="optional">[</span>, <em>valueindex</em><span class="optional">]</span><span class="optional">[</span>, <em>treevalueindex</em><span class="optional">]</span><span class="optional">[</span>, <em>nodeindex</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Document" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>type</strong> (<em>string</em>) &#8211; The document type. E.g. &#8216;xml&#8217; or &#8216;json&#8217;</li>
+<li><strong>name</strong> (<em>string</em>) &#8211; The file name.</li>
+<li><strong>data</strong> (<em>object</em>) &#8211; A reference to the underlying document, the DOM.</li>
+<li><strong>tree</strong> (<em>object</em>) &#8211; The root node of the document tree. Use an instance
+of <a class="reference internal" href="Node.html#Node" title="Node"><tt class="xref js js-class docutils literal"><span class="pre">Node()</span></tt></a>.</li>
+<li><strong>src</strong> (<em>string</em>) &#8211; The serialized version of this document, e.g. the
+XML markup code.</li>
+<li><strong>valueindex</strong> (<em>object</em>) &#8211; The object necessary to lookup node values.
+E.g. an instance of <a class="reference internal" href="NodeHashIndex.html#NodeHashIndex" title="NodeHashIndex"><tt class="xref js js-class docutils literal"><span class="pre">NodeHashIndex()</span></tt></a>.</li>
+<li><strong>treevalueindex</strong> (<em>object</em>) &#8211; The object necessary to lookup the
+value of a whole subtree. E.g. an instance of
+<a class="reference internal" href="TreeHashIndex.html#TreeHashIndex" title="TreeHashIndex"><tt class="xref js js-class docutils literal"><span class="pre">TreeHashIndex()</span></tt></a>.</li>
+<li><strong>nodeindex</strong> (<em>object</em>) &#8211; The object necessary to resolve nodes relative
+to other nodes when generating and verifying context. Typically this
+should be an instance of <a class="reference internal" href="DocumentOrderIndex.html#DocumentOrderIndex" title="DocumentOrderIndex"><tt class="xref js js-class docutils literal"><span class="pre">DocumentOrderIndex()</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data">
+<h3>data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">data</tt></dt>
+<dd></dd></dl>
+
+<p>A reference to the underlying document, e.g. the DOMDocument object.</p>
+</div>
+<div class="section" id="name">
+<h3>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">name</tt></dt>
+<dd></dd></dl>
+
+<p>The file name</p>
+</div>
+<div class="section" id="nodeindex">
+<h3>nodeindex<a class="headerlink" href="#nodeindex" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">nodeindex</tt></dt>
+<dd></dd></dl>
+
+<p>An object used to lookup nodes relative to other nodes along a specified
+axis. Typically in document order.</p>
+</div>
+<div class="section" id="src">
+<h3>src<a class="headerlink" href="#src" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">src</tt></dt>
+<dd></dd></dl>
+
+<p>The serialized version of this document.</p>
+</div>
+<div class="section" id="tree">
+<h3>tree<a class="headerlink" href="#tree" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">tree</tt></dt>
+<dd></dd></dl>
+
+<p>The root node of the document tree.</p>
+</div>
+<div class="section" id="treevalueindex">
+<h3>treevalueindex<a class="headerlink" href="#treevalueindex" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">treevalueindex</tt></dt>
+<dd></dd></dl>
+
+<p>An object used to lookup the combined values of all nodes in a subtree.</p>
+</div>
+<div class="section" id="type">
+<h3>type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">type</tt></dt>
+<dd></dd></dl>
+
+<p>The document type. E.g. &#8216;xml&#8217; or &#8216;json&#8217;</p>
+</div>
+<div class="section" id="valueindex">
+<h3>valueindex<a class="headerlink" href="#valueindex" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt>
+<tt class="descname">valueindex</tt></dt>
+<dd></dd></dl>
+
+<p>An object used to lookup node values.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Class Document</a><ul>
+<li><a class="reference internal" href="#constructor">Constructor</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#data">data</a></li>
+<li><a class="reference internal" href="#name">name</a></li>
+<li><a class="reference internal" href="#nodeindex">nodeindex</a></li>
+<li><a class="reference internal" href="#src">src</a></li>
+<li><a class="reference internal" href="#tree">tree</a></li>
+<li><a class="reference internal" href="#treevalueindex">treevalueindex</a></li>
+<li><a class="reference internal" href="#type">type</a></li>
+<li><a class="reference internal" href="#valueindex">valueindex</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="patch.Patch.html"
+                        title="previous chapter">Class patch.Patch</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DeltaDocument.html"
+                        title="next chapter">Class DeltaDocument</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="DeltaDocument.html" title="Class DeltaDocument"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="patch.Patch.html" title="Class patch.Patch"
+             >previous</a> |</li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li>
+          <li><a href="../highlevel.html" >High Level Diff and Patch Interface</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

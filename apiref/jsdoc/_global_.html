@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Built-In Namespace _global_ &mdash; Delta.js Reference</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Delta.js Reference" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="built-in-namespace-global">
+<h1>Built-In Namespace _global_<a class="headerlink" href="#built-in-namespace-global" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mapdom">
+<h3>mapdom<a class="headerlink" href="#mapdom" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt>
+<tt class="descname">mapdom</tt><big>(</big><em>node</em>, <em>callback</em>, <em>T</em>, <em>presult</em><big>)</big></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; <dl class="docutils">
+<dt>The DOM node representing the starting point for the</dt>
+<dd>mapping operation</dd>
+</dl>
+</li>
+<li><strong>callback</strong> &#8211; function(node, parents_result)</li>
+<li><strong>T</strong> &#8211; <dl class="docutils">
+<dt>context parameter bound to &#8220;this&#8221; when invoking the</dt>
+<dd>callback</dd>
+</dl>
+</li>
+<li><strong>presult</strong> &#8211; Internal use.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>A function that visits every node of a DOM tree in document order. Calls
+a callback with the visited node and the result of the callback from
+visitting the parent node.</p>
+<p>This function is a modified version of Douglas Crockfords walk_the_DOM
+function from his book &#8220;Javascript: The Good Parts&#8221;.</p>
+</div>
+<div class="section" id="mapvalue">
+<h3>mapvalue<a class="headerlink" href="#mapvalue" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt>
+<tt class="descname">mapvalue</tt><big>(</big><em>value</em>, <em>callback</em>, <em>T</em>, <em>presult</em>, <em>presult</em><big>)</big></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> &#8211; <dl class="docutils">
+<dt>A JSON value representing the starting point for the</dt>
+<dd>mapping operation</dd>
+</dl>
+</li>
+<li><strong>callback</strong> &#8211; function(value, parents_result)</li>
+<li><strong>T</strong> &#8211; <dl class="docutils">
+<dt>context parameter bound to &#8220;this&#8221; when invoking the</dt>
+<dd>callback</dd>
+</dl>
+</li>
+<li><strong>presult</strong> &#8211; Internal use.</li>
+<li><strong>presult</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>A function that visits every value of a JSON object tree in preorder.
+Calls a callback with the visited value and the result of the callback
+from visitting the parent.</p>
+<p>This function is a modified version of Douglas Crockfords walk_the_DOM
+function from his book &#8220;Javascript: The Good Parts&#8221;.</p>
+</div>
+</div>
+<div class="section" id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="fnv132-init">
+<h3>FNV132_INIT<a class="headerlink" href="#fnv132-init" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="FNV132_INIT ">
+<tt class="descname">FNV132_INIT , <em>constant</em></tt><a class="headerlink" href="#FNV132_INIT " title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Constant FNV-1 32bit offset basis</p>
+</div>
+<div class="section" id="fnv132-prime">
+<h3>FNV132_PRIME<a class="headerlink" href="#fnv132-prime" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="FNV132_PRIME ">
+<tt class="descname">FNV132_PRIME , <em>constant</em></tt><a class="headerlink" href="#FNV132_PRIME " title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Constant FNV-1 32bit prime number</p>
+</div>
+<div class="section" id="fnv132-prime-h">
+<h3>FNV132_PRIME_H<a class="headerlink" href="#fnv132-prime-h" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="FNV132_PRIME_H ">
+<tt class="descname">FNV132_PRIME_H , <em>constant</em></tt><a class="headerlink" href="#FNV132_PRIME_H " title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>High 16 bits of FNV-1 32bit prime number</p>
+</div>
+<div class="section" id="fnv132-prime-l">
+<h3>FNV132_PRIME_L<a class="headerlink" href="#fnv132-prime-l" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="FNV132_PRIME_L ">
+<tt class="descname">FNV132_PRIME_L , <em>constant</em></tt><a class="headerlink" href="#FNV132_PRIME_L " title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Low 16 bits of FNV-1 32bit prime number</p>
+</div>
+<div class="section" id="payloadhandler">
+<h3>payloadHandler<a class="headerlink" href="#payloadhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="payloadHandler">
+<tt class="descname">payloadHandler</tt><a class="headerlink" href="#payloadHandler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Return shared payload handler.</p>
+</div>
+<div class="section" id="treeadapter">
+<h3>treeAdapter<a class="headerlink" href="#treeadapter" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="treeAdapter">
+<tt class="descname">treeAdapter</tt><a class="headerlink" href="#treeAdapter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>shared tree adapter instance</p>
+</div>
+<div class="section" id="type-strings">
+<h3>TYPE_STRINGS<a class="headerlink" href="#type-strings" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="TYPE_STRINGS ">
+<tt class="descname">TYPE_STRINGS , <em>constant</em></tt><a class="headerlink" href="#TYPE_STRINGS " title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="update-forest-type">
+<h3>UPDATE_FOREST_TYPE<a class="headerlink" href="#update-forest-type" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="UPDATE_FOREST_TYPE ">
+<tt class="descname">UPDATE_FOREST_TYPE , <em>constant</em></tt><a class="headerlink" href="#UPDATE_FOREST_TYPE " title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="update-node-type">
+<h3>UPDATE_NODE_TYPE<a class="headerlink" href="#update-node-type" title="Permalink to this headline">¶</a></h3>
+<dl class="attribute">
+<dt id="UPDATE_NODE_TYPE ">
+<tt class="descname">UPDATE_NODE_TYPE , <em>constant</em></tt><a class="headerlink" href="#UPDATE_NODE_TYPE " title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Built-In Namespace _global_</a><ul>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#mapdom">mapdom</a></li>
+<li><a class="reference internal" href="#mapvalue">mapvalue</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#fnv132-init">FNV132_INIT</a></li>
+<li><a class="reference internal" href="#fnv132-prime">FNV132_PRIME</a></li>
+<li><a class="reference internal" href="#fnv132-prime-h">FNV132_PRIME_H</a></li>
+<li><a class="reference internal" href="#fnv132-prime-l">FNV132_PRIME_L</a></li>
+<li><a class="reference internal" href="#payloadhandler">payloadHandler</a></li>
+<li><a class="reference internal" href="#treeadapter">treeAdapter</a></li>
+<li><a class="reference internal" href="#type-strings">TYPE_STRINGS</a></li>
+<li><a class="reference internal" href="#update-forest-type">UPDATE_FOREST_TYPE</a></li>
+<li><a class="reference internal" href="#update-node-type">UPDATE_NODE_TYPE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Delta.js Reference</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Lorenz Schori.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

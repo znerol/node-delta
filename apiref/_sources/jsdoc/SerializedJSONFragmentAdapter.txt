@@ -1,0 +1,43 @@
+
+
+
+
+
+
+..
+    Classes and methods
+
+Class SerializedJSONFragmentAdapter
+================================================================================
+
+..
+   class-title
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+Constructor
+-----------
+
+.. js:class:: SerializedJSONFragmentAdapter()
+
+
+
+
+
+
+
+
+    
+
+
