@@ -15,6 +15,7 @@
   "devDependencies": {
     "browserify": "1.8.x",
     "connect": "1.8.x",
-    "nodeunit": "0.6.x"
+    "nodeunit": "0.6.x",
+    "requirejs": "1.0.x" 
   }
 }

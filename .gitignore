@@ -4,10 +4,9 @@ dist/browser-test/deltajs-test.js
 dist/browser-test-cov
 dist/browser/delta.js
 dist/amd
-examples/*/delta.js
+examples/lcs/delta.js
+examples/xcc/delta.js
 examples/srcdiff/srcdiff.js
-examples/vizmerge/src/delta
-examples/vizmerge/src/profiles
-node_modules/*
-!node_modules/xmlshim
+examples/vizmerge/delta
+!examples/vizmerge/delta/xmlshim.js
 node_modules

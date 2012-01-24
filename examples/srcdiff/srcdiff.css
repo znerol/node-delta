@@ -1,0 +1,21 @@
+#src1, #src2 {
+    overflow: auto;
+    width: 50%;
+    float: left;
+}
+#patch {
+    overflow: auto;
+}
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.change-remove {
+    background-color: #FFCCCC;
+}
+.change-insert {
+    background-color: #CCFFCC;
+}

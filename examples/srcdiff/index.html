@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <title>Delta.js interactive xml diff</title>
+    <link href="google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+    <link href="srcdiff.css" rel="stylesheet" type="text/css">
+    <script src="google-code-prettify/prettify.js"></script>
+    <script src="jquery-1.7.1.min.js"></script>
+    <script src="srcdiff.js"></script>
+</head>
+<body>
+    <h1>Delta.js interactive xml diff</h1>
+    <form name='switchboard'>
+        <p><label>Original file</label><input type="file" id="file1"></p>
+        <p><label>Changed file</label><input type="file" id="file2"></p>
+    </form>
+    <div class='clearfix'>
+    <div id='src1'>
+        <pre class='prettyprint'></pre>
+    </div>
+    <div id='src2'>
+        <pre class='prettyprint'></pre>
+    </div>
+    </div>
+    </div>
+    <div id='patch'>
+        <pre class='prettyprint'></pre>
+    </div>
+</body>
+</html>

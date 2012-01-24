@@ -11,7 +11,7 @@ test/fixtures:
 	make -C test/fixtures
 
 browser:
-	$(BROWSERIFY) test-browserify-entry.js > dist/browser-test/deltajs-test.js
+	mkdir -p dist/browser
 	$(BROWSERIFY) deltajs-browserify-entry.js > dist/browser/delta.js
 
 amd:
@@ -23,13 +23,15 @@ examples: browser
 	cp dist/browser/delta.js examples/xcc/delta.js
 	cp dist/browser/delta.js examples/lcs/delta.js
 	$(BROWSERIFY) examples/srcdiff/srcdiff-entry.js > examples/srcdiff/srcdiff.js
-	$(RJS) -convert lib/delta examples/vizmerge/src/delta
-	$(RJS) -convert lib/profiles examples/vizmerge/src/profiles
+	$(RJS) -convert lib/delta examples/vizmerge/delta
 
 browser-coverage: browser test/fixtures
 	$(JSCOV) dist/browser-test dist/browser-test-cov
 
-browser-test: browser test/fixtures
+dist/browser-test/delta-test.js:
+	$(BROWSERIFY) test-browserify-entry.js > dist/browser-test/deltajs-test.js
+
+browser-test: dist/browser-test/delta-test.js test/fixtures
 	 $(BROWSER) dist/browser-test/test.html >/dev/null 2>&1 &
 
 jsdoc:

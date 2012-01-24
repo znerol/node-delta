@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Visualization of XCC Tree diff algorithm</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="processing-1.3.6.min.js"></script>
+    <script type="text/javascript" src="delta.js"></script>
+    <script type="text/javascript" src="extra/xcc_recorder.js"></script>
+    <script type="text/javascript" src="extra/xcc_orig_leaf_update.js"></script>
+    <script type="text/javascript" src="extra/tree_layout.js"></script>
+  </head>
+
+  <body>
+    <h3>Visualization of XCC Tree diff algorithm</h3>
+    <form name='params' method='GET' action='#'>
+      <label>A</label>
+      <input type='textfield' name='A' maxlength=255' value='r+a++a1++a2+b++b1+c++c1+d'>
+      <label>B</label>
+      <input type='textfield' name='B' maxlength='255' value='r+a++a2+b++b2+c++c1++c2+d++d1'>
+      <input type='button' name='refresh' value='Refresh' onclick='window.refresh();'>
+      <input type='button' name='step' value='Step' onclick='window.gostep();'>
+      <input type='button' name='clear' value='Clear' onclick='window.clear();'>
+      <input type='button' name='bigger' value='+' onclick='window.change_scale(0.2);'>
+      <input type='button' name='smaller' value='-' onclick='window.change_scale(-0.2);'>
+      <input type='button' name='save' value='Save' onclick='window.save_image();'><br>
+      <p><input type='checkbox' name='matchlines' checked='yes' onclick='window.toggle_matchlines(this.checked);'>Show matchlines</p>
+      <p><input type="radio" checked='yes' name="lud" id="lud1" onclick='window.switch_lud(this.value);' value="0" /><label for="lud1">No leaf-update detection</label></p>
+      <p><input type="radio" name="lud" id="lud2" onclick='window.switch_lud(this.value);' value="1" /><label for="lud2">Linear time leaf-update detection</label></p> 
+      <p><input type="radio" name="lud" id="lud3" onclick='window.switch_lud(this.value);' value="2" /><label for="lud3">Original leaf-update detection</label></p>
+    </form>
+    <canvas data-processing-sources="xcc.pde" style="border: 1px solid gray;"></canvas>
+
+     <script src="xcc.js">
+    </script>
+  </body>
+</html>

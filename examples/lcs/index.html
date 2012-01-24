@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Myers LCS algorithm</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="processing-1.3.6.min.js"></script>
+    <script type="text/javascript" src="delta.js"></script>
+    <script type="text/javascript" src="extra/basic_lcs.js"></script>
+    <script type="text/javascript" src="extra/lcs_recorder.js"></script>
+    <script type="text/javascript" src="extra/snake_edges.js"></script>
+  </head>
+
+  <body>
+    <h3>Myers LCS algorithm</h3>
+    <form name='params' method='GET' action='#'>
+      <label>A</label>
+      <input type='textfield' name='A' size='8' maxlength='8' value='abcabba'>
+      <label>B</label>
+      <input type='textfield' name='B' size='8' maxlength='8' value='cbabac'>
+      <input type='button' name='refresh' value='Refresh' onclick='window.refresh();'>
+      <input type='button' name='step' value='Step' onclick='window.gostep();'>
+      <input type='button' name='clear' value='Clear' onclick='window.clear();'>
+      <input type='button' name='bigger' value='+' onclick='window.change_scale(0.2);'>
+      <input type='button' name='smaller' value='-' onclick='window.change_scale(-0.2);'>
+      <input type='button' name='save' value='Save' onclick='window.save_image();'><br>
+      <p><input type='checkbox' name='grid' checked='yes' onclick='window.toggle_grid(this.checked);'>Show grid</p>
+      <p><input type='checkbox' name='editgraph' onclick='window.toggle_editgraph(this.checked);'>Show edit graph</p>
+      <p><input type='checkbox' name='klines' onclick='window.toggle_klines(this.checked);'>Show k-lines</p>
+      <p><input type='checkbox' name='dcontours' onclick='window.toggle_dcontours(this.checked);'>Show d-contours</p>
+      <p><input type="radio" checked='yes' name="algo" id="algo1" onclick='window.switch_algo(this.value);' value="FWLCS" /><label for="algo1">Basic forward</label></p>
+      <p><input type="radio" name="algo" id="algo2" onclick='window.switch_algo(this.value);' value="BWLCS" /><label for="algo2">Basic backward</label></p> 
+      <p><input type="radio" name="algo" id="algo3" onclick='window.switch_algo(this.value);' value="LCS" /><label for="algo3">Linear space divide &amp; conquer</label></p>
+    </form>
+    <canvas data-processing-sources="lcs.pde" style="border: 1px solid gray;"></canvas>
+
+     <script src="lcs.js">
+    </script>
+  </body>
+</html>
