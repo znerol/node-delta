@@ -115,7 +115,11 @@ require.alias = function (from, to) {
     }
     var basedir = path.dirname(res);
     
-    var keys = Object_keys(require.modules);
+    var keys = (Object.keys || function (obj) {
+        var res = [];
+        for (var key in obj) res.push(key)
+        return res;
+    })(require.modules);
     
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
@@ -160,17 +164,34 @@ require.define = function (filename, fn) {
     };
 };
 
-var Object_keys = Object.keys || function (obj) {
-    var res = [];
-    for (var key in obj) res.push(key)
-    return res;
-};
-
 if (typeof process === 'undefined') process = {};
 
-if (!process.nextTick) process.nextTick = function (fn) {
-    setTimeout(fn, 0);
-};
+if (!process.nextTick) process.nextTick = (function () {
+    var queue = [];
+    var canPost = typeof window !== 'undefined'
+        && window.postMessage && window.addEventListener
+    ;
+    
+    if (canPost) {
+        window.addEventListener('message', function (ev) {
+            if (ev.source === window && ev.data === 'browserify-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+    }
+    
+    return function (fn) {
+        if (canPost) {
+            queue.push(fn);
+            window.postMessage('browserify-tick', '*');
+        }
+        else setTimeout(fn, 0);
+    };
+})();
 
 if (!process.title) process.title = 'browser';
 
@@ -320,20 +341,59 @@ exports.extname = function(path) {
 });
 
 require.define("/lib/profiles/algo-diff-xcc.js", function (require, module, exports, __dirname, __filename) {
-    var tree = require('../delta/tree');
+    var factory = require('../delta/diff-xcc-factory.js');
+module.exports = new factory.DiffXCCFactory();
+
+});
+
+require.define("/lib/delta/diff-xcc-factory.js", function (require, module, exports, __dirname, __filename) {
+    /**
+ * @fileoverview This module contains the factory class necessary to
+ * instantiate the xcc algorithm class.
+ */
+
+
+/** @ignore */
+var tree = require('../delta/tree');
+/** @ignore */
 var xcc = require('../delta/xcc');
+
+
+/**
+ * Return new instance of XCC diff factory class.
+ *
+ * @param {Object} [options] Options which will be passed to the xcc algorithm
+ *         upon instantiation.
+ *
+ * @constructor
+ */
+function DiffXCCFactory(options) {
+    this.options = options;
+}
+
 
 /**
  * Return new initialized instance of XCC diff algorithm.
+ *
+ * @param {Object} doc1         The original document. Use
+ *         ``loadOriginalDocument`` of the document factory to load a suitable
+ *         document.
+ * @param {Object} doc2         The changed document. Use ``loadInputDocument``
+ *         of the document factory to load a suitable document.
+ * @param {function} [equals]   The equality test-function used during diffing.
+ *         Use the method ``createNodeEqualityTest`` of the document factory to
+ *         create a suitable equality test function.
+ *
+ * @return {xcc.Diff} An initialized xcc.Diff instance.
  */
-exports.createDiffAlgorithm = function(doc1, doc2, equals) {
+DiffXCCFactory.prototype.createDiffAlgorithm = function(doc1, doc2, equals) {
     var diff;
 
     if (!doc1.tree || !doc2.tree) {
         throw new Error('Parameter error: Document objects must have tree property');
     }
 
-    diff = new xcc.Diff(doc1.tree, doc2.tree);
+    diff = new xcc.Diff(doc1.tree, doc2.tree, this.options);
 
     if (equals) {
         diff.equals = equals;
@@ -342,12 +402,17 @@ exports.createDiffAlgorithm = function(doc1, doc2, equals) {
     return diff;
 }
 
+
 /**
  * Return new tree matching object
+ *
+ * @return {tree.Matching} Empty matching object.
  */
-exports.createMatching = function() {
+DiffXCCFactory.prototype.createMatching = function() {
     return new tree.Matching();
 }
+
+exports.DiffXCCFactory = DiffXCCFactory;
 
 });
 
@@ -359,6 +424,11 @@ require.define("/lib/delta/tree.js", function (require, module, exports, __dirna
 
 /**
  * Create a new tree node and set its value and optionally user data.
+ *
+ * @param {String} [value]  The node value.
+ * @param {object} [data]   User data for this tree node. You may store a
+ *         reference to the corresponding object in the underlying document
+ *         structure. E.g. a reference to a DOM element.
  *
  * @constructor
  */
@@ -375,6 +445,8 @@ function Node(value, data) {
 
 /**
  * Append the given node as a child node.
+ *
+ * @param {object} child The new child node.
  */
 Node.prototype.append = function(child) {
     if (child.par) {
@@ -389,29 +461,13 @@ Node.prototype.append = function(child) {
 
 
 /**
- * Compare the given path to the path of the node. Return positive integer
- * if the node is later in the tree, return a negative integer if it is
- * earlier and return zero if the path matches exactly.
- */
-Node.prototype.pathcmp = function(path) {
-    var result;
-    if (this.depth === 0) {
-        result = 0;
-    }
-    else {
-        result = this.par.pathcmp(path);
-        if (result === 0) {
-            result = this.childidx - path[this.depth - 1];
-        }
-    }
-
-    return result;
-};
-
-
-/**
  * Invokes a callback for the node and all its child nodes in preorder
  * (document order).
+ *
+ * @param {function}    callback    The function which will be invoked for each
+ *         node.
+ * @param {object}      [T]         Context object bound to "this" when the
+ *         callback is invoked.
  */
 Node.prototype.forEach = function(callback, T) {
     callback.call(T, this);
@@ -423,6 +479,11 @@ Node.prototype.forEach = function(callback, T) {
 
 /**
  * Invokes a callback for the node and all its child nodes in postorder.
+ *
+ * @param {function}    callback    The function which will be invoked for each
+ *         node.
+ * @param {object}      [T]         Context object bound to "this" when the
+ *         callback is invoked.
  */
 Node.prototype.forEachPostorder = function(callback, T) {
     this.children.forEach(function(node) {
@@ -434,7 +495,12 @@ Node.prototype.forEachPostorder = function(callback, T) {
 
 /**
  * Equal to forEach except that the callback is not invoked for the context
- * node
+ * node.
+ *
+ * @param {function}    callback    The function which will be invoked for each
+ *         node.
+ * @param {object}      [T]         Context object bound to "this" when the
+ *         callback is invoked.
  */
 Node.prototype.forEachDescendant = function(callback, T) {
     this.children.forEach(function(node) {
@@ -444,23 +510,11 @@ Node.prototype.forEachDescendant = function(callback, T) {
 
 
 /**
- * Call the given callback for the parent node and then for each ancestor
- * until reaching the root or callback returns a trueish value.
- */
-Node.prototype.forEachAncestor = function(callback, T) {
-    var brk;
-    if (this.par) {
-        brk = callback.call(T, this.par);
-        if (!brk) {
-            this.par.forEachAncestor(callback, T);
-        }
-    }
-};
-
-
-/**
  * Create a new Matching instance. Optionally specify the property used to
  * store partner links in target objects.
+ *
+ * @param {String}  [propname]  The name of the property which should be used
+ *         on a tree.Node to store a reference to its partner.
  *
  * @constructor
  */
@@ -471,6 +525,9 @@ function Matching(propname) {
 
 /**
  * Return the partner of given object.
+ *
+ * @param {object} obj  The tree node whose partner should be returned.
+ * @return {object} The object associated with the given tree node.
  */
 Matching.prototype.get = function(obj) {
     return obj && obj[this.propname];
@@ -479,6 +536,9 @@ Matching.prototype.get = function(obj) {
 
 /**
  * Associate the given objects.
+ *
+ * @param {object} a    The first candidate for the new pair.
+ * @param {object} b    The second candidate for the new pair.
  */
 Matching.prototype.put = function(a, b) {
     if (a[this.propname] || b[this.propname]) {
@@ -493,9 +553,9 @@ Matching.prototype.put = function(a, b) {
  * Create a new secondary tree structure providing quick access to all
  * nodes of a generation.
  *
- * @param root      A tree.Node representing the root of the tree
- * @param propname  The name of the property which will be used to cache
- *                  index values on tree.Node objects.
+ * @param {object}  root        A tree.Node representing the root of the tree
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache index values on tree.Node objects.
  *
  * @constructor
  */
@@ -633,10 +693,10 @@ GenerationIndex.prototype.last = function(depth) {
  * Return a tree.Node with the same depth at the given offset relative to
  * the given reference node.
  *
- * @param refnode   The reference tree.Node
- * @param offset    An integer value
+ * @param {object}  refnode   The reference tree.Node
+ * @param {number}  offset    An integer value
  *
- * @returns tree.Node or undefined
+ * @returns {object} tree.Node or undefined
  */
 GenerationIndex.prototype.get = function(refnode, offset) {
     var depth, refindex;
@@ -702,9 +762,9 @@ GenerationIndex.prototype.get = function(refnode, offset) {
  * Create a new secondary tree structure providing quick access to all
  * nodes in document order.
  *
- * @param root      A tree.Node representing the root of the tree
- * @param propname  The name of the property which will be used to cache
- *                  index values on tree.Node objects.
+ * @param {object}  root      A tree.Node representing the root of the tree
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache index values on tree.Node objects.
  *
  * @constructor
  */
@@ -749,10 +809,10 @@ DocumentOrderIndex.prototype.buildAll = function() {
 /**
  * Return a tree.Node at the offset relative to the given reference node.
  *
- * @param refnode   The reference tree.Node
- * @param offset    An integer value
+ * @param {object}  refnode   The reference tree.Node
+ * @param {number}  offset    An integer value
  *
- * @returns tree.Node or undefined
+ * @returns {object} tree.Node or undefined
  */
 DocumentOrderIndex.prototype.get = function(refnode, offset) {
     var depth, refindex;
@@ -779,27 +839,6 @@ DocumentOrderIndex.prototype.get = function(refnode, offset) {
 
         // Requested index is beyond upper bound of index. Fall through to
         // code outside the if below.
-    }
-
-    if (this.idxcomplete) {
-        // No need to attempt searching for the node if index is complete.
-        return undefined;
-    }
-    else {
-        // Extend document order index
-        // return this.extendIndex(depth, refnode, index);
-        throw new Error('Dynamic index expansion not implemented yet');
-    }
-};
-
-
-/**
- * Skip over a whole subtree rooted at refnode.
- */
-DocumentOrderIndex.prototype.skip = function(refnode) {
-    // Check cache
-    if (refnode.hasOwnProperty(this.propname)) {
-        return this.get(refnode, this.size(refnode));
     }
 
     if (this.idxcomplete) {
@@ -844,6 +883,9 @@ DocumentOrderIndex.prototype.flatten = function(refnode) {
 /**
  * Simple subtree hashing algorithm.
  *
+ * @param {function}    HashAlgorithm   Constructor function for the hash
+ * @param {object}      nodehashindex   An instance of :js:class:`NodeHashIndex`
+ *
  * @constructor
  */
 function SimpleTreeHash(HashAlgorithm, nodehashindex) {
@@ -854,6 +896,10 @@ function SimpleTreeHash(HashAlgorithm, nodehashindex) {
 
 /**
  * Calculate hash value of subtree
+ *
+ * @param {object}  node    A tree.Node specifying the root of the subtree.
+ * @param {object}  [hash]  If provided, use this hash instance. Otherwise
+ *         create a new one.
  */
 SimpleTreeHash.prototype.process = function(node, hash) {
     hash = hash || new this.HashAlgorithm();
@@ -868,6 +914,14 @@ SimpleTreeHash.prototype.process = function(node, hash) {
 
 
 /**
+ * Create new instance of a node hash index.
+ *
+ * @param {object}  nodehash    An object implementing the node-hashing method
+ *         for the underlying document. E.g. an instance of
+ *         :js:class:`DOMNodeHash`.
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache the hash values on tree.Node objects. Defaults to 'nodehash'.
+ *
  * @constructor
  */
 function NodeHashIndex(nodehash, propname) {
@@ -876,6 +930,13 @@ function NodeHashIndex(nodehash, propname) {
 }
 
 
+/**
+ * Return the hash value for the given node.
+ *
+ * @param {object}  node    A tree.Node.
+ *
+ * @return {number} Hash value of the tree node.
+ */
 NodeHashIndex.prototype.get = function(node) {
     if (node) {
         if (!(node.hasOwnProperty(this.propname))) {
@@ -888,6 +949,14 @@ NodeHashIndex.prototype.get = function(node) {
 
 
 /**
+ * Create new instance of a tree hash index.
+ *
+ * @param {object}  treehash    An object implementing the tree-hashing method.
+ *         E.g. an instance of
+ *         :js:class`SimpleTreeHash`.
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache the hash values on tree.Node objects. Defaults to 'treehash'.
+ *
  * @constructor
  */
 function TreeHashIndex(treehash, propname) {
@@ -896,6 +965,13 @@ function TreeHashIndex(treehash, propname) {
 }
 
 
+/**
+ * Return the hash value for the subtree rooted at the given node.
+ *
+ * @param {object}  node    A tree.Node.
+ *
+ * @return {number} Hash value of the subtree rooted at the given node.
+ */
 TreeHashIndex.prototype.get = function(node) {
     if (node) {
         if (!(node.hasOwnProperty(this.propname))) {
@@ -925,10 +1001,11 @@ TreeHashIndex.prototype.get = function(node) {
  *      The index into the children list of the base node. This property is
  *      undefined when the anchor points at the root of the tree.
  *
- * @param root  The root node of the tree.
- * @param base  The base node for this anchor. If index is left away, this
- *              parameter specifies the target node.
- * @param index The child index of the target node.
+ * @param {tree.Node} root      The root node of the tree.
+ * @param {tree.Node} [base]    The base node for this anchor. If index is left
+ *         out, this parameter specifies the target node.  Otherwise it
+ *         specifies the parent node of the target pointed at by index.
+ * @param {Number} [index]      The child index of the target node.
  *
  * @constructor
  */
@@ -968,20 +1045,25 @@ exports.Anchor = Anchor;
 
 require.define("/lib/delta/xcc.js", function (require, module, exports, __dirname, __filename) {
     /**
- * @file:   Implementation of Rönnau/Berghoff XML tree diff algorithm XCC.
+ * @fileoverview Implementation of Rönnau/Borghoff XML tree diff algorithm XCC.
  *
  * @see:
  * * http://dx.doi.org/10.1007/s00450-010-0140-2
  * * https://launchpad.net/xcc
- *
- * @module  xcc
  */
 
 /** @ignore */
 var lcs = require('./lcs');
 
 /**
+ * Create a new instance of the XCC diff implementation.
+ *
+ * @param {tree.Node} a Root node of original tree
+ * @param {tree.Node} b Root node of changed tree
+ * @param {Object} options Options
+ *
  * @constructor
+ * @name xcc.Diff
  */
 function Diff(a, b, options) {
     this.a = a; // Root node of tree a
@@ -994,6 +1076,11 @@ function Diff(a, b, options) {
 
 /**
  * Create a matching between the two nodes using the xcc diff algorithm
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchTrees = function(matching) {
     // Associate root nodes
@@ -1009,6 +1096,13 @@ Diff.prototype.matchTrees = function(matching) {
 /**
  * Default equality test. Override this method if you need to test other
  * node properties instead/beside node value.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.equals = function(a, b) {
     return (a.value === b.value);
@@ -1018,6 +1112,11 @@ Diff.prototype.equals = function(a, b) {
 /**
  * Identify unchanged leaves by comparing them using myers longest common
  * subsequence algorithm.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchLeafLCS = function(matching) {
     var a_leaves = [],
@@ -1077,6 +1176,17 @@ Diff.prototype.matchLeafLCS = function(matching) {
 /**
  * Identify leaf-node updates by traversing descendants of b_node top-down.
  * b_node must already be part of the matching.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ * @param {tree.Node} a_node A node from tree a which already takes part in the
+ *         matching.
+ * @param {function} [reject] A user supplied function which may indicate
+ *         a given node should not be considered when detecting node updates.
+ *         The function should take one argument (tree.Node) and return true
+ *         (reject) or false (do not reject).
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchLeafUpdatesOnDescendants = function(matching, a_node, reject) {
     var a_nodes = a_node.children,
@@ -1146,27 +1256,17 @@ Diff.prototype.matchLeafUpdatesOnDescendants = function(matching, a_node, reject
 
 /**
  * Detect updated leaf nodes by analyzing their neighborhood top-down.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchLeafUpdates = function(matching) {
     var i, rejects = this.options.ludRejectCallbacks || [undefined];
     for (i=0; i<rejects.length; i++) {
         this.matchLeafUpdatesOnDescendants(matching, this.b, rejects[i]);
     }
-};
-
-
-/**
- * Return an updater function for Delta.collect
- */
-Diff.prototype.createUpdater = function(matching) {
-    return (function(that){
-        return function(node, callback, T) {
-            var partner = matching.get(node);
-            if (!that.equals(node, partner)) {
-                callback.call(T, node, partner);
-            }
-        };
-    }(this));
 };
 
 
@@ -1662,13 +1762,47 @@ exports.Limit = Limit;
 });
 
 require.define("/lib/profiles/algo-diff-skelmatch.js", function (require, module, exports, __dirname, __filename) {
-    var tree = require('../delta/tree');
+    var factory = require('../delta/diff-skelmatch-factory.js');
+module.exports = new factory.DiffSkelmatchFactory();
+
+});
+
+require.define("/lib/delta/diff-skelmatch-factory.js", function (require, module, exports, __dirname, __filename) {
+    /**
+ * @fileoverview This module contains the factory class necessary to
+ * instantiate the skelmatch algorithm class.
+ */
+
+
+/** @ignore */
+var tree = require('../delta/tree');
+/** @ignore */
 var skelmatch = require('../delta/skelmatch');
 
+
 /**
- * Return new initialized instance of skelmatch diff algorithm.
+ * Create a new instance of the skelmatch diff factory.
+ * @constructor
  */
-exports.createDiffAlgorithm = function(doc1, doc2, equals) {
+function DiffSkelmatchFactory() {
+}
+
+
+/**
+ * Return new initialized instance of Skel-Match diff algorithm.
+ *
+ * @param {Object} doc1         The original document. Use
+ *         ``loadOriginalDocument`` of the document factory to load a suitable
+ *         document.
+ * @param {Object} doc2         The changed document. Use ``loadInputDocument``
+ *         of the document factory to load a suitable document.
+ * @param {function} [equals]   The equality test-function used during diffing.
+ *         Use the method ``createNodeEqualityTest`` of the document factory to
+ *         create a suitable equality test function.
+ *
+ * @return {skelmatch.Diff} An initialized skelmatch.Diff instance.
+ */
+DiffSkelmatchFactory.prototype.createDiffAlgorithm = function(doc1, doc2, equals) {
     var diff;
 
     if (!doc1.tree || !doc2.tree) {
@@ -1684,12 +1818,18 @@ exports.createDiffAlgorithm = function(doc1, doc2, equals) {
     return diff;
 }
 
+
 /**
  * Return new tree matching object
+ *
+ * @return {tree.Matching} Empty matching object.
  */
-exports.createMatching = function() {
+DiffSkelmatchFactory.prototype.createMatching = function() {
     return new tree.Matching();
 }
+
+
+exports.DiffSkelmatchFactory = DiffSkelmatchFactory;
 
 });
 
@@ -1698,7 +1838,7 @@ require.define("/lib/delta/skelmatch.js", function (require, module, exports, __
  * @fileoverview    Implementation of the "skelmatch" tree matching algorithm.
  *
  * This algorithm is heavily inspired by the XCC tree matching algorithm by
- * Sebastian Rönnau and Uwe M. Berghoff. It shares the idea that the
+ * Sebastian Rönnau and Uwe M. Borghoff. It shares the idea that the
  * interesting bits are found towards the bottom of the tree.
  *
  * Skel-match divides the problem of finding a partial matching between two
@@ -1717,9 +1857,15 @@ var lcs = require('./lcs');
 
 
 /**
+ * Create a new instance of the XCC diff implementation.
+ *
+ * @param {tree.Node} a Root node of original tree
+ * @param {tree.Node} b Root node of changed tree
+ *
  * @constructor
+ * @name skelmatch.Diff
  */
-function Diff(a, b, options) {
+function Diff(a, b) {
     this.a = a; // Root node of tree a
     this.b = b; // Root node of tree b
 }
@@ -1727,6 +1873,11 @@ function Diff(a, b, options) {
 
 /**
  * Create a matching between the two nodes using the skelmatch algorithm
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchTrees = function(matching) {
     // Associate root nodes
@@ -1738,9 +1889,16 @@ Diff.prototype.matchTrees = function(matching) {
 
 
 /**
- * Return true if the given node should be treated as a content node.
+ * Return true if the given node should be treated as a content node. Override
+ * this method in order to implement custom logic to decide whether a node
+ * should be examined during the initial LCS (content) or during the second
+ * pass. Default: Return true for leaf-nodes.
  *
- * Default: Return true for leaf-nodes.
+ * @param {tree.Node} The node which should be examined.
+ *
+ * @return {boolean} True if the node is a content-node, false otherwise.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.isContent = function(node) {
     return (node.children.length === 0);
@@ -1749,8 +1907,13 @@ Diff.prototype.isContent = function(node) {
 
 /**
  * Return true if the given node should be treated as a structure node.
- *
  * Default: Return true for internal nodes.
+ *
+ * @param {tree.Node} The node which should be examined.
+ *
+ * @return {boolean} True if the node is a content-node, false otherwise.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.isStructure = function(node) {
     return !this.isContent(node);
@@ -1760,6 +1923,13 @@ Diff.prototype.isStructure = function(node) {
 /**
  * Default equality test for node values. Override this method if you need to
  * test other node properties instead/beside node value.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.equals = function(a, b) {
     return (a.value === b.value);
@@ -1770,6 +1940,13 @@ Diff.prototype.equals = function(a, b) {
  * Default equality test for content nodes. Also test all descendants of a and
  * b for equality. Override this method if you want to use tree hashing for
  * this purpose.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.equalContent = function(a, b) {
     var i;
@@ -1791,6 +1968,13 @@ Diff.prototype.equalContent = function(a, b) {
  * Default equality test for structure nodes. Return true if ancestors either
  * have the same node value or if they form a pair. Override this method if you
  * want to use tree hashing for this purpose.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.equalStructure = function(matching, a, b) {
     if (!matching.get(a) && !matching.get(b)) {
@@ -1807,6 +1991,15 @@ Diff.prototype.equalStructure = function(matching, a, b) {
 
 /**
  * Return true if a pair is found in the ancestor chain of a and b.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if a pair is found in the ancestor chain.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchingCheckAncestors = function(matching, a, b) {
     if (!a || !b) {
@@ -1823,6 +2016,13 @@ Diff.prototype.matchingCheckAncestors = function(matching, a, b) {
 
 /**
  * Put a and b and all their unmatched ancestors into the matching.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchingPutAncestors = function(matching, a, b) {
     if (!a || !b) {
@@ -1841,6 +2041,11 @@ Diff.prototype.matchingPutAncestors = function(matching, a, b) {
 /**
  * Identify unchanged leaves by comparing them using myers longest common
  * subsequence algorithm.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchContent = function(matching) {
     var a_content = [],
@@ -1886,6 +2091,11 @@ Diff.prototype.matchContent = function(matching) {
 /**
  * Return an array of the bottom-most structure-type nodes beneath the given
  * node.
+ *
+ * @param {tree.Node} node The internal node from where the search should
+ *         start.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.collectBones = function(node) {
     var result = [], outer, i = 0;
@@ -1909,14 +2119,16 @@ Diff.prototype.collectBones = function(node) {
 /**
  * Invoke the given callback with each sequence of unmatched nodes.
  *
- * @param matching  A partial matching
- * @param a_sibs    A sequence of siblings from tree a
- * @param b_sibs    A sequence of siblings from tree b
- * @param callback  A function (a_nodes, b_nodes, a_parent, b_parent) called
- *                  for every consecutive sequence of nodes from a_sibs and
- *                  b_sibs seperated by one or more node pairs.
- * @param T         Context object bound to "this" when the callback is
- *                  invoked.
+ * @param {tree.Matching}   matching  A partial matching
+ * @param {Array}           a_sibs    A sequence of siblings from tree a
+ * @param {Array}           b_sibs    A sequence of siblings from tree b
+ * @param {function}        callback  A function (a_nodes, b_nodes, a_parent, b_parent)
+ *         called for every consecutive sequence of nodes from a_sibs and
+ *         b_sibs seperated by one or more node pairs.
+ * @param {Object}          T         Context object bound to "this" when the
+ *         callback is invoked.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.forEachUnmatchedSequenceOfSiblings = function(matching,
         a_sibs, b_sibs, callback, T)
@@ -1972,6 +2184,10 @@ Diff.prototype.forEachUnmatchedSequenceOfSiblings = function(matching,
 /**
  * Traverse a partial matching and detect equal structure-type nodes between
  * matched content nodes.
+ *
+ * @param {tree.Matching}   matching  A partial matching
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchStructure = function(matching) {
     // Collect unmatched sequences of siblings from tree a and b. Run lcs over
@@ -2019,56 +2235,70 @@ exports.Diff = Diff;
 });
 
 require.define("/lib/profiles/doc-tree-xml.js", function (require, module, exports, __dirname, __filename) {
-    var xmlpayload = require('../delta/xmlpayload');
-var fnv132 = require('../delta/fnv132');
-var tree = require('../delta/tree');
-var domtree = require('../delta/domtree');
-var domdelta = require('../delta/domdelta');
+    var factory = require('../delta/doc-xml-factory.js');
+module.exports = new factory.DocumentXMLFactory();
+
+});
+
+require.define("/lib/delta/doc-xml-factory.js", function (require, module, exports, __dirname, __filename) {
+    /**
+ * @fileoverview This module provides the factory class for XML documents
+ */
+
+
+/** @ignore */
+var xmlpayload = require('./xmlpayload');
+/** @ignore */
+var fnv132 = require('./fnv132');
+/** @ignore */
+var tree = require('./tree');
+/** @ignore */
+var domtree = require('./domtree');
+/** @ignore */
+var domhandler = require('./domhandler');
+/** @ignore */
+var docmod = require('./doc');
+
+/** Shared payload handler instance */
+var payloadHandler = new xmlpayload.XMLPayloadHandler();
+
+/** shared tree adapter instance */
+var treeAdapter = new domtree.DOMTreeAdapter();
+
+/**
+ * Create a new instance of the XML document factory class.
+ * @constructor
+ */
+function DocumentXMLFactory() {
+}
 
 
 /**
- * Return shared payload handler.
+ * Return a new empty document.
+ *
+ * @return {Object} A document initialized with default values.
  */
-exports.payloadHandler = new xmlpayload.XMLPayloadHandler();
-
-
-/**
- * Return shared tree adapter.
- */
-exports.treeAdapter = new domtree.DOMTreeAdapter();
-
-
-/**
- * Return a new empty delta document.
- */
-exports.createEmptyDocument = function() {
-    var valueindex, treevalueindex;
-
-    valueindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
-    treevalueindex = new tree.TreeHashIndex(
-            new tree.SimpleTreeHash(fnv132.Hash, valueindex));
-
-    if (typeof domdoc === 'string') {
-        src = domdoc;
-        domdoc = exports.payloadHandler.parseString(domdoc);
-    }
-
-    return {
-        'type': 'xml',
-        'name': 'untitled.xml',
-        'data': exports.payloadHandler.createDocument(),
-        'tree': undefined,
-        'src': '',
-        'valueindex': valueindex,
-        'treevalueindex': treevalueindex
-    };
+DocumentXMLFactory.prototype.createEmptyDocument = function() {
+    return new docmod.Document('xml', 'untitled.xml',
+        payloadHandler.createDocument(),
+        undefined,
+        '',
+        undefined,
+        undefined,
+        undefined
+    );
 };
 
 
 /**
- * Return new document objects suitable for supplying to diff.Diff
+ * Return new document loaded from a DOMDocument.
+ *
+ * @param {String|Document} domdoc  The underlying DOMDocument.
+ * @param {String}          [name]  The file name of the document.
+ *
+ * @return {Object} A document initialized from the given DOMDocument.
  */
-exports.loadInputDocument = function(domdoc, name) {
+DocumentXMLFactory.prototype.loadInputDocument = function(domdoc, name) {
     var src, result, valueindex, treevalueindex;
 
     valueindex = new tree.NodeHashIndex(new domtree.DOMNodeHash(fnv132.Hash));
@@ -2077,29 +2307,32 @@ exports.loadInputDocument = function(domdoc, name) {
 
     if (typeof domdoc === 'string') {
         src = domdoc;
-        domdoc = exports.payloadHandler.parseString(domdoc);
+        domdoc = payloadHandler.parseString(domdoc);
     }
 
-    result = {
-        'type': 'xml',
-        'name': name,
-        'data': domdoc,
-        'tree': exports.treeAdapter.adaptDocument(domdoc),
-        'src': src,
-        'valueindex': valueindex,
-        'treevalueindex': treevalueindex
-    };
-
-    return result;
+    return new docmod.Document('xml', name,
+        domdoc,
+        treeAdapter.adaptDocument(domdoc),
+        src,
+        valueindex,
+        treevalueindex,
+        undefined
+    );
 }
 
 
 /**
- * Return new document objects suitable for supplying to diff.Diff as the
- * original (unchanged) document.
+ * Return new document loaded from a DOMDocument. Use this method for loading
+ * the original (unchanged) document and supply it as doc1 to diff.Diff or
+ * patch.Patch.
+ *
+ * @param {String|Document} domdoc  The underlying DOMDocument.
+ * @param {String}          [name]  The file name of the document.
+ *
+ * @return {Object} A document initialized from the given DOMDocument.
  */
-exports.loadOriginalDocument = function(domdoc, name) {
-    var result = exports.loadInputDocument(domdoc, name);
+DocumentXMLFactory.prototype.loadOriginalDocument = function(domdoc, name) {
+    var result = DocumentXMLFactory.prototype.loadInputDocument(domdoc, name);
 
     var nodeindex = new tree.DocumentOrderIndex(result.tree);
     nodeindex.buildAll();
@@ -2110,22 +2343,32 @@ exports.loadOriginalDocument = function(domdoc, name) {
 
 
 /**
- * Return the proper document fragemnt adapter for the given deltadoc.
+ * Return the proper document fragment adapter for the given deltadoc type.
+ *
+ * @param {String} type The document type of the delta document this adapter
+ *         should be used for.
+ *
+ * @return {FragmentAdapter} A suitable fragment adapter for the given type.
  */
-exports.createFragmentAdapter = function(type) {
+DocumentXMLFactory.prototype.createFragmentAdapter = function(type) {
     if (type === 'xml') {
-        return new xmlpayload.XMLFragmentAdapter(exports.treeAdapter);
+        return new xmlpayload.XMLFragmentAdapter(treeAdapter);
     }
     else {
-        return new xmlpayload.SerializedXMLFragmentAdapter(exports.treeAdapter);
+        return new xmlpayload.SerializedXMLFragmentAdapter(treeAdapter);
     }
 }
 
 
 /**
- * Return the proper node equality test.
+ * Return the proper node equality test function.
+ *
+ * @param {object} doc1 The original document
+ * @param {object} doc2 The changed document
+ *
+ * @return {function} node equality test function.
  */
-exports.createNodeEqualityTest = function(doc1, doc2) {
+DocumentXMLFactory.prototype.createNodeEqualityTest = function(doc1, doc2) {
     if (!doc1.valueindex || !doc2.valueindex) {
         throw new Error('Parameter error: Document objects must have valueindex property');
     }
@@ -2139,8 +2382,13 @@ exports.createNodeEqualityTest = function(doc1, doc2) {
 
 /**
  * Return the proper subtree equality test.
+ *
+ * @param {object} doc1 The original document
+ * @param {object} doc2 The changed document
+ *
+ * @return {function} node equality test function.
  */
-exports.createTreeEqualityTest = function(doc1, doc2) {
+DocumentXMLFactory.prototype.createTreeEqualityTest = function(doc1, doc2) {
     if (!doc1.treevalueindex || !doc2.treevalueindex) {
         throw new Error('Parameter error: Document objects must have treevalueindex property');
     }
@@ -2154,8 +2402,12 @@ exports.createTreeEqualityTest = function(doc1, doc2) {
 
 /**
  * Return proper value checker.
+ *
+ * @param {object} doc The original document
+ *
+ * @return {function} value comparison function.
  */
-exports.createValueTest = function(doc) {
+DocumentXMLFactory.prototype.createValueTest = function(doc) {
     if (!doc.valueindex) {
         throw new Error('Parameter error: Document objects must have valueindex property');
     }
@@ -2168,20 +2420,32 @@ exports.createValueTest = function(doc) {
 
 
 /**
- * Returns delta operation handler factory
+ * Returns delta operation handler factory.
+ *
+ * @return {object} Instance of the handler factory class suitable for XML
+ *         documents.
  */
-exports.createHandlerFactory = function() {
-    return new domdelta.DOMOperationHandlerFactory();
+DocumentXMLFactory.prototype.createHandlerFactory = function() {
+    return new domhandler.DOMOperationHandlerFactory();
 }
 
+
 /**
- * Serialize the data property into the src string and return it.
+ * Serialize the data property into the src string and return it. Also store
+ * the source into the ``src`` property of ``deltadoc``.
+ *
+ * @param {Object} deltadoc A populated delta document.
+ *
+ * @return {String} The XML representation of the delta document as a string.
  */
-exports.serializeDocument = function(doc) {
-    doc.src = exports.payloadHandler.serializeToString(doc.data);
+DocumentXMLFactory.prototype.serializeDocument = function(doc) {
+    doc.src = payloadHandler.serializeToString(doc.data);
 
     return doc.src;
 };
+
+
+exports.DocumentXMLFactory = DocumentXMLFactory;
 
 });
 
@@ -2596,189 +2860,13 @@ exports.DOMNodeHash = DOMNodeHash;
 
 });
 
-require.define("/lib/delta/domdelta.js", function (require, module, exports, __dirname, __filename) {
+require.define("/lib/delta/domhandler.js", function (require, module, exports, __dirname, __filename) {
     /**
- * @file:   Adapter class for XML/DOM based delta format
- * @module  domdelta
+ * @fileoverview    Operation handler classes for XML/DOM based delta format
  */
 
 /** @ignore */
 var deltamod = require('./delta');
-var contextdelta = require('./contextdelta');
-
-TYPE_TAGS = {};
-TYPE_TAGS[deltamod.UPDATE_NODE_TYPE] = 'node';
-TYPE_TAGS[deltamod.UPDATE_FOREST_TYPE] = 'forest';
-TYPE_TAGS.node = deltamod.UPDATE_NODE_TYPE;
-TYPE_TAGS.forest = deltamod.UPDATE_FOREST_TYPE;
-
-/**
- * @constructor
- */
-function DOMDeltaAdapter(fragmentadapter) {
-    this.fragmentadapter = fragmentadapter;
-}
-
-
-DOMDeltaAdapter.prototype.adaptDocument = function(doc) {
-    var operations = [], root, nodes, n, i;
-
-    // loop through children and add documents and options to delta class
-    root = doc.documentElement;
-
-    nodes = Array.prototype.slice.call(root.childNodes);
-    for (i = 0; i < nodes.length; i++) {
-        n = nodes[i];
-        if (n.nodeType === n.ELEMENT_NODE) {
-            operations.push(this.adaptOperation(n, TYPE_TAGS[n.tagName]));
-        }
-    }
-
-    return operations;
-};
-
-
-DOMDeltaAdapter.prototype.adaptOperation = function(element, type) {
-    var path = element.getAttribute('path'),
-        children, remove, insert, i, n, head, tail, body;
-
-    switch (type) {
-        case deltamod.UPDATE_NODE_TYPE:
-        case deltamod.UPDATE_FOREST_TYPE:
-            break;
-        default:
-            throw new Error('Encountered unsupported change type');
-    }
-
-    // Parse path
-    if (path === '') {
-        path = [];
-    }
-    else {
-        path = path.split('/').map(function(component) {
-            return parseInt(component, 10);
-        });
-    }
-
-    children = Array.prototype.slice.call(element.childNodes);
-    node = this.nextElement('context', children);
-    head = this.parseContext(node);
-
-    node = this.nextElement('remove', children);
-    remove = this.fragmentadapter.importFragment(node.childNodes);
-
-    node = this.nextElement('insert', children);
-    insert = this.fragmentadapter.importFragment(node.childNodes);
-
-    node = this.nextElement('context', children);
-    tail = this.parseContext(node);
-
-    return new contextdelta.DetachedContextOperation(type, path, remove, insert, head, tail);
-};
-
-
-DOMDeltaAdapter.prototype.nextElement = function(tag, domnodes) {
-    var node = domnodes.shift();
-    while (node && node.nodeType !== node.ELEMENT_NODE) {
-        if (node.tagName === tag) {
-            break;
-        }
-        node = domnodes.shift();
-    }
-    return node;
-};
-
-
-DOMDeltaAdapter.prototype.nextText = function(domnodes) {
-    var node = domnodes.shift();
-    while(node && node.nodeType !== node.TEXT_NODE) {
-        node = domnodes.shift();
-    }
-    return node;
-};
-
-
-DOMDeltaAdapter.prototype.parseContext = function(node) {
-    var children = Array.prototype.slice.call(node.childNodes);
-    var text = this.nextText(children);
-    if (text) {
-        return text.nodeValue.split(';').map(function(component) {
-            component = component.trim();
-            if (component.length) {
-                return parseInt(component, 16);
-            }
-        });
-    }
-};
-
-
-/**
- * Populate the document with settings and operations from delta.
- */
-DOMDeltaAdapter.prototype.populateDocument = function(doc, operations) {
-    var i, root, element;
-    // Loop through operations and append them to the given document
-
-    root = doc.createElement('delta');
-
-    for (i = 0; i < operations.length; i++) {
-        element = this.constructOperationElement(doc, operations[i]);
-        root.appendChild(element);
-    }
-
-    doc.appendChild(root);
-};
-
-
-DOMDeltaAdapter.prototype.constructOperationElement = function(doc, op) {
-    var tag = TYPE_TAGS[op.type],
-        deep = (op.type !== deltamod.UPDATE_NODE_TYPE),
-        element = doc.createElement(tag),
-        remove = doc.createElement('remove'),
-        insert = doc.createElement('insert'),
-        head = doc.createElement('context'),
-        tail = doc.createElement('context'),
-        oldcontent, newcontent;
-
-    element.setAttribute('path', op.path.join('/'));
-
-    head.appendChild(doc.createTextNode(this.formatFingerprint(op.head)));
-    element.appendChild(head);
-
-    if (op.remove) {
-        oldcontent = this.fragmentadapter.adapt(doc, op.remove, deep);
-        if (typeof oldcontent === 'string') {
-            remove.appendChild(doc.createCDATASection(oldcontent));
-        }
-        else {
-            remove.appendChild(oldcontent);
-        }
-        element.appendChild(remove);
-    }
-
-    if (op.insert) {
-        newcontent = this.fragmentadapter.adapt(doc, op.insert, deep);
-        if (typeof newcontent === 'string') {
-            insert.appendChild(doc.createCDATASection(newcontent));
-        }
-        else {
-            insert.appendChild(newcontent);
-        }
-        element.appendChild(insert);
-    }
-
-    tail.appendChild(doc.createTextNode(this.formatFingerprint(op.tail)));
-    element.appendChild(tail);
-
-    return element;
-};
-
-DOMDeltaAdapter.prototype.formatFingerprint = function(parts) {
-    return parts.map(function(n) {
-        return n ? n.toString(16) : '';
-    }).join(';');
-};
-
 
 /**
  * Helper class for a memoizing the currently active DOM node during a patching
@@ -3058,7 +3146,6 @@ DOMOperationHandlerFactory.prototype.createOperationHandler = function(anchor, t
 }
 
 
-exports.DOMDeltaAdapter = DOMDeltaAdapter;
 exports.DOMOperationNodeDataMap = DOMOperationNodeDataMap;
 exports.DOMNodeReplaceOperationHandler = DOMNodeReplaceOperationHandler;
 exports.DOMTreeSequenceOperationHandler = DOMTreeSequenceOperationHandler;
@@ -3068,6 +3155,8 @@ exports.DOMOperationHandlerFactory = DOMOperationHandlerFactory;
 
 require.define("/lib/delta/delta.js", function (require, module, exports, __dirname, __filename) {
     /**
+ * @fileoverview Provides classes and methods necessary for the construction of
+ * attached operations.
  */
 
 /** @ignore */
@@ -3124,7 +3213,12 @@ ParameterBuffer.prototype.flush = function() {
     }
 };
 
-
+/**
+ * Utility class to construct a sequence of attached operations from a
+ * matching.
+ *
+ * @constructor
+ */
 function DeltaCollector(matching, root_a, root_b) {
     this.matching = matching;
     this.root_a = root_a;
@@ -3132,6 +3226,10 @@ function DeltaCollector(matching, root_a, root_b) {
 }
 
 
+/**
+ * Default equality test. Override this method if you need to test other
+ * node properties instead/beside node value.
+ */
 DeltaCollector.prototype.equals = function(a, b) {
     return a.value === b.value;
 }
@@ -3149,6 +3247,7 @@ DeltaCollector.prototype.equals = function(a, b) {
  *                  invoked.
  * @param path      (internal use) current path relative to base node. Used
  *                  from recursive calls.
+ *
  */
 DeltaCollector.prototype.forEachChange = function(callback, T, root_a, root_b,
         path) {
@@ -3223,7 +3322,8 @@ DeltaCollector.prototype.forEachChange = function(callback, T, root_a, root_b,
 
 
 /**
- * Construct a new attached operation instance.
+ * Construct a new attached operation instance. An attached operation is always
+ * bound to a tree-node identified thru the anchor.
  *
  * @constructor
  */
@@ -3310,7 +3410,8 @@ AttachedOperation.prototype.toString = function() {
 
 
 /**
- * Create a new operation attacher instance.
+ * Create a new operation attacher instance. Use this class to convert detached
+ * operations read from a patch-file.
  *
  * @constructor
  */
@@ -3322,14 +3423,13 @@ function Attacher(resolver) {
 /**
  * Resolve anchor of one operation and return new attached operation instance.
  */
-Attacher.prototype.attach = function(op, out) {
+Attacher.prototype.attach = function(op) {
     res = this.resolver.find(op.path, op.remove, op.head, op.tail, op.type);
 
-    if (typeof out === 'object') {
-        out.res = res;
+    if (res.anchor && res.tail.length === 0) {
+        return new AttachedOperation(res.anchor, op.type, op.path, op.remove,
+                op.insert);
     }
-    return new AttachedOperation(res.anchor, op.type, op.path, op.remove,
-            op.insert);
 }
 
 
@@ -3342,6 +3442,262 @@ exports.UPDATE_FOREST_TYPE = UPDATE_FOREST_TYPE;
 
 });
 
+require.define("/lib/delta/doc.js", function (require, module, exports, __dirname, __filename) {
+    /**
+ * @fileoverview This module provides the pure data object Document
+ */
+
+/**
+ * Create new document instance.
+ *
+ * @param {string}  type    The document type. E.g. 'xml' or 'json'
+ * @param {string}  [name]  The file name.
+ * @param {object}  data    A reference to the underlying document, the DOM.
+ * @param {object}  [tree]  The root node of the document tree. Use an instance
+ *         of :js:class:`Node`.
+ * @param {string}  [src]   The serialized version of this document, e.g. the
+ *         XML markup code.
+ * @param {object}  [valueindex]    The object necessary to lookup node values.
+ *         E.g. an instance of :js:class:`NodeHashIndex`.
+ * @param {object}  [treevalueindex]    The object necessary to lookup the
+ *         value of a whole subtree. E.g. an instance of
+ *         :js:class:`TreeHashIndex`.
+ * @param {object}  [nodeindex] The object necessary to resolve nodes relative
+ *         to other nodes when generating and verifying context. Typically this
+ *         should be an instance of :js:class:`DocumentOrderIndex`.
+ *
+ * @constructor
+ */
+function Document(type, name, data, tree, src, valueindex, treevalueindex, nodeindex) {
+    /**
+     * The document type. E.g. 'xml' or 'json'
+     */
+    this.type = type;
+
+    /**
+     * The file name
+     */
+    this.name = name;
+
+    /**
+     * A reference to the underlying document, e.g. the DOMDocument object.
+     */
+    this.data = data;
+
+    /**
+     * The root node of the document tree.
+     */
+    this.tree = tree;
+
+    /**
+     * The serialized version of this document.
+     */
+    this.src = src;
+
+    /**
+     * An object used to lookup node values.
+     */
+    this.valueindex = valueindex;
+
+    /**
+     * An object used to lookup the combined values of all nodes in a subtree.
+     */
+    this.treevalueindex = treevalueindex;
+
+    /**
+     * An object used to lookup nodes relative to other nodes along a specified
+     * axis. Typically in document order.
+     */
+    this.nodeindex = nodeindex;
+}
+
+exports.Document = Document;
+
+});
+
+require.define("/lib/profiles/delta-tree-xml.js", function (require, module, exports, __dirname, __filename) {
+    var factory = require('../delta/delta-xml-factory');
+module.exports = new factory.DeltaXMLFactory();
+
+});
+
+require.define("/lib/delta/delta-xml-factory.js", function (require, module, exports, __dirname, __filename) {
+    /**
+ * @fileoverview This module contains a factory class for the XML patch format.
+ */
+
+/** @ignore */
+var xmlpayload = require('./xmlpayload');
+/** @ignore */
+var deltamod = require('./delta');
+/** @ignore */
+var contextdelta= require('./contextdelta');
+/** @ignore */
+var domdelta = require('./domdelta');
+/** @ignore */
+var deltadocmod = require('./delta-doc');
+
+
+/**
+ * Return shared payload handler.
+ */
+var payloadHandler = new xmlpayload.XMLPayloadHandler();
+
+
+/**
+ * Create a new instance of the factory class supporting the XML patch file
+ * format.
+ *
+ * @constructor
+ */
+function DeltaXMLFactory() {
+}
+
+
+/**
+ * Return a new empty delta document.
+ *
+ * @param {tree.Matching} [matching] A matching produced by some tree diff algorithm.
+ *
+ * @return {Object} A delta document initialized with default values.
+ */
+DeltaXMLFactory.prototype.createEmptyDocument = function(matching) {
+    return new deltadocmod.DeltaDocument('xml', 'untitled-diff.xml',
+        payloadHandler.createDocument(),
+        undefined,
+        undefined,
+        undefined,
+        matching
+    );
+};
+
+
+/**
+ * Return a delta document loaded from the given string or DOMDocument.
+ *
+ * @param {String|Document} domdoc  A document containing delta operations.
+ * @param {Object} fragAdapter      A document fragemnt adapter. Use the object
+ *         produced by createFragmentAdapter method from a document factory.
+ * @param {String}          [name]  The file name of the document.
+ *
+ * @return {Object} A delta document initialized from the given DOMDocument.
+ */
+DeltaXMLFactory.prototype.loadDocument = function(domdoc, fragAdapter, name) {
+    var src, operations, entries = [], i,
+        deltaAdapter = new domdelta.DOMDeltaAdapter(fragAdapter);
+
+    if (typeof domdoc === 'string') {
+        src = domdoc;
+        domdoc = payloadHandler.parseString(domdoc);
+    }
+
+    return new deltadocmod.DeltaDocument('xml', name,
+        domdoc,
+        [],
+        deltaAdapter.adaptDocument(domdoc),
+        src,
+        undefined
+    );
+};
+
+
+/**
+ * Return an initialized collector instance.
+ *
+ * @param {Object} deltadoc      The delta document produced by createEmptyDocument
+ *         or loadDocument.
+ * @param {Object} doc           The document as created by the
+ *         loadOriginalDocument method of the document factory class.
+ * @param {function} [equals]    The equality test-function used during diffing.
+ *
+ * @return {delta.DeltaCollector} An initialized collector instance.
+ */
+DeltaXMLFactory.prototype.createCollector = function(deltadoc, doc, equals) {
+    var collector, root, partner;
+
+    if (!doc.tree) {
+        throw new Error('Parameter error: Document objects must have a tree property');
+    }
+    if (!doc.valueindex) {
+        throw new Error('Parameter error: Document objects must have a valueindex property');
+    }
+
+    root = doc.tree;
+    partner = deltadoc.matching.get(root);
+    if (!partner) {
+        throw new Error('Parameter error: Matching does not contain tree root');
+    }
+
+    collector = new deltamod.DeltaCollector(deltadoc.matching, root, partner);
+
+    if (equals) {
+        collector.equals = equals;
+    }
+
+    return collector;
+}
+
+
+/**
+ * Return an initialized context delta detacher instance.
+ *
+ * @param {Object} doc           The document as created by the
+ *         loadOriginalDocument method of the document factory class.
+ *
+ * @return {contextdelta.Detacher} Initialized detacher instance.
+ */
+DeltaXMLFactory.prototype.createDetacher = function(doc) {
+    var contextgen = new contextdelta.ContextGenerator(4, doc.nodeindex, doc.valueindex);
+    return new contextdelta.Detacher(contextgen);
+}
+
+
+/**
+ * Return an initialized context delta attacher instance
+ *
+ * @param {Object} resolver An instance of ContextResolver. Use the output of
+ *         createResolver method from the resolver factory.
+ *
+ * @return {delta.Attacher} Initialized attacher instance.
+ */
+DeltaXMLFactory.prototype.createAttacher = function(resolver) {
+    return new deltamod.Attacher(resolver);
+}
+
+
+/**
+ * Return an initialized delta adapter instance.
+ *
+ * @param {Object} fragAdapter      A document fragemnt adapter. Use the object
+ *         produced by createFragmentAdapter method from a document factory.
+ *
+ * @return {domdelta.DOMDeltaAdapter} Initialized instance of the proper delta
+ *         adapter.
+ */
+DeltaXMLFactory.prototype.createDeltaAdapter = function(fragAdapter) {
+    return new domdelta.DOMDeltaAdapter(fragAdapter);
+}
+
+
+/**
+ * Serialize the data property into the src string and return it. Also store
+ * the source into the ``src`` property of ``deltadoc``.
+ *
+ * @param {Object} deltadoc A populated delta document.
+ *
+ * @return {String} The XML representation of the delta document as a string.
+ */
+DeltaXMLFactory.prototype.serializeDocument = function(deltadoc) {
+    deltadoc.src = payloadHandler.serializeToString(deltadoc.data);
+
+    return deltadoc.src;
+};
+
+
+exports.DeltaXMLFactory = DeltaXMLFactory;
+
+});
+
 require.define("/lib/delta/contextdelta.js", function (require, module, exports, __dirname, __filename) {
     /**
  * This module provides classes and methods for the conversion between attached
@@ -3350,9 +3706,6 @@ require.define("/lib/delta/contextdelta.js", function (require, module, exports,
 
 /** @ignore */
 var tree = require('./tree');
-
-/** @ignore */
-var resolvermod = require('./resolver');
 
 /** @ignore */
 var deltamod = require('./delta');
@@ -3573,561 +3926,328 @@ exports.ContextGenerator = ContextGenerator;
 
 });
 
-require.define("/lib/delta/resolver.js", function (require, module, exports, __dirname, __filename) {
+require.define("/lib/delta/domdelta.js", function (require, module, exports, __dirname, __filename) {
     /**
- * @file:   Resolver class capable of identifying nodes in a given tree by
- *          pattern matching.
- *
- * @see:    * Sebastian Rönnau, Christian Pauli, and Uwe M. Borghoff. Merging
- *            changes in XML documents using reliable context fingerprints:
- *            http://dx.doi.org/10.1145/1410140.1410151
- *          * Original Sourcecode:
- *            https://launchpad.net/xcc
- *
- * @module  resolver
+ * @fileoverview    Adapter class for XML/DOM based delta format
  */
 
 /** @ignore */
-var tree = require('./tree');
+var deltamod = require('./delta');
 
 /** @ignore */
-var contextmatcher = require('./contextmatcher');
+var contextdelta = require('./contextdelta');
+
+TYPE_TAGS = {};
+TYPE_TAGS[deltamod.UPDATE_NODE_TYPE] = 'node';
+TYPE_TAGS[deltamod.UPDATE_FOREST_TYPE] = 'forest';
+TYPE_TAGS.node = deltamod.UPDATE_NODE_TYPE;
+TYPE_TAGS.forest = deltamod.UPDATE_FOREST_TYPE;
 
 /**
- * Construct new resolver result instance.
  * @constructor
  */
-function ResolverResult(anchor, tail, offset, quality) {
-    this.anchor = anchor;
-    this.tail = tail || [];
-    this.offset = offset || 0;
-    this.quality = quality || 1;
-}
-
-/**
- * Constructor for ContextResolver instances.
- *
- * @param refnode   A tree.Node, typically the root node
- * @param nodeindex An index class capable of accessing nodes by offset to
- *                  other nodes. Typically an instance of
- *                  DocumentOrderIndex should be used for this purpose.
- * @param radius    The search radius for the fuzzy matching algorithm
- * @param threshold The threshold of the fuzzy matching algorithm. A value
- *                  between 0.5 and 1. The authors of the xcc patching
- *                  algorithm recommend 0.7.
- * @param matcher   (optional) A matcher instance. Defaults to a
- *                  WeightedContextMatcher with radius=4.
- *
- * @constructor
- */
-function ContextResolver(refnode, nodeindex, radius, threshold, matcher) {
-    this.refnode = refnode;
-    this.nodeindex = nodeindex;
-
-    if (typeof radius === 'undefined') {
-        radius = 4;
-    }
-    this.r = radius;
-
-    if (typeof threshold === 'undefined') {
-        threshold = 0.7;
-    }
-    this.t = threshold;
-
-    this.matcher = matcher || new contextmatcher.WeightedContextMatcher(4);
-
-    // Install custom equality tester for matcher
-    this.matcher.equal = (function(that){
-        return function(subject, offset, value, flag) {
-            if (flag) {
-                return that.equalContent(that.nodeindex.get(subject, offset), value, flag);
-            }
-            else {
-                return that.equalContext(that.nodeindex.get(subject, offset), value);
-            }
-        };
-    }(this));
-
-    this.resolver = new exports.TopDownPathResolver(refnode);
+function DOMDeltaAdapter(fragmentadapter) {
+    this.fragmentadapter = fragmentadapter;
 }
 
 
-/**
- * Compare a document node against a content node from the patch. Return
- * true if the docnode matches the patnode.
- *
- * Override this method if you use something different than the value
- * property of tree.Node.
- *
- * @param docnode   A candidate node from the document
- * @param patnode   A body-node from the pattern
- */
-ContextResolver.prototype.equalContent = function(docnode, patnode) {
-    return docnode === undefined ? patnode === undefined : 
-        docnode && patnode && docnode.value === patnode.value;
+DOMDeltaAdapter.prototype.adaptDocument = function(doc) {
+    var operations = [], root, nodes, n, i;
+
+    // loop through children and add documents and options to delta class
+    root = doc.documentElement;
+
+    nodes = Array.prototype.slice.call(root.childNodes);
+    for (i = 0; i < nodes.length; i++) {
+        n = nodes[i];
+        if (n.nodeType === n.ELEMENT_NODE) {
+            operations.push(this.adaptOperation(n, TYPE_TAGS[n.tagName]));
+        }
+    }
+
+    return operations;
 };
 
 
-/**
- * Compare a document node against a context node value. Return true if
- * the value of docnode matches the pattern value.
- *
- * Override this method if you use something different than the value
- * property of tree.Node.
- *
- * @param docnode   A candidate node from the document
- * @param patnode   The value from a context node
- */
-ContextResolver.prototype.equalContext = function(docnode, value) {
-    return docnode === undefined ? value === undefined :
-        docnode.value === value;
-};
+DOMDeltaAdapter.prototype.adaptOperation = function(element, type) {
+    var path = element.getAttribute('path'),
+        children, remove, insert, i, n, head, tail, body;
 
+    switch (type) {
+        case deltamod.UPDATE_NODE_TYPE:
+        case deltamod.UPDATE_FOREST_TYPE:
+            break;
+        default:
+            throw new Error('Encountered unsupported change type');
+    }
 
-/**
- * Given an anchor and a nodeindex, this method identifies the node which
- * matches the anchor as close as possible.
- */
-ContextResolver.prototype.getClosestNode = function(anchor, nodeindex) {
-    var result, siblings, lastsib;
-
-    if (anchor.target) {
-        result = anchor.target;
+    // Parse path
+    if (path === '') {
+        path = [];
     }
     else {
-        siblings = anchor.base.children;
-        if (siblings.length === 0) {
-            // First guess has no children. Just use that.
-            result = anchor.base;
+        path = path.split('/').map(function(component) {
+            return parseInt(component, 10);
+        });
+    }
+
+    children = Array.prototype.slice.call(element.childNodes);
+    node = this.nextElement('context', children);
+    head = this.parseContext(node);
+
+    node = this.nextElement('remove', children);
+    remove = this.fragmentadapter.importFragment(node.childNodes);
+
+    node = this.nextElement('insert', children);
+    insert = this.fragmentadapter.importFragment(node.childNodes);
+
+    node = this.nextElement('context', children);
+    tail = this.parseContext(node);
+
+    return new contextdelta.DetachedContextOperation(type, path, remove, insert, head, tail);
+};
+
+
+DOMDeltaAdapter.prototype.nextElement = function(tag, domnodes) {
+    var node = domnodes.shift();
+    while (node && node.nodeType !== node.ELEMENT_NODE) {
+        if (node.tagName === tag) {
+            break;
         }
-        else if (anchor.index < 0) {
-            result = nodeindex.get(siblings[0], -1);
-        }
-        else if (anchor.index < siblings.length) {
-            // Start with the appointed child node
-            result = siblings[anchor.index];
+        node = domnodes.shift();
+    }
+    return node;
+};
+
+
+DOMDeltaAdapter.prototype.nextText = function(domnodes) {
+    var node = domnodes.shift();
+    while(node && node.nodeType !== node.TEXT_NODE) {
+        node = domnodes.shift();
+    }
+    return node;
+};
+
+
+DOMDeltaAdapter.prototype.parseContext = function(node) {
+    var children = Array.prototype.slice.call(node.childNodes);
+    var text = this.nextText(children);
+    if (text) {
+        return text.nodeValue.split(';').map(function(component) {
+            component = component.trim();
+            if (component.length) {
+                return parseInt(component, 16);
+            }
+        });
+    }
+};
+
+
+/**
+ * Populate the document with settings and operations from delta.
+ */
+DOMDeltaAdapter.prototype.populateDocument = function(doc, operations) {
+    var i, root, element;
+    // Loop through operations and append them to the given document
+
+    root = doc.createElement('delta');
+
+    for (i = 0; i < operations.length; i++) {
+        element = this.constructOperationElement(doc, operations[i]);
+        root.appendChild(element);
+    }
+
+    doc.appendChild(root);
+};
+
+
+DOMDeltaAdapter.prototype.constructOperationElement = function(doc, op) {
+    var tag = TYPE_TAGS[op.type],
+        deep = (op.type !== deltamod.UPDATE_NODE_TYPE),
+        element = doc.createElement(tag),
+        remove = doc.createElement('remove'),
+        insert = doc.createElement('insert'),
+        head = doc.createElement('context'),
+        tail = doc.createElement('context'),
+        oldcontent, newcontent;
+
+    element.setAttribute('path', op.path.join('/'));
+
+    head.appendChild(doc.createTextNode(this.formatFingerprint(op.head)));
+    element.appendChild(head);
+
+    if (op.remove) {
+        oldcontent = this.fragmentadapter.adapt(doc, op.remove, deep);
+        if (typeof oldcontent === 'string') {
+            remove.appendChild(doc.createCDATASection(oldcontent));
         }
         else {
-            // Resort to the last node in the subtree under the preceeding
-            // sibling if top-down resolver did not came through to the very
-            // last path component.
-            lastsib = siblings[siblings.length-1];
-            result = nodeindex.get(lastsib, nodeindex.size(lastsib) - 1);
+            remove.appendChild(oldcontent);
         }
+        element.appendChild(remove);
     }
 
-    return result;
-}
-
-
-/**
- * Locate a node at the given path starting at refnode. Try to locate the
- * target within a given radius using the fingerprint values if direct
- * lookup failed.
- *
- * @param   path        An array of numbers. Each value represents an index
- *                      into the childrens of a node in top-down order.
- * @param   body        An array containing the node sequence in question.
- *                      When resolving the location of insert operations,
- *                      the array is empty.  For updates, the array will
- *                      consist of exactly one node. Remove operations may
- *                      consist of one or more nodes.
- * @param   head        Leading context: An array containing the values of
- *                      leading nodes in the same generation.
- * @param   tail        Trailing context: An array containing the values of
- *                      trailing nodes in the same generation.
- * @param   type        Operation type. This parameter is passed to the
- *                      equalContent callback.
- *
- * @returns A result object with two properties: node holds the resolved
- * tree.Node and tail the unresolved part of path. Returns undefined on
- * failure.
- */
-ContextResolver.prototype.find = function(path, body, head, tail, type) {
-    var guess, node, i, q = 0, f, best, bestnode, anchor, result, flatbody;
-
-    // Need a trueish value in order to differentiate context from content
-    if (typeof type === 'undefined') {
-        type = true;
-    }
-
-    if (path.length === 0) {
-        // We are operating on the root node, initial guess is trivial.
-        node = this.refnode;
-    }
-    else {
-        // Start with an initial guess using the top-down path resolver.
-        guess = this.resolver.resolve(path);
-        node = this.getClosestNode(guess.anchor, this.nodeindex);
-    }
-
-    // concatenate all nodes contained in body into one array
-    flatbody = [];
-    body.forEach(function(n) {
-        Array.prototype.push.apply(flatbody, this.nodeindex.flatten(n));
-    }, this);
-
-    // context verification and fuzzy matching
-    if (node) {
-        this.matcher.setPattern(flatbody, head, tail);
-        for (i = -this.r; i <= this.r; i++) {
-            f = this.matcher.matchQuality(node, i, type);
-            if (f > q && f >= this.t) {
-                q = f;
-                best = i;
-            }
-        }
-    }
-
-    if (typeof best === 'undefined') {
-        throw new Error('Failed to resolve operation');
-    }
-    else {
-        if ((bestnode = this.nodeindex.get(node, best)) && bestnode.depth === path.length) {
-            // Best points at an existing node with the required depth. Use
-            // that as anchor.
-            anchor = new tree.Anchor(this.refnode, bestnode);
-        }
-        else if ((bestnode = this.nodeindex.get(node, best-1)) && bestnode.depth >= path.length - 1) {
-            // Go one node back in document order and find the node which is
-            // at depth-1. Then point the anchor past the last child of this
-            // node.
-            while (bestnode.depth > path.length - 1) {
-                bestnode = bestnode.par;
-            }
-
-            anchor = new tree.Anchor(this.refnode, bestnode,
-                    bestnode.children.length);
+    if (op.insert) {
+        newcontent = this.fragmentadapter.adapt(doc, op.insert, deep);
+        if (typeof newcontent === 'string') {
+            insert.appendChild(doc.createCDATASection(newcontent));
         }
         else {
-            throw new Error('Failed to resolve operation');
+            insert.appendChild(newcontent);
         }
+        element.appendChild(insert);
     }
 
-    return new ResolverResult(anchor, [], best, q);
+    tail.appendChild(doc.createTextNode(this.formatFingerprint(op.tail)));
+    element.appendChild(tail);
+
+    return element;
+};
+
+DOMDeltaAdapter.prototype.formatFingerprint = function(parts) {
+    return parts.map(function(n) {
+        return n ? n.toString(16) : '';
+    }).join(';');
 };
 
 
-/**
- * Create a new instance of top-down path resolver
- *
- * @constructor
- */
-function TopDownPathResolver(refnode) {
-    this.refnode = refnode;
-}
-
-
-/**
- * Try to resolve the given path top-down. Return an object containing the last
- * internal node which was resolved properly as well as the unresolved tail of
- * the path. Note that leaf nodes are represented by their parent and a tail
- * containing their child-index.
- *
- * @param path  Array of integers
- * @returns A result object with two properties: node holds the resolved
- * tree.Node and tail the unresolved part of path.
- */
-TopDownPathResolver.prototype.resolve = function(path, base) {
-    var anchor, tail, result;
-
-    base = base || this.refnode;
-
-    if (path.length <= 1) {
-        anchor = new tree.Anchor(this.refnode, base, path[0]);
-        result = new ResolverResult(anchor);
-    }
-    else {
-        if (base.children[path[0]]) {
-            result = this.resolve(path.slice(1), base.children[path[0]]);
-        }
-        else {
-            tail = path.slice();
-            anchor = new tree.Anchor(this.refnode, base, tail.shift());
-            result = new ResolverResult(anchor, tail);
-        }
-    }
-
-    return result;
-};
-
-
-exports.ResolverResult = ResolverResult;
-exports.ContextResolver = ContextResolver;
-exports.TopDownPathResolver = TopDownPathResolver;
+exports.DOMDeltaAdapter = DOMDeltaAdapter;
 
 });
 
-require.define("/lib/delta/contextmatcher.js", function (require, module, exports, __dirname, __filename) {
+require.define("/lib/delta/delta-doc.js", function (require, module, exports, __dirname, __filename) {
     /**
- * @file:   Calculate matching quality of sequences as well as leading and
- *          trailing context.
- * @see:    * Sebastian Rönnau, Christian Pauli, and Uwe M. Borghoff. Merging
- *            changes in XML documents using reliable context fingerprints:
- *            http://dx.doi.org/10.1145/1410140.1410151
- *          * Original Sourcecode:
- *            https://launchpad.net/xcc
- *
- * @module  contextmatcher
+ * @fileoverview This module provides the DeltaDocument object.
  */
 
-
 /**
- * Create a new WeightedContextMatcher instance implementing the fuzzy
- * matching mechanism.
+ * Create new delta document instance.
  *
- * @param radius    Maximum radius of the fingerprint. Values greater than
- *                  four are not recommended.
+ * @param {string}  type    The document type. E.g. 'xml' or 'json'
+ * @param {string}  [name]  The file name.
+ * @param {object}  data    A reference to the underlying document, the DOM.
+ * @param {array}   [attached]  An array of attached operations (
+ *         :js:class:AttachedOperation).
+ * @param {array}   [detached]  An array of detached operations (e.g.
+ *         :js:class:DetachedContextOperation) when loading from a file.
+ * @param {string}  [src]   The serialized version of this document, e.g. the
+ *         XML markup code.
+ * @param {object}  [matching]  A matching which should be used to build up the
+ *         document later on.
  *
  * @constructor
  */
-function WeightedContextMatcher(radius) {
-    var f, cf = 0;
+function DeltaDocument(type, name, data, attached, detached, src, matching) {
+    /**
+     * The document type. E.g. 'xml' or 'json'
+     */
+    this.type = type;
 
-    if (typeof radius === 'undefined') {
-        radius = 4;
-    }
-    this.r = radius;
+    /**
+     * The file name
+     */
+    this.name = name;
 
-    // Match quality factors
-    this.qf = [];
+    /**
+     * A reference to the underlying document, e.g. the DOMDocument object.
+     */
+    this.data = data;
 
-    // Cummulative match quality factor used for normalization
-    this.cqf = [];
+    /**
+     * An array of attached operations.
+     */
+    this.attached = attached || [];
 
-    // Precompute match quality factors for given fingerprint radius
-    for (i = 0; i < this.r; i++) {
-        f = 1/Math.pow(2, i);
-        this.qf[i] = f;
-        cf += f;
-        this.cqf[i] = cf;
-    }
+    /**
+     * An array of dettached operations.
+     */
+    this.detached = detached || [];
 
-    this.body = [];
-    this.head = [];
-    this.tail = [];
+    /**
+     * The serialized version of this document.
+     */
+    this.src = src || '';
+
+    /**
+     * A matching which is used to collect attached operations when building
+     * the delta document.
+     */
+    this.matching = matching;
 }
 
 
 /**
- * Return true if subject at offset is equal to the candidate value. Override
- * this method if your values need special handling.
- */
-WeightedContextMatcher.prototype.equal = function(subject, offset, value, flag) {
-    return subject[offset] === value;
-};
-
-
-/**
- * Set the pattern consisting of the body and the context which should be
- * matched against candidates using matchQuality method subsequently.
+ * Install handlers for a resolved delta.
  *
- * @param body  Array of context elements between head and tail
- * @param head  Array of leading context elements
- * @param tail  Array of trailing context elements
+ * @param {Object}  handlerfactory  An instance returned from the document
+ *         factory ``createHandlerFactory`` method.
  */
-WeightedContextMatcher.prototype.setPattern = function(body, head, tail) {
-    this.body = body;
-    this.head = head || [];
-    this.tail = tail || [];
-};
+DeltaDocument.prototype.installHandlers = function(handlerfactory) {
+    var i, op;
 
-
-/**
- * Return a number between zero and one representing the match quality of
- * the pattern.
- *
- * @param offset    An integer representing the offset to the subject.
- */
-WeightedContextMatcher.prototype.matchQuality = function(subject, offset,
-        contentflag, contextflag)
-{
-    return this.matchContent(subject, offset, contentflag) &&
-        this.matchContext(subject, offset, contextflag);
-};
-
-
-/**
- * Return 1 if every body-item of the pattern matches the candidates
- * exactly. Otherwise return 0.
- */
-WeightedContextMatcher.prototype.matchContent = function(subject, offset, flag) {
-    var i, k, n;
-
-    // Check value-array. Only consider positions where body matches.
-    n = this.body.length;
-    for (i = 0, k = offset; i < n; i++, k++) {
-        if (!this.equal(subject, k, this.body[i], flag)) {
-            return 0;
+    // Install handlers for attached operations
+    for (i = 0; i < this.attached.length; i++) {
+        op = this.attached[i];
+        if (op && !op.handler) {
+            op.handler = handlerfactory.createOperationHandler(op.anchor,
+                    op.type, op.path, op.remove, op.insert);
         }
     }
-
-    return 1;
-};
+}
 
 
 /**
- * Return a number between 0 and 1 representing the match quality of the
- * pattern context with the candidate.
+ * Toggle all handlers of a delta document.
  */
-WeightedContextMatcher.prototype.matchContext = function(subject, offset, flag) {
-    var i, k, n, f = 0, cf = 0;
+DeltaDocument.prototype.toggleHandlers = function() {
+    var i, op;
 
-    // Match context fingerprint if any
-    if (this.qf.length && (this.head.length || this.tail.length)) {
-        n = Math.min(this.head.length, this.qf.length);
-        for (i = 0, k = offset - 1; i < n; i++, k--) {
-            f += this.equal(subject, k, this.head[n-i-1], flag) * this.qf[i];
+    // Toggle handler for each attached operation
+    for (i = 0; i < this.attached.length; i++) {
+        op = this.attached[i];
+        if (op && op.handler) {
+            op.handler.toggle();
         }
-        cf += n && this.cqf[n-1];
-
-        n = Math.min(this.tail.length, this.qf.length);
-        for (i = 0, k = offset + this.body.length; i < n; i++, k++) {
-            f += this.equal(subject, k, this.tail[i], flag) * this.qf[i];
-        }
-        cf += n && this.cqf[n-1];
-
-        // Normalize
-        f /= cf;
     }
-    else {
-        f = 1;
-    }
-
-    return f;
-};
-
-exports.WeightedContextMatcher = WeightedContextMatcher;
-
-});
-
-require.define("/lib/profiles/delta-tree-xml.js", function (require, module, exports, __dirname, __filename) {
-    var xmlpayload = require('../delta/xmlpayload');
-var deltamod = require('../delta/delta');
-var contextdelta= require('../delta/contextdelta');
-var domdelta = require('../delta/domdelta');
-
-/**
- * Return shared payload handler.
- */
-exports.payloadHandler = new xmlpayload.XMLPayloadHandler();
-
-
-/**
- * Return a new empty delta document.
- */
-exports.createEmptyDocument = function(matching) {
-    return {
-        'type': 'xml',
-        'name': 'untitled-diff.xml',
-        'data': exports.payloadHandler.createDocument(),
-        'attached': [], // Array of attached operations
-        'detached': [], // Array of detached operations
-        'messages': [], // Array of array of messages generated during the
-                        // processing, indexed by operation
-        'src': '',
-        'matching': matching
-    };
-};
-
-
-/**
- * Return a delta document loaded from the given string or DOMDocument.
- */
-exports.loadDocument = function(domdoc, fragAdapter, name) {
-    var src, operations, entries = [], i,
-        deltaAdapter = new domdelta.DOMDeltaAdapter(fragAdapter);
-
-    if (typeof domdoc === 'string') {
-        src = domdoc;
-        domdoc = exports.payloadHandler.parseString(domdoc);
-    }
-
-    return {
-        'type': 'xml',
-        'name': name,
-        'data': domdoc,
-        'attached': [],
-        'detached': deltaAdapter.adaptDocument(domdoc),
-        'messages': [],
-        'src': src,
-        'matching': undefined
-    };
-};
-
-
-/**
- * Return an initialized collector instance.
- */
-exports.createCollector = function(deltadoc, doc, equals) {
-    var collector, root, partner;
-
-    if (!doc.tree) {
-        throw new Error('Parameter error: Document objects must have a tree property');
-    }
-    if (!doc.valueindex) {
-        throw new Error('Parameter error: Document objects must have a valueindex property');
-    }
-
-    root = doc.tree;
-    partner = deltadoc.matching.get(root);
-    if (!partner) {
-        throw new Error('Parameter error: Matching does not contain tree root');
-    }
-
-    collector = new deltamod.DeltaCollector(deltadoc.matching, root, partner);
-
-    if (equals) {
-        collector.equals = equals;
-    }
-
-    return collector;
 }
 
-
-/**
- * Return an initialized context delta detacher instance.
- */
-exports.createDetacher = function(doc) {
-    var contextgen = new contextdelta.ContextGenerator(4, doc.nodeindex, doc.valueindex);
-    return new contextdelta.Detacher(contextgen);
-}
-
-
-/**
- * Return an initialized context delta attacher instance
- */
-exports.createAttacher = function(resolver) {
-    return new deltamod.Attacher(resolver);
-}
-
-
-/**
- * Return an initialized delta adapter instance.
- */
-exports.createDeltaAdapter = function(fragadapter) {
-    return new domdelta.DOMDeltaAdapter(fragadapter);
-}
-
-
-/**
- * Serialize the data property into the src string and return it.
- */
-exports.serializeDocument = function(deltadoc) {
-    deltadoc.src = exports.payloadHandler.serializeToString(deltadoc.data);
-
-    return deltadoc.src;
-};
+exports.DeltaDocument = DeltaDocument;
 
 });
 
 require.define("/lib/delta/diff.js", function (require, module, exports, __dirname, __filename) {
     /**
- * @fileoverview    Abstract diff implementation
+ * @fileoverview High-Lever interface for diffing process
  */
 
 /**
+ * Create a new instance of a patch command based on the given factory objects.
+ *
+ * @param {Object} diffFactory      A reference to a diff algorithm profile.
+ * @param {Object} docFactory       A reference to a document profile.
+ * @param {Object} deltaFactory     A reference to a delta profile.
+ *
+ * Usage example:
+ *
+ * .. code-block:: javascript
+ * 
+ *      var diffProfile = require('./lib/profiles/algo-diff-skelmatch');
+ *      var docProfile = require('./lib/profiles/doc-tree-xml');
+ *      var deltaProfile = require('./lib/profiles/delta-tree-xml');
+ *      var diff = require('./lib/delta/diff');
+ *      
+ *      var d = new diff.Diff(diffProfile, docProfile, deltaProfile);
+ *
+ *      var orig = docProfile.loadOriginalDocument(original_content);
+ *      var changed = docProfile.loadInputDocument(changed_content);
+ *
+ *      var delta = d.diff(orig, changed);
+ *
+ *      var result = deltaProfile.serializeDocument(delta);
+ *
+ * @constructor
  * @creator
+ * @name diff.Diff
  */
 function Diff(diffFactory, docFactory, deltaFactory) {
     this.diffFactory = diffFactory;
@@ -4138,6 +4258,13 @@ function Diff(diffFactory, docFactory, deltaFactory) {
 /**
  * Return the delta object after computing and collecting the diff between
  * doc1 and doc2.
+ *
+ * @param {Object} doc1     Original document. An instance returned by document
+ *                          profile loadOriginalDocument method.
+ * @param {Object} doc2     Changed document. An instance returned by document
+ *                          profile loadInputDocument method.
+ * @return {Object} Delta document.
+ * @memberOf diff.Diff
  */
 Diff.prototype.diff = function(doc1, doc2) {
     var matching = this.diffFactory.createMatching(),
@@ -4158,7 +4285,17 @@ Diff.prototype.diff = function(doc1, doc2) {
 
 
 /**
- * Construct delta document
+ * Construct delta document.
+ *
+ * @param {Object} doc1     Original document. An instance returned by document
+ *                          profile loadOriginalDocument method.
+ * @param {Object} doc2     Changed document. An instance returned by document
+ *                          profile loadInputDocument method.
+ * @param {Object} matching The matching produced by the choosen diff
+ *                          algorithm.
+ * @return {Object} Delta document.
+ *
+ * @memberOf diff.Diff
  */
 Diff.prototype.collect = function(doc1, doc2, matching) {
     var deltadoc = this.deltaFactory.createEmptyDocument(matching),
@@ -4178,6 +4315,14 @@ Diff.prototype.collect = function(doc1, doc2, matching) {
 
 /**
  * Populate delta document with detached operations
+ *
+ * @param {Object} deltadoc The delta document produced by diff.Diff.collect.
+ * @param {Object} doc      Original document. An instance returned by document
+ *                          profile loadInputDocument method.
+ * @return {Object} The file-format specific representation of the delta
+ *                  document (e.g. the DOM document).
+ *
+ * @memberOf diff.Diff
  */
 Diff.prototype.populate = function(deltadoc, doc) {
     var i, detacher = this.deltaFactory.createDetacher(doc),

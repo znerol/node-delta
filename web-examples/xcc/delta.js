@@ -115,7 +115,11 @@ require.alias = function (from, to) {
     }
     var basedir = path.dirname(res);
     
-    var keys = Object_keys(require.modules);
+    var keys = (Object.keys || function (obj) {
+        var res = [];
+        for (var key in obj) res.push(key)
+        return res;
+    })(require.modules);
     
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
@@ -160,17 +164,34 @@ require.define = function (filename, fn) {
     };
 };
 
-var Object_keys = Object.keys || function (obj) {
-    var res = [];
-    for (var key in obj) res.push(key)
-    return res;
-};
-
 if (typeof process === 'undefined') process = {};
 
-if (!process.nextTick) process.nextTick = function (fn) {
-    setTimeout(fn, 0);
-};
+if (!process.nextTick) process.nextTick = (function () {
+    var queue = [];
+    var canPost = typeof window !== 'undefined'
+        && window.postMessage && window.addEventListener
+    ;
+    
+    if (canPost) {
+        window.addEventListener('message', function (ev) {
+            if (ev.source === window && ev.data === 'browserify-tick') {
+                ev.stopPropagation();
+                if (queue.length > 0) {
+                    var fn = queue.shift();
+                    fn();
+                }
+            }
+        }, true);
+    }
+    
+    return function (fn) {
+        if (canPost) {
+            queue.push(fn);
+            window.postMessage('browserify-tick', '*');
+        }
+        else setTimeout(fn, 0);
+    };
+})();
 
 if (!process.title) process.title = 'browser';
 
@@ -948,6 +969,11 @@ require.define("/lib/delta/tree.js", function (require, module, exports, __dirna
 /**
  * Create a new tree node and set its value and optionally user data.
  *
+ * @param {String} [value]  The node value.
+ * @param {object} [data]   User data for this tree node. You may store a
+ *         reference to the corresponding object in the underlying document
+ *         structure. E.g. a reference to a DOM element.
+ *
  * @constructor
  */
 function Node(value, data) {
@@ -963,6 +989,8 @@ function Node(value, data) {
 
 /**
  * Append the given node as a child node.
+ *
+ * @param {object} child The new child node.
  */
 Node.prototype.append = function(child) {
     if (child.par) {
@@ -977,29 +1005,13 @@ Node.prototype.append = function(child) {
 
 
 /**
- * Compare the given path to the path of the node. Return positive integer
- * if the node is later in the tree, return a negative integer if it is
- * earlier and return zero if the path matches exactly.
- */
-Node.prototype.pathcmp = function(path) {
-    var result;
-    if (this.depth === 0) {
-        result = 0;
-    }
-    else {
-        result = this.par.pathcmp(path);
-        if (result === 0) {
-            result = this.childidx - path[this.depth - 1];
-        }
-    }
-
-    return result;
-};
-
-
-/**
  * Invokes a callback for the node and all its child nodes in preorder
  * (document order).
+ *
+ * @param {function}    callback    The function which will be invoked for each
+ *         node.
+ * @param {object}      [T]         Context object bound to "this" when the
+ *         callback is invoked.
  */
 Node.prototype.forEach = function(callback, T) {
     callback.call(T, this);
@@ -1011,6 +1023,11 @@ Node.prototype.forEach = function(callback, T) {
 
 /**
  * Invokes a callback for the node and all its child nodes in postorder.
+ *
+ * @param {function}    callback    The function which will be invoked for each
+ *         node.
+ * @param {object}      [T]         Context object bound to "this" when the
+ *         callback is invoked.
  */
 Node.prototype.forEachPostorder = function(callback, T) {
     this.children.forEach(function(node) {
@@ -1022,7 +1039,12 @@ Node.prototype.forEachPostorder = function(callback, T) {
 
 /**
  * Equal to forEach except that the callback is not invoked for the context
- * node
+ * node.
+ *
+ * @param {function}    callback    The function which will be invoked for each
+ *         node.
+ * @param {object}      [T]         Context object bound to "this" when the
+ *         callback is invoked.
  */
 Node.prototype.forEachDescendant = function(callback, T) {
     this.children.forEach(function(node) {
@@ -1032,23 +1054,11 @@ Node.prototype.forEachDescendant = function(callback, T) {
 
 
 /**
- * Call the given callback for the parent node and then for each ancestor
- * until reaching the root or callback returns a trueish value.
- */
-Node.prototype.forEachAncestor = function(callback, T) {
-    var brk;
-    if (this.par) {
-        brk = callback.call(T, this.par);
-        if (!brk) {
-            this.par.forEachAncestor(callback, T);
-        }
-    }
-};
-
-
-/**
  * Create a new Matching instance. Optionally specify the property used to
  * store partner links in target objects.
+ *
+ * @param {String}  [propname]  The name of the property which should be used
+ *         on a tree.Node to store a reference to its partner.
  *
  * @constructor
  */
@@ -1059,6 +1069,9 @@ function Matching(propname) {
 
 /**
  * Return the partner of given object.
+ *
+ * @param {object} obj  The tree node whose partner should be returned.
+ * @return {object} The object associated with the given tree node.
  */
 Matching.prototype.get = function(obj) {
     return obj && obj[this.propname];
@@ -1067,6 +1080,9 @@ Matching.prototype.get = function(obj) {
 
 /**
  * Associate the given objects.
+ *
+ * @param {object} a    The first candidate for the new pair.
+ * @param {object} b    The second candidate for the new pair.
  */
 Matching.prototype.put = function(a, b) {
     if (a[this.propname] || b[this.propname]) {
@@ -1081,9 +1097,9 @@ Matching.prototype.put = function(a, b) {
  * Create a new secondary tree structure providing quick access to all
  * nodes of a generation.
  *
- * @param root      A tree.Node representing the root of the tree
- * @param propname  The name of the property which will be used to cache
- *                  index values on tree.Node objects.
+ * @param {object}  root        A tree.Node representing the root of the tree
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache index values on tree.Node objects.
  *
  * @constructor
  */
@@ -1221,10 +1237,10 @@ GenerationIndex.prototype.last = function(depth) {
  * Return a tree.Node with the same depth at the given offset relative to
  * the given reference node.
  *
- * @param refnode   The reference tree.Node
- * @param offset    An integer value
+ * @param {object}  refnode   The reference tree.Node
+ * @param {number}  offset    An integer value
  *
- * @returns tree.Node or undefined
+ * @returns {object} tree.Node or undefined
  */
 GenerationIndex.prototype.get = function(refnode, offset) {
     var depth, refindex;
@@ -1290,9 +1306,9 @@ GenerationIndex.prototype.get = function(refnode, offset) {
  * Create a new secondary tree structure providing quick access to all
  * nodes in document order.
  *
- * @param root      A tree.Node representing the root of the tree
- * @param propname  The name of the property which will be used to cache
- *                  index values on tree.Node objects.
+ * @param {object}  root      A tree.Node representing the root of the tree
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache index values on tree.Node objects.
  *
  * @constructor
  */
@@ -1337,10 +1353,10 @@ DocumentOrderIndex.prototype.buildAll = function() {
 /**
  * Return a tree.Node at the offset relative to the given reference node.
  *
- * @param refnode   The reference tree.Node
- * @param offset    An integer value
+ * @param {object}  refnode   The reference tree.Node
+ * @param {number}  offset    An integer value
  *
- * @returns tree.Node or undefined
+ * @returns {object} tree.Node or undefined
  */
 DocumentOrderIndex.prototype.get = function(refnode, offset) {
     var depth, refindex;
@@ -1367,27 +1383,6 @@ DocumentOrderIndex.prototype.get = function(refnode, offset) {
 
         // Requested index is beyond upper bound of index. Fall through to
         // code outside the if below.
-    }
-
-    if (this.idxcomplete) {
-        // No need to attempt searching for the node if index is complete.
-        return undefined;
-    }
-    else {
-        // Extend document order index
-        // return this.extendIndex(depth, refnode, index);
-        throw new Error('Dynamic index expansion not implemented yet');
-    }
-};
-
-
-/**
- * Skip over a whole subtree rooted at refnode.
- */
-DocumentOrderIndex.prototype.skip = function(refnode) {
-    // Check cache
-    if (refnode.hasOwnProperty(this.propname)) {
-        return this.get(refnode, this.size(refnode));
     }
 
     if (this.idxcomplete) {
@@ -1432,6 +1427,9 @@ DocumentOrderIndex.prototype.flatten = function(refnode) {
 /**
  * Simple subtree hashing algorithm.
  *
+ * @param {function}    HashAlgorithm   Constructor function for the hash
+ * @param {object}      nodehashindex   An instance of :js:class:`NodeHashIndex`
+ *
  * @constructor
  */
 function SimpleTreeHash(HashAlgorithm, nodehashindex) {
@@ -1442,6 +1440,10 @@ function SimpleTreeHash(HashAlgorithm, nodehashindex) {
 
 /**
  * Calculate hash value of subtree
+ *
+ * @param {object}  node    A tree.Node specifying the root of the subtree.
+ * @param {object}  [hash]  If provided, use this hash instance. Otherwise
+ *         create a new one.
  */
 SimpleTreeHash.prototype.process = function(node, hash) {
     hash = hash || new this.HashAlgorithm();
@@ -1456,6 +1458,14 @@ SimpleTreeHash.prototype.process = function(node, hash) {
 
 
 /**
+ * Create new instance of a node hash index.
+ *
+ * @param {object}  nodehash    An object implementing the node-hashing method
+ *         for the underlying document. E.g. an instance of
+ *         :js:class:`DOMNodeHash`.
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache the hash values on tree.Node objects. Defaults to 'nodehash'.
+ *
  * @constructor
  */
 function NodeHashIndex(nodehash, propname) {
@@ -1464,6 +1474,13 @@ function NodeHashIndex(nodehash, propname) {
 }
 
 
+/**
+ * Return the hash value for the given node.
+ *
+ * @param {object}  node    A tree.Node.
+ *
+ * @return {number} Hash value of the tree node.
+ */
 NodeHashIndex.prototype.get = function(node) {
     if (node) {
         if (!(node.hasOwnProperty(this.propname))) {
@@ -1476,6 +1493,14 @@ NodeHashIndex.prototype.get = function(node) {
 
 
 /**
+ * Create new instance of a tree hash index.
+ *
+ * @param {object}  treehash    An object implementing the tree-hashing method.
+ *         E.g. an instance of
+ *         :js:class`SimpleTreeHash`.
+ * @param {string}  [propname]  The name of the property which will be used to
+ *         cache the hash values on tree.Node objects. Defaults to 'treehash'.
+ *
  * @constructor
  */
 function TreeHashIndex(treehash, propname) {
@@ -1484,6 +1509,13 @@ function TreeHashIndex(treehash, propname) {
 }
 
 
+/**
+ * Return the hash value for the subtree rooted at the given node.
+ *
+ * @param {object}  node    A tree.Node.
+ *
+ * @return {number} Hash value of the subtree rooted at the given node.
+ */
 TreeHashIndex.prototype.get = function(node) {
     if (node) {
         if (!(node.hasOwnProperty(this.propname))) {
@@ -1513,10 +1545,11 @@ TreeHashIndex.prototype.get = function(node) {
  *      The index into the children list of the base node. This property is
  *      undefined when the anchor points at the root of the tree.
  *
- * @param root  The root node of the tree.
- * @param base  The base node for this anchor. If index is left away, this
- *              parameter specifies the target node.
- * @param index The child index of the target node.
+ * @param {tree.Node} root      The root node of the tree.
+ * @param {tree.Node} [base]    The base node for this anchor. If index is left
+ *         out, this parameter specifies the target node.  Otherwise it
+ *         specifies the parent node of the target pointed at by index.
+ * @param {Number} [index]      The child index of the target node.
  *
  * @constructor
  */
@@ -1556,20 +1589,25 @@ exports.Anchor = Anchor;
 
 require.define("/lib/delta/xcc.js", function (require, module, exports, __dirname, __filename) {
     /**
- * @file:   Implementation of Rönnau/Berghoff XML tree diff algorithm XCC.
+ * @fileoverview Implementation of Rönnau/Borghoff XML tree diff algorithm XCC.
  *
  * @see:
  * * http://dx.doi.org/10.1007/s00450-010-0140-2
  * * https://launchpad.net/xcc
- *
- * @module  xcc
  */
 
 /** @ignore */
 var lcs = require('./lcs');
 
 /**
+ * Create a new instance of the XCC diff implementation.
+ *
+ * @param {tree.Node} a Root node of original tree
+ * @param {tree.Node} b Root node of changed tree
+ * @param {Object} options Options
+ *
  * @constructor
+ * @name xcc.Diff
  */
 function Diff(a, b, options) {
     this.a = a; // Root node of tree a
@@ -1582,6 +1620,11 @@ function Diff(a, b, options) {
 
 /**
  * Create a matching between the two nodes using the xcc diff algorithm
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchTrees = function(matching) {
     // Associate root nodes
@@ -1597,6 +1640,13 @@ Diff.prototype.matchTrees = function(matching) {
 /**
  * Default equality test. Override this method if you need to test other
  * node properties instead/beside node value.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.equals = function(a, b) {
     return (a.value === b.value);
@@ -1606,6 +1656,11 @@ Diff.prototype.equals = function(a, b) {
 /**
  * Identify unchanged leaves by comparing them using myers longest common
  * subsequence algorithm.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchLeafLCS = function(matching) {
     var a_leaves = [],
@@ -1665,6 +1720,17 @@ Diff.prototype.matchLeafLCS = function(matching) {
 /**
  * Identify leaf-node updates by traversing descendants of b_node top-down.
  * b_node must already be part of the matching.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ * @param {tree.Node} a_node A node from tree a which already takes part in the
+ *         matching.
+ * @param {function} [reject] A user supplied function which may indicate
+ *         a given node should not be considered when detecting node updates.
+ *         The function should take one argument (tree.Node) and return true
+ *         (reject) or false (do not reject).
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchLeafUpdatesOnDescendants = function(matching, a_node, reject) {
     var a_nodes = a_node.children,
@@ -1734,27 +1800,17 @@ Diff.prototype.matchLeafUpdatesOnDescendants = function(matching, a_node, reject
 
 /**
  * Detect updated leaf nodes by analyzing their neighborhood top-down.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf xcc.Diff
  */
 Diff.prototype.matchLeafUpdates = function(matching) {
     var i, rejects = this.options.ludRejectCallbacks || [undefined];
     for (i=0; i<rejects.length; i++) {
         this.matchLeafUpdatesOnDescendants(matching, this.b, rejects[i]);
     }
-};
-
-
-/**
- * Return an updater function for Delta.collect
- */
-Diff.prototype.createUpdater = function(matching) {
-    return (function(that){
-        return function(node, callback, T) {
-            var partner = matching.get(node);
-            if (!that.equals(node, partner)) {
-                callback.call(T, node, partner);
-            }
-        };
-    }(this));
 };
 
 
@@ -1767,7 +1823,7 @@ require.define("/lib/delta/skelmatch.js", function (require, module, exports, __
  * @fileoverview    Implementation of the "skelmatch" tree matching algorithm.
  *
  * This algorithm is heavily inspired by the XCC tree matching algorithm by
- * Sebastian Rönnau and Uwe M. Berghoff. It shares the idea that the
+ * Sebastian Rönnau and Uwe M. Borghoff. It shares the idea that the
  * interesting bits are found towards the bottom of the tree.
  *
  * Skel-match divides the problem of finding a partial matching between two
@@ -1786,9 +1842,15 @@ var lcs = require('./lcs');
 
 
 /**
+ * Create a new instance of the XCC diff implementation.
+ *
+ * @param {tree.Node} a Root node of original tree
+ * @param {tree.Node} b Root node of changed tree
+ *
  * @constructor
+ * @name skelmatch.Diff
  */
-function Diff(a, b, options) {
+function Diff(a, b) {
     this.a = a; // Root node of tree a
     this.b = b; // Root node of tree b
 }
@@ -1796,6 +1858,11 @@ function Diff(a, b, options) {
 
 /**
  * Create a matching between the two nodes using the skelmatch algorithm
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchTrees = function(matching) {
     // Associate root nodes
@@ -1807,9 +1874,16 @@ Diff.prototype.matchTrees = function(matching) {
 
 
 /**
- * Return true if the given node should be treated as a content node.
+ * Return true if the given node should be treated as a content node. Override
+ * this method in order to implement custom logic to decide whether a node
+ * should be examined during the initial LCS (content) or during the second
+ * pass. Default: Return true for leaf-nodes.
  *
- * Default: Return true for leaf-nodes.
+ * @param {tree.Node} The node which should be examined.
+ *
+ * @return {boolean} True if the node is a content-node, false otherwise.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.isContent = function(node) {
     return (node.children.length === 0);
@@ -1818,8 +1892,13 @@ Diff.prototype.isContent = function(node) {
 
 /**
  * Return true if the given node should be treated as a structure node.
- *
  * Default: Return true for internal nodes.
+ *
+ * @param {tree.Node} The node which should be examined.
+ *
+ * @return {boolean} True if the node is a content-node, false otherwise.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.isStructure = function(node) {
     return !this.isContent(node);
@@ -1829,6 +1908,13 @@ Diff.prototype.isStructure = function(node) {
 /**
  * Default equality test for node values. Override this method if you need to
  * test other node properties instead/beside node value.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.equals = function(a, b) {
     return (a.value === b.value);
@@ -1839,6 +1925,13 @@ Diff.prototype.equals = function(a, b) {
  * Default equality test for content nodes. Also test all descendants of a and
  * b for equality. Override this method if you want to use tree hashing for
  * this purpose.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.equalContent = function(a, b) {
     var i;
@@ -1860,6 +1953,13 @@ Diff.prototype.equalContent = function(a, b) {
  * Default equality test for structure nodes. Return true if ancestors either
  * have the same node value or if they form a pair. Override this method if you
  * want to use tree hashing for this purpose.
+ *
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if the value of the two nodes is equal.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.equalStructure = function(matching, a, b) {
     if (!matching.get(a) && !matching.get(b)) {
@@ -1876,6 +1976,15 @@ Diff.prototype.equalStructure = function(matching, a, b) {
 
 /**
  * Return true if a pair is found in the ancestor chain of a and b.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @return {boolean} Return true if a pair is found in the ancestor chain.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchingCheckAncestors = function(matching, a, b) {
     if (!a || !b) {
@@ -1892,6 +2001,13 @@ Diff.prototype.matchingCheckAncestors = function(matching, a, b) {
 
 /**
  * Put a and b and all their unmatched ancestors into the matching.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ * @param {tree.Node} a Candidate node from tree a
+ * @param {tree.Node} b Candidate node from tree b
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchingPutAncestors = function(matching, a, b) {
     if (!a || !b) {
@@ -1910,6 +2026,11 @@ Diff.prototype.matchingPutAncestors = function(matching, a, b) {
 /**
  * Identify unchanged leaves by comparing them using myers longest common
  * subsequence algorithm.
+ *
+ * @param {tree.Matching} matching A tree matching which will be populated by
+ *         diffing tree a and b.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchContent = function(matching) {
     var a_content = [],
@@ -1955,6 +2076,11 @@ Diff.prototype.matchContent = function(matching) {
 /**
  * Return an array of the bottom-most structure-type nodes beneath the given
  * node.
+ *
+ * @param {tree.Node} node The internal node from where the search should
+ *         start.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.collectBones = function(node) {
     var result = [], outer, i = 0;
@@ -1978,14 +2104,16 @@ Diff.prototype.collectBones = function(node) {
 /**
  * Invoke the given callback with each sequence of unmatched nodes.
  *
- * @param matching  A partial matching
- * @param a_sibs    A sequence of siblings from tree a
- * @param b_sibs    A sequence of siblings from tree b
- * @param callback  A function (a_nodes, b_nodes, a_parent, b_parent) called
- *                  for every consecutive sequence of nodes from a_sibs and
- *                  b_sibs seperated by one or more node pairs.
- * @param T         Context object bound to "this" when the callback is
- *                  invoked.
+ * @param {tree.Matching}   matching  A partial matching
+ * @param {Array}           a_sibs    A sequence of siblings from tree a
+ * @param {Array}           b_sibs    A sequence of siblings from tree b
+ * @param {function}        callback  A function (a_nodes, b_nodes, a_parent, b_parent)
+ *         called for every consecutive sequence of nodes from a_sibs and
+ *         b_sibs seperated by one or more node pairs.
+ * @param {Object}          T         Context object bound to "this" when the
+ *         callback is invoked.
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.forEachUnmatchedSequenceOfSiblings = function(matching,
         a_sibs, b_sibs, callback, T)
@@ -2041,6 +2169,10 @@ Diff.prototype.forEachUnmatchedSequenceOfSiblings = function(matching,
 /**
  * Traverse a partial matching and detect equal structure-type nodes between
  * matched content nodes.
+ *
+ * @param {tree.Matching}   matching  A partial matching
+ *
+ * @memberOf skelmatch.Diff
  */
 Diff.prototype.matchStructure = function(matching) {
     // Collect unmatched sequences of siblings from tree a and b. Run lcs over
@@ -2792,12 +2924,13 @@ exports.JSObjectTreeAdapter = JSObjectTreeAdapter;
 
 require.define("/lib/delta/domdelta.js", function (require, module, exports, __dirname, __filename) {
     /**
- * @file:   Adapter class for XML/DOM based delta format
- * @module  domdelta
+ * @fileoverview    Adapter class for XML/DOM based delta format
  */
 
 /** @ignore */
 var deltamod = require('./delta');
+
+/** @ignore */
 var contextdelta = require('./contextdelta');
 
 TYPE_TAGS = {};
@@ -2974,294 +3107,14 @@ DOMDeltaAdapter.prototype.formatFingerprint = function(parts) {
 };
 
 
-/**
- * Helper class for a memoizing the currently active DOM node during a patching
- * session. This mapping is necessary because DOMNodeReplaceOperationHandler
- * swaps dom nodes when toggled. Thus, any operation attached to a child node
- * needs to be capable of detecting the currently active parent in order to
- * prevent operations on inactive nodes which may lead to loss of data.
- *
- * @constructor
- */
-function DOMOperationNodeDataMap(propname) {
-    this.propname = propname || 'currentDOMNode';
-}
-
-
-/**
- * Return active DOM node for this tree.Node.
- */
-DOMOperationNodeDataMap.prototype.getCurrentDOMNode = function(node) {
-    return node && (node[this.propname] || node.data);
-}
-
-
-/**
- * Set active DOM node for this tree.Node.
- */
-DOMOperationNodeDataMap.prototype.setCurrentDOMNode = function(node, domnode) {
-    node[this.propname] = domnode;
-}
-
-
-/**
- * @constructor
- */
-function DOMNodeReplaceOperationHandler(anchor, datamap, orignode, changednode) {
-    this.anchor = anchor;
-    this.datamap = datamap;
-    this.orignode = orignode;
-    this.changednode = changednode;
-
-    // Changed node may not have any children
-    while(this.changednode.firstChild) {
-        this.changednode.removeChild(this.changednode.firstChild);
-    }
-
-    this.state = false;
-}
-
-
-/**
- * Toggle active state of this hunk.
- */
-DOMNodeReplaceOperationHandler.prototype.toggle = function() {
-    var fromnode = this.state ? this.changednode : this.orignode,
-        tonode = this.state ? this.orignode : this.changednode,
-        parent = (fromnode === fromnode.ownerDocument.documentElement) ?
-            fromnode.ownerDocument : fromnode.parentNode;
-
-    // Move children
-    while (fromnode.firstChild) {
-        tonode.appendChild(fromnode.firstChild);
-    }
-
-    // Replace node
-    parent.replaceChild(tonode, fromnode);
-
-    // Update node data map
-    this.datamap.setCurrentDOMNode(this.anchor, tonode);
-
-    this.state = !this.state;
-};
-
-
-/**
- * Return the currently activated node
- */
-DOMNodeReplaceOperationHandler.prototype.getNode = function() {
-    return this.state ? this.changednode : this.orignode;
-}
-
-
-/**
- * Return true if this hunk is active.
- */
-DOMNodeReplaceOperationHandler.prototype.isActive = function() {
-    return this.state;
-};
-
-
-/**
- * Activate this hunk, remove old attributes and insert new attributes if
- * necessary.
- */
-DOMNodeReplaceOperationHandler.prototype.activate = function() {
-    if (!this.state) {
-        this.toggle();
-    }
-};
-
-
-/**
- * Deactivate this hunk, remove inserted attributes and reinsert removed
- * attributes if necessary.
- */
-DOMNodeReplaceOperationHandler.prototype.deactivate = function() {
-    if (this.state) {
-        this.toggle();
-    }
-};
-
-
-/**
- * Construct a new DOM operation element capable of replacing the specified
- * subtrees.
- *
- * @param   par         The tree.Node whose children should be replaced
- * @param   before      The tree.Node where new nodes should be attached
- *                      before
- * @param   oldnodes    An array of the root DOM elements of the original
- *                      subtrees
- * @param   newnodes    An array of the root DOM elements of the changed
- *                      subtrees
- * @constructor
- */
-function DOMTreeSequenceOperationHandler(par, before, datamap, oldnodes,
-        newnodes) {
-    this.par = par;
-    this.before = before;
-    this.datamap = datamap;
-
-    this.oldnodes = oldnodes;
-    this.newnodes = newnodes;
-}
-
-
-/**
- * Toggle active state
- */
-DOMTreeSequenceOperationHandler.prototype.toggle = function() {
-    var remove = this.state ? this.newnodes : this.oldnodes,
-        insert = this.state ? this.oldnodes : this.newnodes,
-        node = this.datamap.getCurrentDOMNode(this.par),
-        before = this.datamap.getCurrentDOMNode(this.before),
-        i;
-
-    for (i = 0; i < remove.length; i++) {
-        node.removeChild(remove[i]);
-    }
-    for (i = 0; i < insert.length; i++) {
-        node.insertBefore(insert[i], before);
-    }
-
-    this.state = !this.state;
-};
-
-
-/**
- * Return true if the hunk is active
- */
-DOMTreeSequenceOperationHandler.prototype.isActive = function() {
-    return this.state;
-};
-
-
-/**
- * Activate this hunk, inserting new subtrees and removing old subtrees if
- * necessary.
- */
-DOMTreeSequenceOperationHandler.prototype.activate = function() {
-    if (!this.state) {
-        this.toggle();
-    }
-};
-
-
-/**
- * Deactivate this hunk, removing inserted nodes and inserting removed
- * nodes into if necessary.
- */
-DOMTreeSequenceOperationHandler.prototype.deactivate = function() {
-    if (this.state) {
-        this.toggle();
-    }
-};
-
-
-/**
- * Construct a DOM operation factory.
- * @constructor
- */
-function DOMOperationHandlerFactory() {
-    this.dataMap = new DOMOperationNodeDataMap();
-}
-
-
-/**
- * Return a new node update operation on the given node.
- *
- * @param anchor    A DeltaJS.tree.Anchor pointing to the node with old values
- * @param newnode   A DeltaJS.tree.node pointing to the node with the new values
- */
-DOMOperationHandlerFactory.prototype.createNodeUpdateOperationHandler = function(
-        anchor, newnode) {
-    var oldnode;
-    if (!anchor.target) {
-        throw new Error('Parameter error: node update handler needs an anchor with a target');
-    }
-    oldnode = anchor.target;
-    remove = oldnode.data;
-    insert = oldnode.data.ownerDocument.importNode(newnode.data, false);
-    return new DOMNodeReplaceOperationHandler(oldnode, this.dataMap, remove, insert);
-};
-
-
-/**
- * Return a new forest update operation for a sequence of children of the given
- * node. Remove all children from start through length and replace them with
- * the subtrees given in the replacement array.
- *
- * @param anchor    A DeltaJS.tree.Anchor pointing to the first node which
- *                  should be removed. Should point to the location before
- *                  which elements should be inserted if no nodes are to be
- *                  removed.
- * @param length    Number of tree nodes to be removed
- * @param replacement   Array of replacement tree nodes
- */
-DOMOperationHandlerFactory.prototype.createForestUpdateOperationHandler = function(
-        anchor, length, replacement, parenthandler) {
-    var doc, oldnodes = [], newnodes = [], i,
-        node = anchor.base,
-        start = anchor.index;
-
-    if (!node) {
-        throw new Error('Parameter error: forest update handler needs an anchor with a base');
-    }
-    else if (typeof start === 'undefined') {
-        throw new Error('Parameter error: forest update handler needs an anchor with an index');
-    }
-    else if (!length && !replacement.length) {
-        throw new Error('Forest update operation requires at least one node');
-    }
-
-    doc = node.data.ownerDocument;
-
-    for (i = start; i < start + length; i++) {
-        oldnodes.push(node.children[i].data);
-    }
-    for (i = 0; i < replacement.length; i++) {
-        newnodes.push(doc.importNode(replacement[i].data, true));
-    }
-
-    before = node.children[start + length];
-
-    return new DOMTreeSequenceOperationHandler(node, before, this.dataMap,
-            oldnodes, newnodes, parenthandler);
-};
-
-
-/**
- * Return a new operation handler for the given operation at the anchor.
- *
- * @param anchor    A DeltaJS.tree.Anchor
- * @param op        The operation to create a handler for
- */
-DOMOperationHandlerFactory.prototype.createOperationHandler = function(anchor, type, path, remove, insert) {
-    switch (type) {
-        case deltamod.UPDATE_FOREST_TYPE:
-            return this.createForestUpdateOperationHandler(anchor,
-                    remove.length, insert);
-
-        case deltamod.UPDATE_NODE_TYPE:
-            return this.createNodeUpdateOperationHandler(anchor,
-                    insert[0]);
-    }
-
-    throw new Error('Operation type not supported by this factory');
-}
-
-
 exports.DOMDeltaAdapter = DOMDeltaAdapter;
-exports.DOMOperationNodeDataMap = DOMOperationNodeDataMap;
-exports.DOMNodeReplaceOperationHandler = DOMNodeReplaceOperationHandler;
-exports.DOMTreeSequenceOperationHandler = DOMTreeSequenceOperationHandler;
-exports.DOMOperationHandlerFactory = DOMOperationHandlerFactory;
 
 });
 
 require.define("/lib/delta/delta.js", function (require, module, exports, __dirname, __filename) {
     /**
+ * @fileoverview Provides classes and methods necessary for the construction of
+ * attached operations.
  */
 
 /** @ignore */
@@ -3318,7 +3171,12 @@ ParameterBuffer.prototype.flush = function() {
     }
 };
 
-
+/**
+ * Utility class to construct a sequence of attached operations from a
+ * matching.
+ *
+ * @constructor
+ */
 function DeltaCollector(matching, root_a, root_b) {
     this.matching = matching;
     this.root_a = root_a;
@@ -3326,6 +3184,10 @@ function DeltaCollector(matching, root_a, root_b) {
 }
 
 
+/**
+ * Default equality test. Override this method if you need to test other
+ * node properties instead/beside node value.
+ */
 DeltaCollector.prototype.equals = function(a, b) {
     return a.value === b.value;
 }
@@ -3343,6 +3205,7 @@ DeltaCollector.prototype.equals = function(a, b) {
  *                  invoked.
  * @param path      (internal use) current path relative to base node. Used
  *                  from recursive calls.
+ *
  */
 DeltaCollector.prototype.forEachChange = function(callback, T, root_a, root_b,
         path) {
@@ -3417,7 +3280,8 @@ DeltaCollector.prototype.forEachChange = function(callback, T, root_a, root_b,
 
 
 /**
- * Construct a new attached operation instance.
+ * Construct a new attached operation instance. An attached operation is always
+ * bound to a tree-node identified thru the anchor.
  *
  * @constructor
  */
@@ -3504,7 +3368,8 @@ AttachedOperation.prototype.toString = function() {
 
 
 /**
- * Create a new operation attacher instance.
+ * Create a new operation attacher instance. Use this class to convert detached
+ * operations read from a patch-file.
  *
  * @constructor
  */
@@ -3516,14 +3381,13 @@ function Attacher(resolver) {
 /**
  * Resolve anchor of one operation and return new attached operation instance.
  */
-Attacher.prototype.attach = function(op, out) {
+Attacher.prototype.attach = function(op) {
     res = this.resolver.find(op.path, op.remove, op.head, op.tail, op.type);
 
-    if (typeof out === 'object') {
-        out.res = res;
+    if (res.anchor && res.tail.length === 0) {
+        return new AttachedOperation(res.anchor, op.type, op.path, op.remove,
+                op.insert);
     }
-    return new AttachedOperation(res.anchor, op.type, op.path, op.remove,
-            op.insert);
 }
 
 
@@ -3544,9 +3408,6 @@ require.define("/lib/delta/contextdelta.js", function (require, module, exports,
 
 /** @ignore */
 var tree = require('./tree');
-
-/** @ignore */
-var resolvermod = require('./resolver');
 
 /** @ignore */
 var deltamod = require('./delta');
