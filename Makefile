@@ -28,7 +28,11 @@ examples: browser
 browser-coverage: browser test/fixtures
 	$(JSCOV) dist/browser-test dist/browser-test-cov
 
-dist/browser-test/delta-test.js:
+dist/browser-test:
+	mkdir -p dist/browser-test/
+	cp -r browser-test/* dist/browser-test/
+
+dist/browser-test/delta-test.js: dist/browser-test
 	$(BROWSERIFY) test-browserify-entry.js > dist/browser-test/deltajs-test.js
 
 browser-test: dist/browser-test/delta-test.js test/fixtures
