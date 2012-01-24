@@ -1,0 +1,62 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+ 
+#appLayout {
+    height: 100%;
+}
+
+#optionsPanel {
+    width: 20em;
+}
+
+#previewFrame {
+    width: 100%;
+    height: 100%;
+}
+
+.dijitButton {
+    width:100%;
+}
+
+.dijitButton .dijitButtonNode
+{
+    width:96%;
+}
+
+/**
+ * Help content, set a maxwidth for better readability.
+ */
+.helpContent
+{
+    max-width: 40em;
+}
+
+/**
+ * Patch operations grid
+ */
+
+.opfail tr td
+{
+    background-color: #FF9999;
+}
+
+.opfail tr td:first-of-type,
+.dojoxGridRowOver.opfail tr td:first-of-type
+{
+    background-image: url('warning.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+/**
+ * Hide checkbox on failed hunks and when operations are locked
+ */
+.opfail input,
+.oplock input
+{
+    display: none;
+}

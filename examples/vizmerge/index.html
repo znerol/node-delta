@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Delta.js interactive XML diff and merge</title>
+        <!-- Application-specific CSS should be stored in your application's package to ensure portability and to allow
+        the build system to combine & minify it. -->
+        <link rel="stylesheet" href="app/resources/style.css">
+        <link rel="stylesheet" href="http://yandex.st/dojo/1.7.1/dojo/resources/dojo.css" />
+        <link rel="stylesheet" href="http://yandex.st/dojo/1.7.1/dijit/themes/claro/claro.css" />
+        <link rel="stylesheet" href="http://yandex.st/dojo/1.7.1/dojox/grid/resources/claroGrid.css"/>
+    </head>
+    <body class="claro">
+        <!-- dojo.js is an AMD-compliant loader script. It accepts configuration either from a data-dojo-config attribute,
+        as shown here, from a global dojoConfig object (which must be defined *before* dojo.js is loaded), or from
+        a global require object.
+
+        Configuration options for the loader can be viewed at http://livedocs.dojotoolkit.org/loader/amd
+        along with a bunch of additional information about its features.
+
+        Below, we're doing the following:
+
+        1. Enabling the AMD loader. (async: 1)
+        2. Fixing the loader to use normal AMD resolution of unregistered module paths (relative to baseDir)
+        instead of the traditional Dojo resolution method (relative to the parent of baseDir).
+        (tlmSiblingOfDojo: 0)
+        3. Enabling debugging. (isDebug: 1)
+
+        The remainder of Dojo configuration, as well as our application's instantiation, occurs within
+        js/app/run.js. -->
+        <script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1, parseOnLoad: true"
+            src="http://yandex.st/dojo/1.7.1/dojo/dojo.js"></script>
+        <!-- src="dojo/dojo.js" defer></script> -->
+        <div
+            id="appLayout" class="demoLayout"
+            data-dojo-type="dijit.layout.BorderContainer"
+            data-dojo-props="design: 'sidebar'">
+            <div
+                id="optionsPanel" class="edgePanel"
+                data-dojo-type="dijit.layout.ContentPane"
+                data-dojo-props="region: 'left', splitter: true">
+
+                <h4>Input Documents</h4>
+                <input name="uploadOrig" type="file"
+                id="uploadOrig" data-dojo-type="dojox.form.Uploader"
+                label="Select original version">
+                <input name="uploadChanged" type="file"
+                id="uploadChanged" data-dojo-type="dojox.form.Uploader"
+                label="Diff against changed file">
+                <input name="uploadPatch" type="file"
+                id="uploadPatch" data-dojo-type="dojox.form.Uploader"
+                label="Patch using delta file">
+
+                <h4>Result</h4>
+                <input name="savePatch" type="button"
+                id="savePatch" data-dojo-type="dijit.form.Button"
+                label="Save delta file"/>
+                <input name="saveResult" type="button"
+                id="saveResult" data-dojo-type="dijit.form.Button"
+                label="Save patched document"/>
+                <input name="resetButton" type="button"
+                id="resetButton" data-dojo-type="dijit.form.Button"
+                label="Reset"/>
+
+                <h4>Changes</h4>
+                <table id="patchOperations"
+                    data-dojo-type="dojox.grid.DataGrid" autoHeight='true'>
+                    <thead>
+                        <tr>
+                            <th field="active" width='28px' cellType='dojox.grid.cells.Bool' editable='true'>On</th>
+                            <th field="description" width='100%' editable='false'>Operation</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- div
+                id="detailPanel" class="edgePanel"
+                data-dojo-type="dijit.layout.ContentPane"
+                data-dojo-props="region: 'top', splitter: true">Op-View</div -->
+            <div id="previewPanel" class="centerPanel"
+                data-dojo-type="dijit.layout.TabContainer"
+                data-dojo-props="region: 'center', tabPosition: 'bottom'">
+                <div class="helpContent"
+                    data-dojo-type="dijit.layout.ContentPane"
+                    data-dojo-props="title: 'Help'">
+                    <h4>Delta.js Help</h4>
+                    <p>This is the interactive XML diff and merge tool based on
+                    the delta.js toolkit.
+
+                    <h4>Diffing XML files</h4>
+                    <p>First select the original version of your XML, HTML or SVG
+                    file using the appropriate button from the toolbar on the
+                    left. Then select the modified version by clicking on "Diff
+                    against changed file". The diffing algorithm now identifies
+                    all the changes between the two versions. The list of
+                    changes is also displayed in the column on the left.</p>
+
+                    <p>Save generated patch file to your download folder by
+                    clicking on the button "Save delta file". Due to browser
+                    restrictions the file will have a awkward name after the
+                    download. In order to use the file afterwards you have to
+                    rename it into something like "mypatch.xml".</p>
+
+                    <p>If you are using Google Chrome or Chromium, the file is
+                    typically named "Download" without any extension. Firefox
+                    will name it "XXXXXXXX.part". Opera allows the user to
+                    choose a file name before the download starts.</p>
+
+                    <h4>Patching xml files</h4>
+                    <p>Again, start out with selecting the original version of
+                    your XML, HTML or SVG file using the "Select original
+                    version" button in the toolbar. Then click on "Patch using
+                    delta file" and choose a patch file you created before. The
+                    patching algorithm now tries to resolve all the changes and
+                    displays them in a list in the column on the left.</p>
+
+                    <p>Each change can be applied individually using the
+                    checkboxes displayed alongside with the change description
+                    in the list. If for some reason a change was not resolved
+                    successfully, a warning sign is displayed instead of the
+                    checkbox</p>
+
+                    <p>The patched document is shown in the preview tab. You
+                    can see the effect an individual change has on the document
+                    by toggling the checkboxes while watching the preview.</p>
+
+                    <p>Using the button titled "Save patched document" you can
+                    open the resulting document incorporating the choosen
+                    changes in a new browser window or tab.</p>
+                </div>
+                <div
+                    data-dojo-type="dijit.layout.ContentPane"
+                    data-dojo-props="title: 'Preview'">
+                    <iframe id="previewFrame"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load the application. -->
+        <script src="app/run.js" defer></script>
+    </body>
+</html>
