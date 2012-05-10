@@ -1,4 +1,4 @@
 fs = require('fs');
-sys = require('sys');
-sys.puts('module.exports=' + JSON.stringify(
+util = require('util');
+util.puts('module.exports=' + JSON.stringify(
             fs.readFileSync(process.argv[2]).toString()));
