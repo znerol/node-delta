@@ -3,6 +3,7 @@ JSCOV=jscoverage
 JSDOCTK=/home/lo/sw/jsdoc-toolkit
 BROWSERIFY=node_modules/.bin/browserify
 RJS=node_modules/.bin/r.js
+XMLSHIM_AMD=node_modules/xmlshim/amd.js
 
 test: test/fixtures
 	node test.js
@@ -18,12 +19,15 @@ amd:
 	mkdir -p dist/amd
 	$(RJS) -convert lib/delta dist/amd/delta
 	$(RJS) -convert lib/profiles dist/amd/profiles
+	cp $(XMLSHIM_AMD) dist/amd/xmlshim.js
 
-examples: browser
+examples: browser amd
 	cp dist/browser/delta.js examples/xcc/delta.js
 	cp dist/browser/delta.js examples/lcs/delta.js
 	$(BROWSERIFY) examples/srcdiff/srcdiff-entry.js > examples/srcdiff/srcdiff.js
-	$(RJS) -convert lib/delta examples/vizmerge/delta
+	rm -rf examples/vizmerge/delta
+	cp -r dist/amd/delta examples/vizmerge/delta
+	cp dist/amd/xmlshim.js examples/vizmerge/xmlshim.js
 
 dist/browser-test:
 	mkdir -p dist/browser-test/
