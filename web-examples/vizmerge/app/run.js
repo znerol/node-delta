@@ -22,15 +22,15 @@ require({
         // instead, and it will configure it using that string for both the "name" and "location" properties. Handy!
         {
             name: 'dojo',
-            location: 'http://yandex.st/dojo/1.7.1/dojo/'
+            location: 'https://yandex.st/dojo/1.7.1/dojo/'
         },
         {
             name: 'dijit',
-            location: 'http://yandex.st/dojo/1.7.1/dijit/'
+            location: 'https://yandex.st/dojo/1.7.1/dijit/'
         },
         {
             name: 'dojox',
-            location: 'http://yandex.st/dojo/1.7.1/dojox/'
+            location: 'https://yandex.st/dojo/1.7.1/dojox/'
         },
         'app',
         'delta',
