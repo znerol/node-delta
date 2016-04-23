@@ -22,15 +22,15 @@ require({
         // instead, and it will configure it using that string for both the "name" and "location" properties. Handy!
         {
             name: 'dojo',
-            location: 'https://yandex.st/dojo/1.7.1/dojo/'
+            location: '//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/'
         },
         {
             name: 'dijit',
-            location: 'https://yandex.st/dojo/1.7.1/dijit/'
+            location: '//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dijit/'
         },
         {
             name: 'dojox',
-            location: 'https://yandex.st/dojo/1.7.1/dojox/'
+            location: '//ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojox/'
         },
         'app',
         'delta',
