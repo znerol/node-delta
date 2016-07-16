@@ -16,9 +16,9 @@
     "xmlshim": "~0.2.0"
   },
   "devDependencies": {
-    "browserify": "1.8.x",
-    "connect": "2.2.x",
-    "nodeunit": "0.9.x",
-    "requirejs": "1.0.x" 
+    "browserify": "^13.0.1",
+    "connect": "^3.4.1",
+    "nodeunit": "^0.9.1",
+    "requirejs": "^2.2.0"
   }
 }
