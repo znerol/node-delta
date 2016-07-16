@@ -25,7 +25,7 @@ exports.testMyersExampleLcs = function(test) {
 /**
  * If input A and input B are exactly the same, output must be same as input
  */
-exports.testContraryInput = function(test) {
+exports.testSameInput = function(test) {
     var A = 'xxxx';
     var B = 'xxxx';
 
@@ -38,7 +38,7 @@ exports.testContraryInput = function(test) {
         actual_lcs_b.push(B[y]);
     });
 
-    test.equal(d, 8);
+    test.equal(d, 0);
     test.deepEqual(actual_lcs_a, expect_lcs);
     test.deepEqual(actual_lcs_b, expect_lcs);
     test.done();
