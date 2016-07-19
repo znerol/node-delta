@@ -11,7 +11,7 @@ exports.setUp = function(callback) {
 
 exports['should calculate correct value for plain element'] = function(test) {
     var domhash = new domtree.DOMNodeHash(fnv132.Hash);
-    var a = new tree.Node('a', doc.createElement('a'));
+    var a = new tree.Node('a', doc.createElementNS(null, 'a'));
 
     var hash = domhash.process(a);
     test.equals(hash, 0xec585be5);
@@ -21,7 +21,7 @@ exports['should calculate correct value for plain element'] = function(test) {
 
 exports['should calculate correct value for plain element with attribute'] = function(test) {
     var domhash = new domtree.DOMNodeHash(fnv132.Hash);
-    var b = new tree.Node('b', doc.createElement('b'));
+    var b = new tree.Node('b', doc.createElementNS(null, 'b'));
     b.data.setAttribute('class', 'test');
 
     var hash = domhash.process(b);
@@ -36,11 +36,11 @@ exports['must not consider order of attributes'] = function(test) {
     var hash1 = new fnv132.Hash();
     var hash2 = new fnv132.Hash();
 
-    var c1 = doc.createElement('c');
+    var c1 = doc.createElementNS(null, 'c');
     c1.setAttribute('one', '1');
     c1.setAttribute('two', '2');
 
-    var c2 = doc.createElement('c');
+    var c2 = doc.createElementNS(null, 'c');
     c2.setAttribute('two', '2');
     c2.setAttribute('one', '1');
 
@@ -65,7 +65,7 @@ exports['should return same hash if qualified element names are equal'] = functi
     var c1 = doc.createElementNS('urn:test', 'pfx1:c');
     var c2 = doc.createElementNS('urn:test', 'pfx2:c');
     var c3 = doc.createElementNS('urn:test', 'c');
-    var c4 = doc.createElement('c');
+    var c4 = doc.createElementNS(null, 'c');
 
     dh1.processElement(c1, hash1);
     dh2.processElement(c2, hash2);
