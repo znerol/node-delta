@@ -95,3 +95,8 @@ Bulding the API reference
 In order to build the API reference, the Python Documentation Generatior Sphinx
 and the jsdoc toolkit version 2 is required. After invoking `make doc`, the
 directory `doc/\_build/html` contains the built documentation in HTML format.
+
+Lincense
+--------
+
+This project is licensed under the terms of the MIT license.
