@@ -67,7 +67,7 @@ function main() {
         options.patchfile=value
     });
 
-    parser.parse(process.ARGV);
+    parser.parse(process.argv);
 
 
     // Check input files

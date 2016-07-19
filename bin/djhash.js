@@ -46,7 +46,7 @@ function main() {
         options.origfile=value
     });
 
-    parser.parse(process.ARGV);
+    parser.parse(process.argv);
 
     // Setup input profile
     var documentProfile = profiles.getDocumentProfile('xml');
