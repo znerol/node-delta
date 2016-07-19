@@ -1,11 +1,12 @@
 Delta.js - A JavaScript diff and patch engine for DOM trees
 ===========================================================
 
+[![Build Status](https://travis-ci.org/znerol/node-delta.svg?branch=master)](https://travis-ci.org/znerol/node-delta)
+
 Requirements
 ------------
 
-* node.js: Tested with version 0.4.12
-* npm: Tested with version 1.0.106
+* node.js: Tested on v4, v5, v6, iojs-v2, iojs-v3
 * GNU make
 
 The instructions have been tested on Linux. They probably also work on Mac OS X
