@@ -10,7 +10,7 @@
   "dependencies": {
     "mime": "1.2.x",
     "optparse": "1.0.x",
-    "xmlshim": "0.1.x"
+    "xmlshim": "0.2.x"
   },
   "devDependencies": {
     "browserify": "1.8.x",
