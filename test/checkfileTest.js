@@ -20,25 +20,25 @@ exports['works fine when file exists and no mimetype'] = function(test) {
 };
 
 exports['calls error callback when file does not exist'] = function(test) {
-    var yield = false;
+    var invoked = false;
     var filepath = 'no/such/file.xml';
     checkfile('file.ext', filepath, undefined, function(msg){
         test.equals("Path to file.ext missing. Use the -h switch for help.", msg);
-        yield = true
+        invoked = true;
     });
-    test.ok(yield, "error callback yield");
+    test.ok(invoked, "error callback invoked");
     test.done();
 };
 
 exports['calls error callback when wrong mime type'] = function(test) {
-    var yield = false;
+    var invoked = false;
     var filepath = 'test/fixtures/logo-1.svg';
     var mimetype = 'wrong/mime';
     checkfile('file.ext', filepath, mimetype, function(msg){
         test.equals("file.ext is of the wrong type (image/svg+xml vs. wrong/mime)", msg);
-        yield = true
+        invoked = true;
     });
-    test.ok(yield, "error callback yield");
+    test.ok(invoked, "error callback invoked");
     test.done();
 };
 
