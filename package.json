@@ -10,6 +10,11 @@
   "scripts": {
     "test": "make test"
   },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/znerol/node-delta.git"
+  },
+  "license": "MIT",
   "dependencies": {
     "mime": "^1.3.4",
     "optparse": "^1.0.0",
