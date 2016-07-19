@@ -7,29 +7,9 @@ var path = require('path');
 var mime = require('mime');
 var diff = require('../lib/delta/diff');
 var profiles = require('../lib/profiles');
+var cmdutils = require('../lib/extra/cmdutils.js');
 
-
-/**
- * Ensure that the filepath is accessible and check its mime type.
- */
-function checkfile(description, filepath, wantmime) {
-    var filemime;
-
-    if (!filepath || !path.existsSync(filepath)) {
-        console.error('Path to ' + description + ' missing. Use the -h switch for help.');
-        process.exit(1);
-    }
-
-    filemime = mime.lookup(filepath);
-    if (wantmime && filemime !== wantmime) {
-        console.error(description + ' is of the wrong type');
-        process.exit(1);
-    }
-    return filemime;
-}
-
-
-
+var checkfile = cmdutils.checkfile;
 
 /**
  * Parse options and command line arguments and initialize the diff algorithm
