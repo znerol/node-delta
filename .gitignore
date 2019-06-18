@@ -7,3 +7,4 @@ examples/srcdiff/srcdiff.js
 examples/vizmerge/delta
 examples/vizmerge/xmlshim.js
 node_modules
+package-lock.json
