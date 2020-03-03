@@ -18,7 +18,7 @@
   "dependencies": {
     "mime": "^2.4.0",
     "optparse": "^1.0.0",
-    "xmlshim": "^0.2.6"
+    "xmlshim": "^0.2.7"
   },
   "devDependencies": {
     "browserify": "^16.2.3",
