@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var optparse = require('optparse');
-var sys = require('sys');
 var fs  = require('fs');
 var path = require('path');
 var mime = require('mime');
@@ -43,7 +42,7 @@ function main() {
     parser.banner = 'Usage: djdiff [options] FILE1 FILE2';
 
     parser.on('help', function(name, value) {
-        sys.puts(parser.toString());
+        console.log(parser.toString());
     });
 
     parser.on('payload', function(name, value) {
@@ -141,7 +140,7 @@ function main() {
     var deltadoc = d.diff(doc1, doc2);
 
     // Write result to stdout
-    sys.puts(deltaProfile.serializeDocument(deltadoc));
+    console.log(deltaProfile.serializeDocument(deltadoc));
 }
 
 main();
