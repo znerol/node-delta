@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var optparse = require('optparse');
-var sys = require('sys');
 var fs  = require('fs');
 var path = require('path');
 var mime = require('mime');
@@ -40,7 +39,7 @@ function main() {
     parser.banner = 'Usage: djdiff [options] FILE PATCH';
 
     parser.on('help', function(name, value) {
-        sys.puts(parser.toString());
+        console.log(parser.toString());
     });
 
     parser.on('payload', function(name, value) {
@@ -126,7 +125,7 @@ function main() {
     p.patch(doc, deltadoc);
 
     // Serialize tree
-    sys.puts(documentProfile.serializeDocument(doc));
+    console.log(documentProfile.serializeDocument(doc));
 }
 
 main();

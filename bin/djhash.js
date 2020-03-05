@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var optparse = require('optparse');
-var sys = require('sys');
 var fs  = require('fs');
 var profiles = require('../lib/profiles');
 
@@ -39,7 +38,7 @@ function main() {
     parser.banner = 'Usage: djhash [options] FILE';
 
     parser.on('help', function(name, value) {
-        sys.puts(parser.toString());
+        console.log(parser.toString());
     });
 
     parser.on(2, function(value) {
@@ -63,7 +62,7 @@ function main() {
         line = fill(line, 40);
         line += doc.valueindex.get(node).toString(16);
         line += " " + doc.treevalueindex.get(node).toString(16);
-        sys.puts(line);
+        console.log(line);
         i++;
     }
 }
