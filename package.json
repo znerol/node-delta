@@ -1,6 +1,6 @@
 {
   "name": "deltajs",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Diff and patch engine for DOM trees",
   "main": "./lib/main",
   "bin": {
